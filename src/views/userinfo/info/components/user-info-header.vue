@@ -57,10 +57,12 @@
         vertical-align: -1px;
       }
     }
+
     .user-msg {
       .arco-icon {
         color: rgb(var(--gray-10));
       }
+
       .arco-typography {
         margin-left: 6px;
       }

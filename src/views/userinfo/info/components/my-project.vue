@@ -62,6 +62,7 @@
     min-height: 128px;
     padding-bottom: 0;
   }
+
   .my-project {
     &-header {
       display: flex;

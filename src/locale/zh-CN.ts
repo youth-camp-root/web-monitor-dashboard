@@ -23,12 +23,16 @@ import locale403 from '@/views/exception/403/locale/zh-CN';
 import locale404 from '@/views/exception/404/locale/zh-CN';
 import locale500 from '@/views/exception/500/locale/zh-CN';
 
-import localeUserInfo from '@/views/user/info/locale/zh-CN';
-import localeUserSetting from '@/views/user/setting/locale/zh-CN';
+import localeUserInfo from '@/views/userinfo/info/locale/zh-CN';
+import localeUserSetting from '@/views/userinfo/setting/locale/zh-CN';
 
 import localeSettings from './zh-CN/settings';
 
 export default {
+  'menu.general': '概览',
+  'menu.user': '用户',
+  'menu.error': '错误',
+  'menu.performance': '性能',
   'menu.dashboard': '仪表盘',
   'menu.server.dashboard': '仪表盘-服务端',
   'menu.server.workplace': '工作台-服务端',
@@ -39,7 +43,7 @@ export default {
   'menu.form': '表单页',
   'menu.profile': '详情页',
   'menu.visualization': '数据可视化',
-  'menu.user': '个人中心',
+  'menu.userinfo': '个人中心',
   'menu.arcoWebsite': 'Arco Design',
   'menu.faq': '常见问题',
   'navbar.docs': '文档中心',

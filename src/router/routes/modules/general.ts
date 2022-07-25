@@ -1,16 +1,16 @@
 import { DEFAULT_LAYOUT } from '@/router/constants';
 import { AppRouteRecordRaw } from '../types';
 
-const USER: AppRouteRecordRaw = {
-  path: '/user',
-  name: 'user',
+const GENERAL: AppRouteRecordRaw = {
+  path: '/general',
+  name: 'general',
   component: DEFAULT_LAYOUT,
   meta: {
-    locale: 'menu.user',
+    locale: 'menu.general',
     requiresAuth: true,
-    icon: 'icon-user',
-    order: 1,
+    icon: 'icon-dashboard',
+    order: 0,
   },
 };
 
-export default USER;
+export default GENERAL;

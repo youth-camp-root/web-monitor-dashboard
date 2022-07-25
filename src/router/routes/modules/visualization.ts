@@ -9,7 +9,7 @@ const VISUALIZATION: AppRouteRecordRaw = {
     locale: 'menu.visualization',
     requiresAuth: true,
     icon: 'icon-apps',
-    order: 1,
+    order: 101,
   },
   children: [
     {

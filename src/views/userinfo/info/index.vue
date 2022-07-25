@@ -55,7 +55,6 @@
       margin-right: 16px;
       overflow: hidden;
       // background-color: var(--color-bg-2);
-
       :deep(.arco-tabs-nav-tab) {
         margin-left: 16px;
       }
@@ -75,10 +74,12 @@
   .mobile {
     .content {
       display: block;
+
       &-left {
         margin-right: 0;
         margin-bottom: 16px;
       }
+
       &-right {
         width: 100%;
       }

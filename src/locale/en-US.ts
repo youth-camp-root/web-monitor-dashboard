@@ -23,12 +23,16 @@ import locale403 from '@/views/exception/403/locale/en-US';
 import locale404 from '@/views/exception/404/locale/en-US';
 import locale500 from '@/views/exception/500/locale/en-US';
 
-import localeUserInfo from '@/views/user/info/locale/en-US';
-import localeUserSetting from '@/views/user/setting/locale/en-US';
+import localeUserInfo from '@/views/userinfo/info/locale/en-US';
+import localeUserSetting from '@/views/userinfo/setting/locale/en-US';
 
 import localeSettings from './en-US/settings';
 
 export default {
+  'menu.general': 'General',
+  'menu.user': 'Users',
+  'menu.error': 'Error',
+  'menu.performance': 'Performance',
   'menu.dashboard': 'Dashboard',
   'menu.server.dashboard': 'Dashboard-Server',
   'menu.server.workplace': 'Workplace-Server',
@@ -39,7 +43,7 @@ export default {
   'menu.form': 'Form',
   'menu.profile': 'Profile',
   'menu.visualization': 'Data Visualization',
-  'menu.user': 'User Center',
+  'menu.userinfo': 'User Center',
   'menu.arcoWebsite': 'Arco Design',
   'menu.faq': 'FAQ',
   'navbar.docs': 'Docs',
