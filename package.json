@@ -1,9 +1,9 @@
 {
-  "name": "arco-design-pro-vue",
-  "description": "Arco Design Pro for Vue",
+  "name": "web-monitor-dashboard",
+  "description": "Front-end monitoring system",
   "version": "1.0.0",
   "private": true,
-  "author": "ArcoDesign Team",
+  "author": "ByteDance Youth Camp - Root",
   "license": "MIT",
   "scripts": {
     "dev": "vite --config ./config/vite.config.dev.ts",

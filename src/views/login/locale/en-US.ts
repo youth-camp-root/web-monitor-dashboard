@@ -1,5 +1,6 @@
 export default {
-  'login.form.title': 'Login to Arco Design Pro',
+  'login.form.title': 'Login to Root',
+  'login.form.subtitle': 'Lightweight front-end monitoring system',
   'login.form.userName.errMsg': 'Username cannot be empty',
   'login.form.password.errMsg': 'Password cannot be empty',
   'login.form.login.errMsg': 'Login error, refresh and try again',

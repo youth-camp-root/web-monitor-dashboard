@@ -1,5 +1,6 @@
 export default {
-  'login.form.title': '登录 Arco Design Pro',
+  'login.form.title': '登录 Root',
+  'login.form.subtitle': '轻度前端监控系统',
   'login.form.userName.errMsg': '用户名不能为空',
   'login.form.password.errMsg': '密码不能为空',
   'login.form.login.errMsg': '登录出错，轻刷新重试',
