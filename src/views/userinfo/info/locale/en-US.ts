@@ -1,5 +1,5 @@
 export default {
-  'menu.user.info': 'User Info',
+  'menu.userinfo.info': 'User Info',
   'userInfo.editUserInfo': 'Edit Info',
   'userInfo.tab.title.overview': 'Overview',
   'userInfo.tab.title.project': 'Project',
