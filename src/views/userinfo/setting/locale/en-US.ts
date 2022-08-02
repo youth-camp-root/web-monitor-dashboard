@@ -1,5 +1,5 @@
 export default {
-  'menu.user.setting': 'User Setting',
+  'menu.userinfo.setting': 'User Setting',
   'userSetting.menu.title.info': 'Personal Information',
   'userSetting.menu.title.account': 'Account Setting',
   'userSetting.menu.title.password': 'Password',

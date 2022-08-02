@@ -2,11 +2,11 @@ import { DEFAULT_LAYOUT } from '@/router/constants';
 import { AppRouteRecordRaw } from '../types';
 
 const USERINFO: AppRouteRecordRaw = {
-  path: '/user',
-  name: 'user',
+  path: '/userinfo',
+  name: 'userinfo',
   component: DEFAULT_LAYOUT,
   meta: {
-    locale: 'menu.user',
+    locale: 'menu.userinfo',
     icon: 'icon-user',
     requiresAuth: true,
     order: 107,
@@ -17,7 +17,7 @@ const USERINFO: AppRouteRecordRaw = {
       name: 'Info',
       component: () => import('@/views/userinfo/info/index.vue'),
       meta: {
-        locale: 'menu.user.info',
+        locale: 'menu.userinfo.info',
         requiresAuth: true,
         roles: ['*'],
       },
@@ -27,7 +27,7 @@ const USERINFO: AppRouteRecordRaw = {
       name: 'Setting',
       component: () => import('@/views/userinfo/setting/index.vue'),
       meta: {
-        locale: 'menu.user.setting',
+        locale: 'menu.userinfo.setting',
         requiresAuth: true,
         roles: ['*'],
       },
