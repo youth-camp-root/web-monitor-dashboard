@@ -23,7 +23,7 @@ const ERROR: AppRouteRecordRaw = {
       },
     },
     {
-      path: 'issue-details/:issueid', // The midline path complies with SEO specifications
+      path: 'issue-details/:issueid', // 通过issueid返回对应的数据 再渲染到页面
       name: 'IssueDetails',
       component: () => import('@/views/error/issue-details/index.vue'),
       meta: {
