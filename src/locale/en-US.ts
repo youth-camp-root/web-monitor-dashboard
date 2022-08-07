@@ -1,6 +1,8 @@
 import localeMessageBox from '@/components/message-box/locale/en-US';
 import localeLogin from '@/views/login/locale/en-US';
 
+import localeUserDetail from '@/views/user/[id]/locale/en-US';
+
 import localeErrorIssues from '@/views/error/issues/locale/en-US';
 import localeErrorIssueDetails from '@/views/error/issue-details/locale/en-US';
 
@@ -33,7 +35,8 @@ import localeSettings from './en-US/settings';
 
 export default {
   'menu.general': 'General',
-  'menu.user': 'Users',
+  'menu.user': 'User',
+  'menu.user.detail': 'Details',
   'menu.error': 'Error',
   'menu.performance': 'Performance',
   'menu.dashboard': 'Dashboard',
@@ -54,6 +57,8 @@ export default {
   ...localeSettings,
   ...localeMessageBox,
   ...localeLogin,
+
+  ...localeUserDetail,
 
   ...localeErrorIssues,
   ...localeErrorIssueDetails,

@@ -10,7 +10,21 @@ const USER: AppRouteRecordRaw = {
     requiresAuth: true,
     icon: 'icon-user',
     order: 1,
+    hideChildrenInMenu: true,
   },
+  children: [
+    {
+      path: ':id',
+      name: 'UserDetail',
+      component: () => import('@/views/user/[id]/index.vue'),
+      meta: {
+        locale: 'menu.user.detail',
+        requiresAuth: true,
+        roles: ['*'],
+        hideInMenu: true,
+      },
+    },
+  ],
 };
 
 export default USER;
