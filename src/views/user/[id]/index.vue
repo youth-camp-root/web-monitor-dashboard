@@ -3,7 +3,7 @@
     <Breadcrumb :items="['menu.user', 'menu.user.detail']" />
     <a-space direction="vertical" :size="16" fill>
       <a-card :title="$t('user.detail.userInfo.title')">
-        <UserInfo />
+        <UserInfo :id="id" />
       </a-card>
       <a-card :title="$t('user.detail.userCharts.title')">
         <UserCharts />
@@ -23,9 +23,7 @@
   import UserInfoList from './components/UserInfoList.vue';
 
   const route = useRoute();
-  const { id } = route.params;
-
-  // TODO: add logic for retrieving data from backend.
+  const id = route.params.id as string;
 </script>
 
 <script lang="ts">
