@@ -3,7 +3,7 @@
     class="general-card"
     :title="$t('multiDAnalysis.card.title.userActions')"
   >
-    <Chart height="122px" :option="chartOption" />
+    <Chart :option="chartOption" autoresize />
   </a-card>
 </template>
 
