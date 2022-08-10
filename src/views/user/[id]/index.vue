@@ -18,9 +18,9 @@
 <script setup lang="ts">
   import { useRoute } from 'vue-router';
   import Breadcrumb from '@/components/breadcrumb/index.vue';
-  import UserInfo from './components/UserInfo.vue';
-  import UserCharts from './components/UserCharts.vue';
-  import UserInfoList from './components/UserInfoList.vue';
+  import UserInfo from './components/user-info.vue';
+  import UserCharts from './components/user-charts.vue';
+  import UserInfoList from './components/user-info-list.vue';
 
   const route = useRoute();
   const id = route.params.id as string;
