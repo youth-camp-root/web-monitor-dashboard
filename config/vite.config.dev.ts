@@ -18,6 +18,9 @@ export default mergeConfig(
         exclude: ['node_modules'],
       }),
     ],
+    build: {
+      sourcemap: true,
+    },
   },
   baseConfig
 );
