@@ -20,6 +20,8 @@ import '@/views/visualization/multi-dimension-data-analysis/mock';
 import '@/views/userinfo/info/mock';
 import '@/views/userinfo/setting/mock';
 
+import '@/views/user/[id]/mock';
+
 import '@/views/error/issue-details/mock';
 
 Mock.setup({

@@ -1,6 +1,8 @@
 import localeMessageBox from '@/components/message-box/locale/zh-CN';
 import localeLogin from '@/views/login/locale/zh-CN';
 
+import localeUserDetail from '@/views/user/[id]/locale/zh-CN';
+
 import localeErrorIssues from '@/views/error/issues/locale/zh-CN';
 import localeErrorIssueDetails from '@/views/error/issue-details/locale/zh-CN';
 
@@ -34,6 +36,7 @@ import localeSettings from './zh-CN/settings';
 export default {
   'menu.general': '概览',
   'menu.user': '用户',
+  'menu.user.detail': '详情',
   'menu.error': '错误',
   'menu.performance': '性能',
   'menu.dashboard': '仪表盘',
@@ -54,6 +57,8 @@ export default {
   ...localeSettings,
   ...localeMessageBox,
   ...localeLogin,
+
+  ...localeUserDetail,
 
   ...localeErrorIssues,
   ...localeErrorIssueDetails,
