@@ -2,12 +2,15 @@
   <VCharts
     v-if="renderChart"
     :option="options"
-    :auto-resize="autoResize"
+    :autoresize="autoResize"
     :style="{ width, height }"
   />
 </template>
 
 <script lang="ts" setup>
+  // https://github.com/ecomfe/vue-echarts/issues/104
+  // vue-echarts :auto-resize="autoResize" not working
+  // The attribute had changed to autoresize instead of auto-resize
   import { ref, nextTick } from 'vue';
   import VCharts from 'vue-echarts';
   // import { useAppStore } from '@/store';
