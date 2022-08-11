@@ -46,10 +46,6 @@
       title: t('user.detail.list.type'),
       dataIndex: 'type',
       slotName: 'type',
-    },
-    {
-      title: t('user.detail.list.datetime'),
-      dataIndex: 'datetime',
       filterable: {
         filter: (value: string[], record: TableData) =>
           record.name.includes(value),
@@ -58,11 +54,15 @@
       },
     },
     {
-      title: 'Salary',
-      dataIndex: 'salary',
+      title: t('user.detail.list.datetime'),
+      dataIndex: 'datetime',
       sortable: {
         sortDirections: ['ascend'],
       },
+    },
+    {
+      title: t('user.detail.list.title'),
+      dataIndex: 'salary',
     },
   ];
   const data: any = userInfoList;

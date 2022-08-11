@@ -17,7 +17,7 @@ export const userInfoList: TableData[] = Mock.mock({
     {
       'key|1-10': 1,
       'datetime': '@DATE',
-      'salary': 23000,
+      'salary': '@TITLE',
     },
   ],
 }).list;

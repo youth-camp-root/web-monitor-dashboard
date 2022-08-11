@@ -17,4 +17,5 @@ export default {
   'user.detail.list.type.event': '事件',
   'user.detail.list.type.error': '错误',
   'user.detail.list.datetime': '时间',
+  'user.detail.list.title': '标题',
 };
