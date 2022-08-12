@@ -1,5 +1,5 @@
 <template>
-  <a-spin :loading="loading" style="width: 100%">
+  <a-spin style="width: 100%">
     <a-card
       class="general-card"
       :header-style="{ paddingBottom: '0' }"
@@ -8,55 +8,83 @@
       <template #title>
         {{ $t('error.issueDetails.stackInfo') }}
       </template>
-      <template #extra>
+      <!-- <template #extra>
         <a-link>{{ $t('error.issueDetails.viewMore') }}</a-link>
-      </template>
+      </template> -->
       <a-space direction="vertical" :size="10" fill>
-        <a-table
-          :data="renderList"
-          :pagination="false"
-          :bordered="false"
-          :scroll="{ x: '100%', y: '264px' }"
-        >
+        <a-menu>
+          <a-sub-menu v-for="record in recordList" :key="record.key">
+            <template #title>{{ record.title }}</template>
+            <a-menu-item key="record_address">{{ record.address }}</a-menu-item>
+            <a-menu-item key="record_button"
+              >【源码解析位置】:
+              <a-button
+                style="margin-left: 10px"
+                type="primary"
+                shape="round"
+                size="mini"
+                status="warning"
+                >解析源码</a-button
+              >
+            </a-menu-item>
+          </a-sub-menu>
+        </a-menu>
+        <!-- <a-table :data="renderList" :pagination="false" :bordered="false" :scroll="{ x: '100%', y: '264px' }">
           <template #columns>
             <a-table-column title="来源" data-index="title">
               <template #cell="{ record }">
-                <a-typography-paragraph
-                  :ellipsis="{
-                    rows: 1,
-                  }"
-                >
+                <a-typography-paragraph :ellipsis="{
+                  rows: 1,
+                }">
                   {{ record.title }}
                 </a-typography-paragraph>
               </template>
             </a-table-column>
           </template>
-        </a-table>
+        </a-table> -->
       </a-space>
     </a-card>
   </a-spin>
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue';
-  import useLoading from '@/hooks/loading';
-  import { queryErrorIssueStack } from '@/api/errorData';
-  import type { TableData } from '@arco-design/web-vue/es/table/interface';
-
-  const { loading, setLoading } = useLoading();
-  const renderList = ref<TableData[]>();
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const { data } = await queryErrorIssueStack();
-      renderList.value = data;
-    } catch (err) {
-      // you can report use errorHandler or other
-    } finally {
-      setLoading(false);
-    }
-  };
-  fetchData();
+  const recordList = [
+    {
+      key: '1',
+      title: 'https://www.test.com/webfunny/common.e6d84b9c.js:29:72045',
+      increases: 35,
+      address:
+        '【压缩代码位置】：rror):t(o?o(e.data):e.data)}),n++,i();else{var s=【错误位置：】i();t(o?o(s):s)}})}}var r=t;this.displayImageCho',
+    },
+    {
+      key: '2',
+      title: 'https://www.test.com/webfunny/common.e6d84b9c.js:29:72310',
+      increases: 35,
+      address:
+        '【压缩代码位置】：rror):t(o?o(e.data):e.data)}),n++,i();else{var s=【错误位置：】i();t(o?o(s):s)}})}}var r=t;this.displayImageCho',
+    },
+    {
+      key: '3',
+      title: 'https://www.test.com/webfunny/common.e6d84b9c.js:29:72198',
+      increases: 35,
+      address:
+        '【压缩代码位置】：rror):t(o?o(e.data):e.data)}),n++,i();else{var s=【错误位置：】i();t(o?o(s):s)}})}}var r=t;this.displayImageCho',
+    },
+    {
+      key: '4',
+      title: 'https://www.test.com/webfunny/common.e6d84b9c.js:29:75766',
+      increases: 35,
+      address:
+        '【压缩代码位置】：rror):t(o?o(e.data):e.data)}),n++,i();else{var s=【错误位置：】i();t(o?o(s):s)}})}}var r=t;this.displayImageCho',
+    },
+    {
+      key: '5',
+      title: 'https://www.test.com/webfunny/common.e6d84b9c.js:29:69967',
+      increases: 35,
+      address:
+        '【压缩代码位置】：rror):t(o?o(e.data):e.data)}),n++,i();else{var s=【错误位置：】i();t(o?o(s):s)}})}}var r=t;this.displayImageCho',
+    },
+  ];
 </script>
 
 <style scoped lang="less">

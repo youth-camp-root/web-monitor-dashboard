@@ -2,15 +2,13 @@
   <div class="container">
     <Breadcrumb :items="['menu.error', 'menu.error.issueDetails']" />
     <div class="overview-box">
-      <div class="panel">
-        <DataPanel></DataPanel>
-      </div>
+      <DataPanel></DataPanel>
     </div>
+    <userMessage></userMessage>
     <div class="main-box">
       <div class="details">
         <StackInfo></StackInfo>
       </div>
-      <div class="statistics"></div>
     </div>
   </div>
 </template>
@@ -18,6 +16,7 @@
 <script lang="ts" setup>
   import DataPanel from './components/data-panel.vue';
   import StackInfo from './components/stack-info.vue';
+  import userMessage from './components/issue-userMessage.vue';
 </script>
 
 <script lang="ts">
@@ -32,17 +31,12 @@
     flex-direction: column;
     padding: 16px 20px;
     padding-bottom: 0;
-    overflow: auto;
-    background-color: var(--color-fill-2);
   }
 
   .overview-box {
-    flex: 1;
+    display: flex;
+    flex-direction: column;
     margin-bottom: 10px;
-  }
-
-  .panel {
-    overflow: auto;
     background-color: var(--color-bg-2);
     border-radius: 4px;
   }
@@ -58,10 +52,6 @@
   }
 
   .details {
-    flex: 2;
-  }
-
-  .statistics {
-    flex: 1;
+    width: 100%;
   }
 </style>
