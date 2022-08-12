@@ -27,6 +27,7 @@ export default mergeConfig(
         },
       },
       chunkSizeWarningLimit: 2000,
+      sourcemap: true,
     },
   },
   baseConfig
