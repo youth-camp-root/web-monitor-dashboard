@@ -53,6 +53,7 @@ setupMock({
 
     Mock.mock(new RegExp('/api/content-period-analysis'), () => {
       // eslint-disable-next-line no-console
+      console.log('here4');
       const getLineData = (name: string) => {
         return {
           name,
@@ -69,7 +70,9 @@ setupMock({
       });
     });
 
-    Mock.mock(new RegExp('/api/content-publish'), () => {
+    Mock.mock(new RegExp('/api/content-overview'), () => {
+      // eslint-disable-next-line no-console
+      console.log('here3');
       const generateLineData = (name: string) => {
         const result = {
           name,
@@ -83,9 +86,9 @@ setupMock({
         return result;
       };
       return successResponseWrap([
-        generateLineData('纯文本'),
-        generateLineData('图文类'),
-        generateLineData('视频类'),
+        generateLineData('新用户数'),
+        // generateLineData('图文类'),
+        generateLineData('老用户数'),
       ]);
     });
 
