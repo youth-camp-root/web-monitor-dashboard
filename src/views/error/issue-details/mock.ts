@@ -34,5 +34,29 @@ setupMock({
     Mock.mock(new RegExp('/api/error/issue-details/stack'), () => {
       return successResponseWrap([...textList]);
     });
+    // error
+    Mock.mock(new RegExp('/api/error/issues/error-overview'), () => {
+      const generateLineData = (name: string) => {
+        return {
+          name,
+          count: Mock.Random.natural(20, 2000),
+          value: new Array(30)
+            .fill(0)
+            .map(() => Mock.Random.natural(800, 4000)),
+        };
+      };
+      const xAxis = new Array(30).fill(0).map((_item, index) => {
+        return `12.1${index}`;
+      });
+      return successResponseWrap({
+        xAxis,
+        data: [
+          generateLineData('Total Error'),
+          generateLineData('JS Error'),
+          generateLineData('API Error'),
+          generateLineData('Resource Error'),
+        ],
+      });
+    });
   },
 });
