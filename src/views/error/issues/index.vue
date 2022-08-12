@@ -1,10 +1,15 @@
 <template>
   <div class="container">
     <Breadcrumb :items="['menu.error', 'menu.error.issues']" />
+    <ErrorOverview></ErrorOverview>
+    <ErrorList></ErrorList>
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+  import ErrorList from './components/error-list.vue';
+  import ErrorOverview from './components/error-overview.vue';
+</script>
 
 <script lang="ts">
   export default {
