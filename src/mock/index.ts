@@ -24,6 +24,10 @@ import '@/views/user/[id]/mock';
 
 import '@/views/error/issue-details/mock';
 
+import '@/views/overview/mock';
+
+import '@/views/useraction/mock';
+
 Mock.setup({
   timeout: '600-1000',
 });

@@ -42,9 +42,15 @@ export interface ContentPublishRecord {
 }
 
 export function queryContentPublish() {
+  // eslint-disable-next-line no-console
+  console.log('here2');
   return axios.get<ContentPublishRecord[]>('/api/content-publish');
 }
-
+export function queryContentPublishOverview() {
+  // eslint-disable-next-line no-console
+  console.log('here');
+  return axios.get<ContentPublishRecord[]>('/api/content-overview');
+}
 export function queryContentPeriodAnalysis() {
   return axios.post<GeneralChart>('/api/content-period-analysis');
 }
@@ -63,6 +69,7 @@ export function queryPublicOpinionAnalysis(data: DataChainGrowth) {
     data
   );
 }
+
 export interface DataOverviewRes {
   xAxis: string[];
   data: Array<{ name: string; value: number[]; count: number }>;
