@@ -30,11 +30,15 @@ import locale500 from '@/views/exception/500/locale/en-US';
 
 import localeUserInfo from '@/views/userinfo/info/locale/en-US';
 import localeUserSetting from '@/views/userinfo/setting/locale/en-US';
+import localeOverview from '@/views/overview/locale/en-US';
 
+import localUserActionSearch from '@/views/useraction/locale/en-US';
 import localeSettings from './en-US/settings';
 
 export default {
   'menu.general': 'General',
+  'menu.overview': 'Overview',
+  'menu.useraction': 'Detailed user check',
   'menu.user': 'User',
   'menu.user.detail': 'Details',
   'menu.error': 'Error',
@@ -57,7 +61,7 @@ export default {
   ...localeSettings,
   ...localeMessageBox,
   ...localeLogin,
-
+  ...localeOverview,
   ...localeUserDetail,
 
   ...localeErrorIssues,
@@ -80,4 +84,5 @@ export default {
   ...locale500,
   ...localeUserInfo,
   ...localeUserSetting,
+  ...localUserActionSearch,
 };

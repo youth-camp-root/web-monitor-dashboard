@@ -31,10 +31,15 @@ import locale500 from '@/views/exception/500/locale/zh-CN';
 import localeUserInfo from '@/views/userinfo/info/locale/zh-CN';
 import localeUserSetting from '@/views/userinfo/setting/locale/zh-CN';
 
+import localeOverview from '@/views/overview/locale/zh-CN';
+
+import localUserActionSearch from '@/views/useraction/locale/zh-CN';
 import localeSettings from './zh-CN/settings';
 
 export default {
   'menu.general': '概览',
+  'menu.overview': '首页',
+  'menu.useraction': '用户细查',
   'menu.user': '用户',
   'menu.user.detail': '详情',
   'menu.error': '错误',
@@ -58,6 +63,8 @@ export default {
   ...localeMessageBox,
   ...localeLogin,
 
+  ...localeOverview,
+
   ...localeUserDetail,
 
   ...localeErrorIssues,
@@ -80,4 +87,5 @@ export default {
   ...locale500,
   ...localeUserInfo,
   ...localeUserSetting,
+  ...localUserActionSearch,
 };
