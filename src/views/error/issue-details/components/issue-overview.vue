@@ -1,32 +1,35 @@
 <template>
   <a-col class="issue-overview">
-    <a-col :span="8">
-      <a-typography-title :heading="4" style="margin-top: 0">
-        {{ issueInfo.name }}
-      </a-typography-title>
-      <a-typography-text code>
-        {{ issueInfo.from }}
+    <a-typography-text bold style="font-size: 18px; color: blue">
+      {{ issueInfo.name }}
+    </a-typography-text>
+    <a-typography-text code>
+      {{ issueInfo.from }}
+    </a-typography-text>
+    <div class="issue-timeShow">
+      <a-tag checkable color="red" :default-checked="true">时间</a-tag>
+      <a-typography-text>
+        {{ issueInfo.time }}
       </a-typography-text>
-    </a-col>
+    </div>
   </a-col>
 </template>
-
 <script lang="ts" setup>
   interface IIssueInfo {
     name: string;
     from: string;
+    time: string;
   }
   const issueInfo: IIssueInfo = {
     name: 'TypeError',
-    from: 'call(components/App)',
+    from: 'internal:///./src/modules/jsError/components/OverviewPanel/index.js:287:105',
+    time: '2022-08-05 13:26:25',
   };
 </script>
-
-<style scoped lang="less">
-  .issue-overview {
-    width: 30%;
-    padding: 20px 20px 0 20px;
-    background-color: var(--color-bg-2);
-    border-radius: 4px 4px 0 0;
+<style scoped>
+  .issue-timeShow {
+    margin-top: 20px;
+    margin-left: 20px;
+    text-align: left;
   }
 </style>
