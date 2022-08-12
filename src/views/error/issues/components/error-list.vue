@@ -60,6 +60,11 @@
             sortDirections: ['ascend', 'descend'],
           }"
         />
+        <a-table-column title="Optional">
+          <template #cell="{ record }">
+            <a-button @click="issuesDetail(record.issueid)">view</a-button>
+          </template>
+        </a-table-column>
       </template>
     </a-table>
   </a-card>
@@ -68,9 +73,9 @@
 <script lang="ts" setup>
   import { reactive, h } from 'vue';
   import { Pagination } from '@/types/global';
-  import useChartOption from '@/hooks/chart-option';
   import { EChartsOption } from 'echarts';
   import 'echarts/lib/component/markLine';
+  import router from '@/router';
 
   const data = reactive([
     {
@@ -81,6 +86,7 @@
       errorFreq: [10, 20, 21, 7, 3, 10, 2],
       errorTotal: 122,
       errorPpl: 111,
+      issueid: 1,
     },
     {
       errorName: 'panic',
@@ -90,6 +96,7 @@
       errorFreq: [6, 4, 3, 7, 3, 10, 17],
       errorTotal: 102,
       errorPpl: 94,
+      issueid: 2,
     },
     {
       errorName: 'Handled Exception',
@@ -99,6 +106,7 @@
       errorFreq: [6, 1, 2, 7, 12, 22, 17],
       errorTotal: 112,
       errorPpl: 87,
+      issueid: 3,
     },
     {
       errorName: 'Error',
@@ -108,6 +116,7 @@
       errorFreq: [6, 0, 1, 7, 10, 9, 2],
       errorTotal: 76,
       errorPpl: 43,
+      issueid: 4,
     },
     {
       errorName: 'Exception',
@@ -117,8 +126,14 @@
       errorFreq: [6, 15, 21, 16, 11, 9, 2],
       errorTotal: 323,
       errorPpl: 256,
+      issueid: 5,
     },
   ]);
+
+  const issuesDetail = (issueid: number) => {
+    console.log(issueid);
+    router.push({ name: 'IssueDetails', params: { issueid } });
+  };
 
   const basePagination: Pagination = {
     current: 1,
@@ -127,10 +142,6 @@
   const pagination = reactive({
     ...basePagination,
   });
-
-  interface CreateOptionsParam {
-    contentData: number[];
-  }
 
   const createOptions = (param: number[]): EChartsOption => {
     console.log(param);

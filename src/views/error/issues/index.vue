@@ -7,8 +7,6 @@
 </template>
 
 <script lang="ts" setup>
-  import errorList from './components/error-list.vue';
-  import errorOverview from './components/error-overview.vue';
   import ErrorList from './components/error-list.vue';
   import ErrorOverview from './components/error-overview.vue';
 </script>
