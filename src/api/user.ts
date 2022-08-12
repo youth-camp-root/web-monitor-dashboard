@@ -8,6 +8,12 @@ export interface UserInfo {
   ip: string;
 }
 
+export interface UserEventRecord {
+  objectId: string;
+  datetime: string;
+  type: 'error' | 'event';
+}
+
 export function queryUserInfo(id: string) {
   return axios.get(`/api/user/profile/${id}`);
 }

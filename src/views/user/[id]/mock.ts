@@ -1,8 +1,7 @@
 import setupMock, { successResponseWrap } from '@/utils/setup-mock';
-import { UserInfo } from '@/api/user';
+import { UserEventRecord, UserInfo } from '@/api/user';
 
 import Mock, { Random } from 'mockjs';
-import { TableData } from '@arco-design/web-vue';
 
 export const userInfo: UserInfo = Mock.mock({
   objectId: Random.integer(1.84467441e19).toString(16),
@@ -12,12 +11,14 @@ export const userInfo: UserInfo = Mock.mock({
   ip: '@ip',
 });
 
-export const userInfoList: TableData[] = Mock.mock({
-  'list|1-10': [
+export const userInfoList: UserEventRecord[] = Mock.mock({
+  'list|100': [
     {
+      'objectId|1-10': 1,
       'key|1-10': 1,
       'datetime': '@DATE',
-      'salary': '@TITLE',
+      'type|1': ['error', 'event'],
+      'title': '@title',
     },
   ],
 }).list;

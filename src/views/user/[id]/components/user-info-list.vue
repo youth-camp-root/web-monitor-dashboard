@@ -4,6 +4,10 @@
   import List from './list/list.vue';
 
   const size = ref(0.6);
+  const item = ref();
+  const handleClick = (e: any) => {
+    item.value = e;
+  };
 </script>
 
 <template>
@@ -18,11 +22,11 @@
       min="300"
     >
       <template #first>
-        <list />
+        <list @user-list-clicked="handleClick" />
       </template>
       <template #resize-trigger> &nbsp; </template>
       <template #second>
-        <list-detail />
+        <list-detail :item="item" />
       </template>
     </a-split>
   </div>

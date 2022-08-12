@@ -18,4 +18,6 @@ export default {
   'user.detail.list.type.error': '错误',
   'user.detail.list.datetime': '时间',
   'user.detail.list.title': '标题',
+  'user.detail.list.detail': '具体信息',
+  'user.detail.list.view': '查看',
 };
