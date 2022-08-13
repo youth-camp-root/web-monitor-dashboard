@@ -133,6 +133,7 @@
   // import { useI18n } from 'vue-i18n';
   import useLoading from '@/hooks/loading';
   import { useRouter } from 'vue-router';
+  import { Message } from '@arco-design/web-vue';
   import {
     queryPolicyList,
     PolicyRecord,
@@ -141,6 +142,7 @@
     queryUserList,
   } from '@/api/list';
   import { Pagination } from '@/types/global';
+import { number } from '@intlify/core-base';
   // import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
 
   const generateFormModel = () => {
@@ -201,9 +203,8 @@
   };
   const jumpTo = (id: number) => {
     // eslint-disable-next-line no-console
-    router.push({
-      name: 'login',
-    });
+    // const tempId: string = parseInt(number, 10);
+    router.push(`/user/${number}`);
   };
   const search = () => {
     if (formModel.value.number) {
@@ -212,8 +213,7 @@
         ...formModel.value,
       } as unknown as PolicyParamsUserAction);
     } else {
-      // eslint-disable-next-line no-new
-      // new Notification('This is an info message!');
+      Message.info('请输入用户编号');
     }
   };
   const onPageChange = (current: number) => {
