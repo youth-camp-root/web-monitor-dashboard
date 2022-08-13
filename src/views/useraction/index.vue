@@ -203,7 +203,7 @@
   const jumpTo = (id: number) => {
     // eslint-disable-next-line no-console
     // const tempId: string = parseInt(number, 10);
-    router.push(`/user/${number}`);
+    router.push(`/user/${id}`);
   };
   const search = () => {
     if (formModel.value.number) {
