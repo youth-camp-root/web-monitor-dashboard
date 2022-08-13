@@ -1,6 +1,6 @@
 <template>
   <a-col class="issue-overview">
-    <a-typography-text bold style="font-size: 18px; color: blue">
+    <a-typography-text bold style="color: blue; font-size: 18px">
       {{ issueInfo.name }}
     </a-typography-text>
     <a-typography-text code>
@@ -14,6 +14,7 @@
     </div>
   </a-col>
 </template>
+
 <script lang="ts" setup>
   interface IIssueInfo {
     name: string;
@@ -26,6 +27,7 @@
     time: '2022-08-05 13:26:25',
   };
 </script>
+
 <style scoped>
   .issue-timeShow {
     margin-top: 20px;

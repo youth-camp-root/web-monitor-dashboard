@@ -53,6 +53,7 @@
     </div>
   </div>
 </template>
+
 <script lang="ts" setup>
   interface Device {
     id: string;
@@ -83,29 +84,31 @@
       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36',
   };
 </script>
+
 <style scoped>
   .userContainer {
+    display: flex;
+    flex-direction: column;
     width: 100%;
     height: 60%;
     margin-bottom: 20px;
     padding: 20px;
-    display: flex;
-    flex-direction: column;
     background: var(--color-bg-2);
   }
+
   /* device--------------- */
   .userContainer .device .deviceItem {
     float: left;
-    margin-right: 10%;
     width: 10%;
+    margin-right: 10%;
     text-align: center;
   }
 
   .userContainer .device .deviceItem .deviceItemText {
-    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: nowrap;
     text-align: center;
+    text-overflow: ellipsis;
   }
 
   /* detail */
