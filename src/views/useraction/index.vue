@@ -142,7 +142,6 @@
     queryUserList,
   } from '@/api/list';
   import { Pagination } from '@/types/global';
-import { number } from '@intlify/core-base';
   // import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
 
   const generateFormModel = () => {
