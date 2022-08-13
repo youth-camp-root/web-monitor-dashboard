@@ -213,6 +213,7 @@
     } else {
       Message.info('请输入用户编号');
     }
+  };
   const onPageChange = (current: number) => {
     fetchData({ ...basePagination, current });
   };
