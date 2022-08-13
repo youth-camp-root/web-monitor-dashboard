@@ -17,6 +17,12 @@
               </template>
               {{ $t('useraction.form.search') }}
             </a-button>
+            <a-button @click="reset">
+              <template #icon>
+                <icon-refresh />
+              </template>
+              {{ $t('searchTable.form.reset') }}
+            </a-button>
           </a-space>
         </a-col>
       </a-row>
@@ -104,8 +110,13 @@
             :title="$t('useraction.columns.operations')"
             data-index="operations"
           >
-            <template #cell>
-              <a-button v-permission="['admin']" type="text" size="small">
+            <template #cell="{ record }">
+              <a-button
+                v-permission="['admin']"
+                type="text"
+                size="small"
+                @click="jumpTo(record.number)"
+              >
                 {{ $t('useraction.columns.operations.view') }}
               </a-button>
             </template>
@@ -121,10 +132,17 @@
   import { ref, reactive } from 'vue';
   // import { useI18n } from 'vue-i18n';
   import useLoading from '@/hooks/loading';
-  import { queryPolicyList, PolicyRecord, PolicyParams } from '@/api/list';
+  import { useRouter } from 'vue-router';
+  import { Message } from '@arco-design/web-vue';
+  import {
+    queryPolicyList,
+    PolicyRecord,
+    PolicyParams,
+    PolicyParamsUserAction,
+    queryUserList,
+  } from '@/api/list';
   import { Pagination } from '@/types/global';
   // import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
-
   const generateFormModel = () => {
     return {
       number: '',
@@ -135,6 +153,7 @@
       status: '',
     };
   };
+  const router = useRouter();
   const { loading, setLoading } = useLoading(true);
   // const { t } = useI18n();
   const renderData = ref<PolicyRecord[]>([]);
@@ -146,40 +165,6 @@
   const pagination = reactive({
     ...basePagination,
   });
-  // const contentTypeOptions = computed<SelectOptionData[]>(() => [
-  //   {
-  //     label: t('useraction.form.contentType.img'),
-  //     value: 'img',
-  //   },
-  //   {
-  //     label: t('useraction.form.contentType.horizontalVideo'),
-  //     value: 'horizontalVideo',
-  //   },
-  //   {
-  //     label: t('useraction.form.contentType.verticalVideo'),
-  //     value: 'verticalVideo',
-  //   },
-  // ]);
-  // const filterTypeOptions = computed<SelectOptionData[]>(() => [
-  //   {
-  //     label: t('useraction.form.filterType.artificial'),
-  //     value: 'artificial',
-  //   },
-  //   {
-  //     label: t('useraction.form.filterType.rules'),
-  //     value: 'rules',
-  //   },
-  // ]);
-  // const statusOptions = computed<SelectOptionData[]>(() => [
-  //   {
-  //     label: t('useraction.form.status.online'),
-  //     value: 'online',
-  //   },
-  //   {
-  //     label: t('useraction.form.status.offline'),
-  //     value: 'offline',
-  //   },
-  // ]);
   const fetchData = async (
     params: PolicyParams = { current: 1, pageSize: 20 }
   ) => {
@@ -195,21 +180,48 @@
       setLoading(false);
     }
   };
-
-  const search = () => {
-    fetchData({
-      ...basePagination,
-      ...formModel.value,
-    } as unknown as PolicyParams);
+  const fetchData1 = async (
+    params: PolicyParamsUserAction = {
+      id: formModel.value.number,
+      current: 1,
+      pageSize: 20,
+    }
+  ) => {
+    setLoading(true);
+    try {
+      const { data } = await queryUserList(params);
+      renderData.value = data.list;
+      pagination.current = params.current;
+      pagination.total = data.total;
+    } catch (err) {
+      // you can report use errorHandler or other
+    } finally {
+      setLoading(false);
+    }
   };
+  const jumpTo = (id: number) => {
+    // eslint-disable-next-line no-console
+    // const tempId: string = parseInt(number, 10);
+    router.push(`/user/${id}`);
+  };
+  const search = () => {
+    if (formModel.value.number) {
+      fetchData1({
+        ...basePagination,
+        ...formModel.value,
+      } as unknown as PolicyParamsUserAction);
+    } else {
+      Message.info('请输入用户编号');
+    }
   const onPageChange = (current: number) => {
     fetchData({ ...basePagination, current });
   };
 
   fetchData();
-  // const reset = () => {
-  //   formModel.value = generateFormModel();
-  // };
+  const reset = () => {
+    formModel.value = generateFormModel();
+    fetchData({ ...basePagination });
+  };
 </script>
 
 <script lang="ts">

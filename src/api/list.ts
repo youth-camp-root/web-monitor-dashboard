@@ -13,6 +13,12 @@ export interface PolicyRecord {
   createdTime: string;
 }
 
+export interface PolicyParamsUserAction extends Partial<PolicyRecord> {
+  id: string;
+  current: number;
+  pageSize: number;
+}
+
 export interface PolicyParams extends Partial<PolicyRecord> {
   current: number;
   pageSize: number;
@@ -25,6 +31,15 @@ export interface PolicyListRes {
 
 export function queryPolicyList(params: PolicyParams) {
   return axios.get<PolicyListRes>('/api/list/policy', {
+    params,
+    paramsSerializer: (obj) => {
+      return qs.stringify(obj);
+    },
+  });
+}
+
+export function queryUserList(params: PolicyParamsUserAction) {
+  return axios.get<PolicyListRes>('/api/useraction/id', {
     params,
     paramsSerializer: (obj) => {
       return qs.stringify(obj);
