@@ -11,3 +11,12 @@ export interface PopularRecord {
 export function queryErrorIssueStack() {
   return axios.get<TableData[]>('/api/error/issue-details/stack');
 }
+
+export interface ErrorOverviewRes {
+  xAxis: string[];
+  data: Array<{ name: string; value: number[]; count: number }>;
+}
+
+export function queryErrorOverview() {
+  return axios.post<ErrorOverviewRes>('/api/error/issues/error-overview');
+}

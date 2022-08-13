@@ -143,7 +143,6 @@
   } from '@/api/list';
   import { Pagination } from '@/types/global';
   // import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
-
   const generateFormModel = () => {
     return {
       number: '',
@@ -214,7 +213,6 @@
     } else {
       Message.info('请输入用户编号');
     }
-  };
   const onPageChange = (current: number) => {
     fetchData({ ...basePagination, current });
   };
