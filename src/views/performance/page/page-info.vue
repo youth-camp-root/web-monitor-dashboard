@@ -194,7 +194,7 @@
       },
     ],
   });
-  const tagsData = ref({});
+  const tagsData = ref<any[]>([]);
   const fetchData = async () => {
     try {
       setLoading(true);
