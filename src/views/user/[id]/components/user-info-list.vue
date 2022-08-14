@@ -1,5 +1,6 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
+  import { debounce } from 'lodash';
+  import { onMounted, onUnmounted, ref } from 'vue';
   import ListDetail from './list/list-detail.vue';
   import List from './list/list.vue';
 
@@ -8,12 +9,29 @@
   const handleClick = (e: any) => {
     item.value = e;
   };
+
+  const direction = ref<'vertical' | 'horizontal'>(
+    window.innerWidth > 768 ? 'horizontal' : 'vertical'
+  );
+
+  const onResize = debounce(() => {
+    direction.value = window.innerWidth > 768 ? 'horizontal' : 'vertical';
+  }, 10);
+
+  onMounted(() => {
+    window.addEventListener('resize', onResize);
+  });
+
+  onUnmounted(() => {
+    window.removeEventListener('resize', onResize);
+  });
 </script>
 
 <template>
   <div>
     <a-split
       v-model:size="size"
+      :direction="direction"
       :style="{
         height: '400px',
         width: '100%',
