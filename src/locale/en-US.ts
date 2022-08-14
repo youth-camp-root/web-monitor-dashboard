@@ -6,6 +6,9 @@ import localeUserDetail from '@/views/user/[id]/locale/en-US';
 import localeErrorIssues from '@/views/error/issues/locale/en-US';
 import localeErrorIssueDetails from '@/views/error/issue-details/locale/en-US';
 
+import localePerformancePage from '@/views/performance/page/locale/en-US';
+import localePerformanceHttp from '@/views/performance/api/locale/en-US';
+
 import localeWorkplace from '@/views/dashboard/workplace/locale/en-US';
 
 import localeMonitor from '@/views/dashboard/monitor/locale/en-US';
@@ -66,6 +69,9 @@ export default {
 
   ...localeErrorIssues,
   ...localeErrorIssueDetails,
+
+  ...localePerformancePage,
+  ...localePerformanceHttp,
 
   ...localeWorkplace,
 

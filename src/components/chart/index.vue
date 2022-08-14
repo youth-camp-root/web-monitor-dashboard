@@ -15,9 +15,21 @@
   import VCharts from 'vue-echarts';
   // import { useAppStore } from '@/store';
   import { use } from 'echarts/core';
-  import { ToolboxComponent } from 'echarts/components';
+  import { CanvasRenderer } from 'echarts/renderers';
+  import { BarChart } from 'echarts/charts';
+  import {
+    GridComponent,
+    TooltipComponent,
+    TitleComponent,
+  } from 'echarts/components';
 
-  use([ToolboxComponent]);
+  use([
+    CanvasRenderer,
+    BarChart,
+    GridComponent,
+    TooltipComponent,
+    TitleComponent,
+  ]);
 
   defineProps({
     options: {

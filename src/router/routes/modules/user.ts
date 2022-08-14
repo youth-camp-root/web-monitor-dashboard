@@ -14,16 +14,6 @@ const USER: AppRouteRecordRaw = {
   },
   children: [
     {
-      path: 'useraction',
-      name: 'Useraction',
-      component: () => import('@/views/useraction/index.vue'),
-      meta: {
-        locale: 'menu.useraction',
-        requiresAuth: true,
-        roles: ['*'],
-      },
-    },
-    {
       path: 'overview',
       name: 'Overview',
       component: () => import('@/views/overview/index.vue'),
@@ -31,6 +21,16 @@ const USER: AppRouteRecordRaw = {
         locale: 'menu.overview',
         requiresAuth: true,
         roles: ['admin'],
+      },
+    },
+    {
+      path: 'useraction',
+      name: 'Useraction',
+      component: () => import('@/views/useraction/index.vue'),
+      meta: {
+        locale: 'menu.useraction',
+        requiresAuth: true,
+        roles: ['*'],
       },
     },
     {
