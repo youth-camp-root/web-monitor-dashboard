@@ -1,4 +1,5 @@
 export default {
+  'menu.user.overview': '用户总览',
   'overview.title.publicOpinion': '流量数据',
   'overview.card.title.allVisitors': '浏览量(PV)',
   'overview.card.title.contentPublished': '访问客数(UV)',

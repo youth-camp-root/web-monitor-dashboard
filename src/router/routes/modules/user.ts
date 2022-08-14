@@ -18,9 +18,9 @@ const USER: AppRouteRecordRaw = {
       name: 'Overview',
       component: () => import('@/views/overview/index.vue'),
       meta: {
-        locale: 'menu.overview',
+        locale: 'menu.user.overview',
         requiresAuth: true,
-        roles: ['admin'],
+        roles: ['*'],
       },
     },
     {

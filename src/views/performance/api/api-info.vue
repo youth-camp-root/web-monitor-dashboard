@@ -1,68 +1,70 @@
 <template>
-  <div class="container">
-    <Breadcrumb
-      :items="[
-        'menu.performance',
-        'menu.performance.api',
-        'menu.performance.apiInfo',
-      ]"
-    />
-    <a-card
-      :bordered="false"
-      :style="{
-        borderRadius: '5px',
-        width: '100%',
-      }"
-    >
-      <a-row justify="space-between">
-        <a-col :span="8">
-          <Chart
-            :option="visitCountOption"
-            :style="{ width: 'auto', height: '200px' }"
-            :auto-resize="true"
-          >
-          </Chart>
-        </a-col>
-        <a-col :span="8">
-          <Chart
-            :option="APIVitalsOption"
-            :style="{ width: 'auto', height: '200px' }"
-            :auto-resize="true"
-          >
-          </Chart>
-        </a-col>
-        <a-col :span="8">
-          <!-- <a-statistic></a-statistic> -->
-          <a-typography-title :heading="5" bold="true"
-            >错误统计</a-typography-title
-          >
-          <a-statistic title="" :value="2000" show-group-separator>
-            <template #suffix>
-              <icon-arrow-rise :style="{ color: 'red' }" />
-            </template>
-          </a-statistic>
-        </a-col>
-      </a-row>
-      <a-row justify="space-between">
-        <a-col :span="8">
-          <a-typography-title :heading="5" bold="true"
-            >应用页面数量</a-typography-title
-          >
-          <a-statistic
-            title=""
-            :value="pageList.totalCount"
-            show-group-separator
-          />
-        </a-col>
-      </a-row>
-      <a-typography-title :heading="5"> 页面列表 </a-typography-title>
-      <a-list hoverable>
-        <a-list-item v-for="item in pageList.data" :key="item.url">
-          {{ item.url }}
-        </a-list-item>
-      </a-list>
-    </a-card>
-  </div>
+  <a-spin :loading="loading" style="width: 100%">
+    <div class="container">
+      <Breadcrumb
+        :items="[
+          'menu.performance',
+          'menu.performance.api',
+          'menu.performance.apiInfo',
+        ]"
+      />
+      <a-card
+        :bordered="false"
+        :style="{
+          borderRadius: '5px',
+          width: '100%',
+        }"
+      >
+        <a-row justify="space-between">
+          <a-col :span="8">
+            <Chart
+              :option="visitCountOption"
+              :style="{ width: 'auto', height: '200px' }"
+              :auto-resize="true"
+            >
+            </Chart>
+          </a-col>
+          <a-col :span="8">
+            <Chart
+              :option="APIVitalsOption"
+              :style="{ width: 'auto', height: '200px' }"
+              :auto-resize="true"
+            >
+            </Chart>
+          </a-col>
+          <a-col :span="8">
+            <!-- <a-statistic></a-statistic> -->
+            <a-typography-title :heading="5" bold="true"
+              >错误统计</a-typography-title
+            >
+            <a-statistic title="" :value="2000" show-group-separator>
+              <template #suffix>
+                <icon-arrow-rise :style="{ color: 'red' }" />
+              </template>
+            </a-statistic>
+          </a-col>
+        </a-row>
+        <a-row justify="space-between">
+          <a-col :span="8">
+            <a-typography-title :heading="5" bold="true"
+              >应用页面数量</a-typography-title
+            >
+            <a-statistic
+              title=""
+              :value="pageList.totalCount"
+              show-group-separator
+            />
+          </a-col>
+        </a-row>
+        <a-typography-title :heading="5"> 页面列表 </a-typography-title>
+        <a-list hoverable>
+          <a-list-item v-for="item in pageList.data" :key="item.url">
+            {{ item.url }}
+          </a-list-item>
+        </a-list>
+      </a-card>
+    </div>
+  </a-spin>
 </template>
 
 <script lang="ts" setup>
@@ -74,12 +76,8 @@
     WebVitals,
     queryPageListAPI,
   } from '@/api/performance';
-  // import { useRouter } from 'vue-router';
-  // import RatioLine from './components/ratio-line.vue';
 
-  // const router = useRouter();
-  const { setLoading } = useLoading();
-  // const { apiid } = router.currentRoute.value.params;
+  const { loading, setLoading } = useLoading(true);
 
   const visitCountOption = ref({
     title: {

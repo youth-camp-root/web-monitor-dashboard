@@ -1,4 +1,5 @@
 export default {
+  'menu.user.overview': 'User Overview',
   'overview.title.publicOpinion': 'Public Opinion Analysis',
   'overview.card.title.allVisitors': 'All Visitors',
   'overview.card.title.contentPublished': 'Content Published',

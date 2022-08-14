@@ -20,3 +20,14 @@ export interface ErrorOverviewRes {
 export function queryErrorOverview() {
   return axios.post<ErrorOverviewRes>('/api/error/issues/error-overview');
 }
+export interface ErrorList {
+  category: string;
+  errorID: string;
+  errorMsg: string;
+  errorType: string;
+  originURL: string;
+  timestamp: string;
+  userAffectCnt: number;
+  TotalErrCnt: number;
+  errorFreq: number[];
+}

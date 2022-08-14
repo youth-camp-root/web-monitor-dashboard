@@ -1,7 +1,6 @@
 <template>
   <div class="container">
-    <!-- <Breadcrumb :items="['menu.overview']" /> -->
-    <Breadcrumb :items="['menu.overview']" />
+    <Breadcrumb :items="['menu.user', 'menu.user.overview']" />
     <a-space direction="vertical" :size="12" fill>
       <a-space direction="vertical" :size="16" fill>
         <div class="space-unit">

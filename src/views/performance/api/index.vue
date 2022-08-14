@@ -1,44 +1,46 @@
 <template>
-  <div class="container">
-    <Breadcrumb :items="['menu.performance', 'menu.performance.api']" />
-    <a-typography-title :heading="5"> 数据概览 </a-typography-title>
-    <a-card
-      :bordered="false"
-      :style="{
-        borderRadius: '5px',
-        width: '100%',
-      }"
-    >
-      <a-row justify="space-between">
-        <a-col
-          v-for="(item, index) in testList"
-          :key="index"
-          :span="24 / testList.length"
-        >
-          <Chart
-            :option="createOptions(item)"
-            :width="'auto'"
-            :height="'330px'"
-            :auto-resize="true"
+  <a-spin :loading="loading" style="width: 100%">
+    <div class="container">
+      <Breadcrumb :items="['menu.performance', 'menu.performance.api']" />
+      <a-typography-title :heading="5"> 数据概览 </a-typography-title>
+      <a-card
+        :bordered="false"
+        :style="{
+          borderRadius: '5px',
+          width: '100%',
+        }"
+      >
+        <a-row justify="space-between">
+          <a-col
+            v-for="(item, index) in testList"
+            :key="index"
+            :span="24 / testList.length"
           >
-          </Chart>
-        </a-col>
-      </a-row>
-    </a-card>
-    <a-typography-title :heading="5"> 页面列表 </a-typography-title>
-    <a-card>
-      <a-list hoverable>
-        <a-list-item
-          v-for="item in apiList"
-          :key="item.url"
-          @click="gotoPage(`apiinfo/${item.pageid}`, {})"
-        >
-          {{ item.url }}
-        </a-list-item>
-      </a-list>
-    </a-card>
-    <!-- </a-space> -->
-  </div>
+            <Chart
+              :option="createOptions(item)"
+              :width="'auto'"
+              :height="'330px'"
+              :auto-resize="true"
+            >
+            </Chart>
+          </a-col>
+        </a-row>
+      </a-card>
+      <a-typography-title :heading="5"> 页面列表 </a-typography-title>
+      <a-card>
+        <a-list hoverable>
+          <a-list-item
+            v-for="item in apiList"
+            :key="item.url"
+            @click="gotoPage(`apiinfo/${item.pageid}`, {})"
+          >
+            {{ item.url }}
+          </a-list-item>
+        </a-list>
+      </a-card>
+      <!-- </a-space> -->
+    </div>
+  </a-spin>
 </template>
 
 <script lang="ts" setup>
