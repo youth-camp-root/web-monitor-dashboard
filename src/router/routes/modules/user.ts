@@ -10,9 +10,29 @@ const USER: AppRouteRecordRaw = {
     requiresAuth: true,
     icon: 'icon-user',
     order: 1,
-    hideChildrenInMenu: true,
+    // hideChildrenInMenu: true,
   },
   children: [
+    {
+      path: 'useraction',
+      name: 'Useraction',
+      component: () => import('@/views/useraction/index.vue'),
+      meta: {
+        locale: 'menu.useraction',
+        requiresAuth: true,
+        roles: ['*'],
+      },
+    },
+    {
+      path: 'overview',
+      name: 'Overview',
+      component: () => import('@/views/overview/index.vue'),
+      meta: {
+        locale: 'menu.overview',
+        requiresAuth: true,
+        roles: ['admin'],
+      },
+    },
     {
       path: ':id',
       name: 'UserDetail',
