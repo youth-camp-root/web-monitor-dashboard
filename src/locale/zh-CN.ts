@@ -4,6 +4,9 @@ import localeLogin from '@/views/login/locale/zh-CN';
 import localeErrorIssues from '@/views/error/issues/locale/zh-CN';
 import localeErrorIssueDetails from '@/views/error/issue-details/locale/zh-CN';
 
+import localePerformancePage from '@/views/performance/page/locale/zh-CN';
+import localePerformanceHttp from '@/views/performance/api/locale/zh-CN';
+
 import localeWorkplace from '@/views/dashboard/workplace/locale/zh-CN';
 
 import localeMonitor from '@/views/dashboard/monitor/locale/zh-CN';
@@ -57,6 +60,9 @@ export default {
 
   ...localeErrorIssues,
   ...localeErrorIssueDetails,
+
+  ...localePerformancePage,
+  ...localePerformanceHttp,
 
   ...localeWorkplace,
 

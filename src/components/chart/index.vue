@@ -11,6 +11,22 @@
   import { ref, nextTick } from 'vue';
   import VCharts from 'vue-echarts';
   // import { useAppStore } from '@/store';
+  import { use } from 'echarts/core';
+  import { CanvasRenderer } from 'echarts/renderers';
+  import { BarChart } from 'echarts/charts';
+  import {
+    GridComponent,
+    TooltipComponent,
+    TitleComponent,
+  } from 'echarts/components';
+
+  use([
+    CanvasRenderer,
+    BarChart,
+    GridComponent,
+    TooltipComponent,
+    TitleComponent,
+  ]);
 
   defineProps({
     options: {
