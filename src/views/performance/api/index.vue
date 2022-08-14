@@ -31,7 +31,7 @@
         <a-list-item
           v-for="item in apiList"
           :key="item.url"
-          @click="gotoPage(`apiinfo/${item.apiid}`, {})"
+          @click="gotoPage(`apiinfo/${item.pageid}`, {})"
         >
           {{ item.url }}
         </a-list-item>
@@ -208,7 +208,7 @@
       },
     ],
   });
-  const apiList = ref({});
+  const apiList = ref<PageList[]>([]);
   const fetchData = async () => {
     try {
       setLoading(true);

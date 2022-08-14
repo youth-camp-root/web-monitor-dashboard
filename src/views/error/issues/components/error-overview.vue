@@ -2,31 +2,13 @@
   <a-spin :loading="loading" style="width: 100%">
     <a-card :title="$t('issuses.card.title.overview')">
       <div class="echart-data">
-        <div class="selector-gp">
-          <!-- <a-select
-            v-model="showGraph.show"
-            default-value="24h"
-            class="select-two"
-            style="width: 150px"
-            :bordered="false"
-            @change="handlechangeselector"
-          >
-            <a-option value="24h">24 hours</a-option>
-            <a-option value="14d">14 days</a-option>
-            <a-option value="30d">30 days</a-option>
-          </a-select> -->
-        </div>
         <a-statistic title="Today" :value="125670" show-group-separator>
           <template #suffix>
             <icon-arrow-rise />
           </template>
         </a-statistic>
       </div>
-      <Chart
-        v-if="showGraph.show === '24h'"
-        style="height: 328px; margin-top: 20px"
-        :option="chartOption"
-      />
+      <Chart style="height: 328px; margin-top: 20px" :option="chartOption" />
     </a-card>
   </a-spin>
 </template>
@@ -35,17 +17,10 @@
   import useChartOption from '@/hooks/chart-option';
   import useLoading from '@/hooks/loading';
   import { LineSeriesOption } from 'echarts';
-  import { reactive, ref } from 'vue';
+  import { ref } from 'vue';
   import { queryErrorOverview } from '@/api/errorData';
 
   const { loading, setLoading } = useLoading(true);
-
-  const showGraph = reactive({
-    show: '24h',
-  });
-  const handlechangeselector = () => {
-    console.log(showGraph.show);
-  };
 
   const generateSeries = (name: string, data: number[]): LineSeriesOption => {
     return {
