@@ -46,7 +46,7 @@ setupMock({
         };
       };
       const xAxis = new Array(30).fill(0).map((_item, index) => {
-        return `12.1${index}`;
+        return `12.${index}`;
       });
       return successResponseWrap({
         xAxis,
