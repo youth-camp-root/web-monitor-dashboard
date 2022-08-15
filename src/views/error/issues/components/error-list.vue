@@ -1,37 +1,73 @@
 <template>
-  <a-card class="general-card">
-    <a-table :data="data" :pagination="pagination">
+  <a-card class="general-card" :title="$t('issuses.card.title.errorlist')">
+    <div class="form">
+      <div class="form-item">
+        <span>Error Type </span>
+        <a-select
+          :style="{ width: '380px', height: '32px' }"
+          placeholder="Please select ..."
+          multiple
+          allow-clear
+          :max-tag-count="2"
+        >
+          <a-option>JS Error</a-option>
+          <a-option>Promise Error</a-option>
+          <a-option>Resource Error</a-option>
+          <a-option>Request Error</a-option>
+          <a-option>Blank Screen Error</a-option>
+        </a-select>
+      </div>
+      <div class="form-item">
+        <span> Website </span>
+        <a-input
+          :style="{ width: '420px', height: '32px' }"
+          placeholder="Please enter ..."
+          allow-clear
+        >
+        </a-input>
+      </div>
+    </div>
+    <a-divider />
+    <a-table
+      :loading="loading"
+      :pagination="pagination"
+      :data="renderData"
+      :bordered="false"
+      @page-change="onPageChange"
+    >
       <template #columns>
         <a-table-column data-index="type">
           <template #cell="{ record }">
-            <a-badge v-if="record.type === 'A'" status="danger" text="A" />
+            <a-badge v-if="record.errorType === 'jsError'" status="danger" />
             <a-badge
-              v-else-if="record.type === 'B'"
+              v-else-if="record.errorType === 'promiseError'"
               status="processing"
-              text="B"
             />
             <a-badge
-              v-else-if="record.type === 'C'"
+              v-else-if="record.errorType === 'resourceError'"
               status="success"
-              text="C"
             />
             <a-badge
-              v-else-if="record.type === 'D'"
+              v-else-if="record.errorType === 'requestError'"
               status="warning"
-              text="D"
+            />
+            <a-badge
+              v-else-if="record.errorType === 'blankscreenError'"
+              status="normal"
             />
           </template>
         </a-table-column>
-        <a-table-column data-index="errorName">
+        <a-table-column data-index="errorName" fixed="left">
           <template #cell="{ record }">
             <div class="column-div">
               <div class="special">
                 <span class="special-name" style="color: #3c74dd">
-                  {{ record.errorName }}
+                  {{ record.name }}
                 </span>
                 <span class="special-msg"> {{ record.errorMsg }} </span>
               </div>
-              <span class="special-time"> {{ record.errorTime }} </span>
+              <span class="special-time"> {{ record.timestamp }} </span>
+              <span class="special-time"> {{ record.originURL }} </span>
             </div>
           </template>
         </a-table-column>
@@ -39,7 +75,7 @@
           <template #cell="{ record }">
             <Chart
               :option="createOptions(record.errorFreq)"
-              :width="'160px'"
+              :width="'220px'"
               :height="'50px'"
               :auto-resize="true"
             >
@@ -47,22 +83,22 @@
           </template>
         </a-table-column>
         <a-table-column
-          title="ErrorTotal"
-          data-index="errorTotal"
+          title="TotalErrCnt"
+          data-index="TotalErrCnt"
           :sortable="{
             sortDirections: ['ascend', 'descend'],
           }"
         />
         <a-table-column
-          title="ErrorPpl"
-          data-index="errorPpl"
+          title="userAffectCnt"
+          data-index="userAffectCnt"
           :sortable="{
             sortDirections: ['ascend', 'descend'],
           }"
         />
-        <a-table-column title="Optional">
+        <a-table-column fixed="right">
           <template #cell="{ record }">
-            <a-button @click="issuesDetail(record.issueid)">view</a-button>
+            <a-button @click="issuesDetail(record.errorID)">view</a-button>
           </template>
         </a-table-column>
       </template>
@@ -71,77 +107,51 @@
 </template>
 
 <script lang="ts" setup>
-  import { reactive, h } from 'vue';
+  import { reactive, ref } from 'vue';
   import { Pagination } from '@/types/global';
   import { EChartsOption } from 'echarts';
   import 'echarts/lib/component/markLine';
   import router from '@/router';
+  import useLoading from '@/hooks/loading';
+  import { queryErrorList, ErrorListParams, ErrorList } from '@/api/errorData';
 
-  const data = reactive([
-    {
-      errorName: 'AFloatingActor::OnSelected',
-      errorMsg: '#0 at 0x7fff204ce462',
-      type: 'A',
-      errorTime: 'time',
-      errorFreq: [10, 20, 21, 7, 3, 10, 2],
-      errorTotal: 122,
-      errorPpl: 111,
-      issueid: 1,
-    },
-    {
-      errorName: 'panic',
-      errorMsg: 'called `Result::unwrap()` on an `Err` value: NotPresent',
-      type: 'B',
-      errorTime: 'time1',
-      errorFreq: [6, 4, 3, 7, 3, 10, 17],
-      errorTotal: 102,
-      errorPpl: 94,
-      issueid: 2,
-    },
-    {
-      errorName: 'Handled Exception',
-      errorMsg: 'sentry_cocoa.ViewController',
-      type: 'C',
-      errorTime: 'time2',
-      errorFreq: [6, 1, 2, 7, 12, 22, 17],
-      errorTotal: 112,
-      errorPpl: 87,
-      issueid: 3,
-    },
-    {
-      errorName: 'Error',
-      errorMsg: 'Unhandled Promise Rejection',
-      type: 'D',
-      errorTime: 'time3',
-      errorFreq: [6, 0, 1, 7, 10, 9, 2],
-      errorTotal: 76,
-      errorPpl: 43,
-      issueid: 4,
-    },
-    {
-      errorName: 'Exception',
-      errorMsg: 'Not enough inventory for wrench',
-      type: 'A',
-      errorTime: 'time4',
-      errorFreq: [6, 15, 21, 16, 11, 9, 2],
-      errorTotal: 323,
-      errorPpl: 256,
-      issueid: 5,
-    },
-  ]);
+  const { loading, setLoading } = useLoading(true);
+  const renderData = ref<ErrorList[]>([]);
+  const basePagination: Pagination = {
+    current: 1,
+    pageSize: 10,
+  };
+  const pagination = reactive({
+    ...basePagination,
+  });
+  const xAxis = ref<string[]>([]);
 
   const issuesDetail = (issueid: number) => {
     console.log(issueid);
     router.push({ name: 'IssueDetails', params: { issueid } });
   };
 
-  const basePagination: Pagination = {
-    current: 1,
-    pageSize: 20,
+  const fetchData = async (
+    params: ErrorListParams = { current: 1, pageSize: 10 }
+  ) => {
+    setLoading(true);
+    try {
+      const { data } = await queryErrorList(params);
+      xAxis.value = data.xAxis;
+      renderData.value = data.list;
+      pagination.current = params.current;
+      pagination.total = data.total;
+    } catch (err) {
+      // you can report use errorHandler or other
+    } finally {
+      setLoading(false);
+    }
   };
-  const pagination = reactive({
-    ...basePagination,
-  });
+  const onPageChange = (current: number) => {
+    fetchData({ ...basePagination, current });
+  };
+
+  fetchData();
 
   const createOptions = (param: number[]): EChartsOption => {
     console.log(param);
@@ -166,7 +176,7 @@
           splitLine: {
             show: false,
           },
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: xAxis.value,
         },
       ],
       yAxis: [
@@ -252,5 +262,17 @@
 
   .special-time {
     margin: 0 5px;
+  }
+
+  .form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .form-item {
+    margin-top: 10px;
+    margin-left: 20px;
   }
 </style>

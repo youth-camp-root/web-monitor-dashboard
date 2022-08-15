@@ -11,6 +11,7 @@ const GENERAL: AppRouteRecordRaw = {
     icon: 'icon-dashboard',
     order: 0,
   },
+  redirect: '/general/overview',
   children: [
     {
       path: 'overview',

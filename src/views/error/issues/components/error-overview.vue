@@ -1,6 +1,6 @@
 <template>
   <a-spin :loading="loading" style="width: 100%">
-    <a-card :title="$t('issuses.card.title.overview')">
+    <a-card :title="$t('issuses.card.title.overview')" class="general-card">
       <div class="echart-data">
         <a-statistic title="Today" :value="125670" show-group-separator>
           <template #suffix>
@@ -149,6 +149,10 @@
 </script>
 
 <style scoped>
+  .general-card {
+    min-width: 680px;
+  }
+
   .echart-data {
     display: flex;
     justify-content: center;
