@@ -11,6 +11,18 @@ const GENERAL: AppRouteRecordRaw = {
     icon: 'icon-dashboard',
     order: 0,
   },
+  children: [
+    {
+      path: 'overview',
+      name: 'Overview',
+      component: () => import('@/views/overview/index.vue'),
+      meta: {
+        locale: 'menu.user.overview',
+        requiresAuth: true,
+        roles: ['*'],
+      },
+    },
+  ],
 };
 
 export default GENERAL;

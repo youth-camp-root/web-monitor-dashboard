@@ -14,16 +14,6 @@ const USER: AppRouteRecordRaw = {
   },
   children: [
     {
-      path: 'overview',
-      name: 'Overview',
-      component: () => import('@/views/overview/index.vue'),
-      meta: {
-        locale: 'menu.user.overview',
-        requiresAuth: true,
-        roles: ['*'],
-      },
-    },
-    {
       path: 'useraction',
       name: 'Useraction',
       component: () => import('@/views/useraction/index.vue'),
