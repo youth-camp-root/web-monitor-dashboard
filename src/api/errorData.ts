@@ -25,12 +25,7 @@ export interface ErrorList {
   name: 'API Error' | 'JS Error' | 'Resource Error';
   errorID: string;
   errorMsg: string;
-  errorType:
-    | 'jsError'
-    | 'promiseError'
-    | 'resourceError'
-    | 'requestError'
-    | 'blankscreenError';
+  errorType: string;
   originURL: string;
   timestamp: string;
   userAffectCnt: number;
@@ -49,9 +44,8 @@ export interface ErrorListRes {
   total: number;
 }
 
-export function queryErrorList(params: ErrorListParams) {
+export function queryErrorList() {
   return axios.get<ErrorListRes>('/api/error/issues/errorlist', {
-    params,
     paramsSerializer: (obj) => {
       return qs.stringify(obj);
     },

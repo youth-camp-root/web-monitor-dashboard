@@ -92,21 +92,15 @@ setupMock({
       });
     });
     // Error List
-    Mock.mock(
-      new RegExp('/api/error/issues/errorlist'),
-      (params: GetParams) => {
-        const { current = 1, pageSize = 10 } = qs.parseUrl(params.url).query;
-        const p = current as number;
-        const ps = pageSize as number;
-        const xAxis = new Array(14).fill(0).map((_item, index) => {
-          return `12.${index}`;
-        });
-        return successResponseWrap({
-          xAxis,
-          list: ErrorListData.list.slice((p - 1) * ps, p * ps),
-          total: 100,
-        });
-      }
-    );
+    Mock.mock(new RegExp('/api/error/issues/errorlist'), () => {
+      const xAxis = new Array(14).fill(0).map((_item, index) => {
+        return `12.${index}`;
+      });
+      return successResponseWrap({
+        xAxis,
+        list: ErrorListData.list,
+        total: 100,
+      });
+    });
   },
 });

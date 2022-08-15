@@ -9,12 +9,14 @@
           multiple
           allow-clear
           :max-tag-count="2"
+          @change="changeHandle"
         >
+          <a-option>All Error</a-option>
           <a-option>JS Error</a-option>
           <a-option>Promise Error</a-option>
           <a-option>Resource Error</a-option>
           <a-option>Request Error</a-option>
-          <a-option>Blank Screen Error</a-option>
+          <a-option>Blank screen Error</a-option>
         </a-select>
       </div>
       <div class="form-item">
@@ -23,8 +25,19 @@
           :style="{ width: '420px', height: '32px' }"
           placeholder="Please enter ..."
           allow-clear
+          @change="InpChangeHandle"
         >
         </a-input>
+      </div>
+      <div class="form-item">
+        <a-button
+          class="btn"
+          type="primary"
+          shape="round"
+          @click="submitHandle"
+        >
+          <icon-filter
+        /></a-button>
       </div>
     </div>
     <a-divider />
@@ -33,7 +46,6 @@
       :pagination="pagination"
       :data="renderData"
       :bordered="false"
-      @page-change="onPageChange"
     >
       <template #columns>
         <a-table-column data-index="type">
@@ -76,7 +88,7 @@
             <Chart
               :option="createOptions(record.errorFreq)"
               :width="'220px'"
-              :height="'50px'"
+              :height="'65px'"
               :auto-resize="true"
             >
             </Chart>
@@ -114,6 +126,8 @@
   import router from '@/router';
   import useLoading from '@/hooks/loading';
   import { queryErrorList, ErrorListParams, ErrorList } from '@/api/errorData';
+  import { Empty } from '@arco-design/web-vue';
+  import { arrayBuffer } from 'stream/consumers';
 
   const { loading, setLoading } = useLoading(true);
   const renderData = ref<ErrorList[]>([]);
@@ -121,40 +135,54 @@
     current: 1,
     pageSize: 10,
   };
-  const pagination = reactive({
-    ...basePagination,
-  });
+  const pagination = { pageSize: 10 };
   const xAxis = ref<string[]>([]);
 
   const issuesDetail = (issueid: number) => {
-    console.log(issueid);
+    // console.log(issueid);
     router.push({ name: 'IssueDetails', params: { issueid } });
   };
 
-  const fetchData = async (
-    params: ErrorListParams = { current: 1, pageSize: 10 }
-  ) => {
+  let fdType = ['All Error'];
+  let fdURL = '';
+
+  const changeHandle = (value: string[]) => {
+    fdType = value;
+  };
+
+  const InpChangeHandle = (value: string) => {
+    fdURL = value;
+  };
+
+  const fetchData = async () => {
     setLoading(true);
     try {
-      const { data } = await queryErrorList(params);
+      const { data } = await queryErrorList();
       xAxis.value = data.xAxis;
       renderData.value = data.list;
-      pagination.current = params.current;
-      pagination.total = data.total;
     } catch (err) {
       // you can report use errorHandler or other
     } finally {
       setLoading(false);
     }
   };
-  const onPageChange = (current: number) => {
-    fetchData({ ...basePagination, current });
-  };
 
   fetchData();
 
+  const submitHandle = () => {
+    if (fdURL !== '') {
+      console.log(fdURL);
+      renderData.value = renderData.value.filter(
+        (item) => item.originURL === fdURL
+      );
+    } else {
+      console.log('empty');
+      fetchData();
+    }
+    console.log(fdType);
+  };
   const createOptions = (param: number[]): EChartsOption => {
-    console.log(param);
+    // console.log(param);
     return {
       color: ['#6aa1ff'],
       tooltip: {
@@ -274,5 +302,9 @@
   .form-item {
     margin-top: 10px;
     margin-left: 20px;
+  }
+
+  .form-item .btn {
+    margin: 0 5px;
   }
 </style>

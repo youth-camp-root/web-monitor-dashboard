@@ -21,6 +21,7 @@
     GridComponent,
     TooltipComponent,
     TitleComponent,
+    ToolboxComponent,
   } from 'echarts/components';
 
   use([
@@ -29,6 +30,7 @@
     GridComponent,
     TooltipComponent,
     TitleComponent,
+    ToolboxComponent,
   ]);
 
   defineProps({
