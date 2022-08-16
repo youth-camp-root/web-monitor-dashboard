@@ -15,53 +15,53 @@
           width: '100%',
         }"
       >
-        <a-row justify="space-between">
-          <a-col :span="8">
-            <Chart
-              :option="visitCountOption"
-              :style="{ width: 'auto', height: '200px' }"
-              :auto-resize="true"
+        <a-row :gutter="30">
+          <a-col :flex="20">
+            <a-grid
+              :cols="{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2, xxl: 2 }"
+              :col-gap="12"
+              :row-gap="16"
             >
-            </Chart>
+              <a-grid-item>
+                <Chart
+                  :option="visitCountOption"
+                  :style="{ width: 'auto', height: '200px' }"
+                  :auto-resize="true"
+                >
+                </Chart>
+              </a-grid-item>
+              <a-grid-item>
+                <Chart
+                  :option="APIVitalsOption"
+                  :style="{ width: 'auto', height: '200px' }"
+                  :auto-resize="true"
+                >
+                </Chart>
+              </a-grid-item>
+            </a-grid>
           </a-col>
-          <a-col :span="8">
-            <Chart
-              :option="APIVitalsOption"
-              :style="{ width: 'auto', height: '200px' }"
-              :auto-resize="true"
-            >
-            </Chart>
-          </a-col>
-          <a-col :span="8">
-            <!-- <a-statistic></a-statistic> -->
-            <a-typography-title :heading="5" bold="true"
-              >错误统计</a-typography-title
-            >
-            <a-statistic title="" :value="2000" show-group-separator>
-              <template #suffix>
-                <icon-arrow-rise :style="{ color: 'red' }" />
-              </template>
-            </a-statistic>
+          <a-col :flex="4">
+            <a-space direction="vertical" fill>
+              <a-statistic title="错误统计" :value="2000" show-group-separator>
+                <template #suffix>
+                  <icon-arrow-rise :style="{ color: 'red' }" />
+                </template>
+              </a-statistic>
+              <a-statistic
+                title="应用页面数量"
+                :value="pageList.totalCount"
+                show-group-separator
+              />
+            </a-space>
           </a-col>
         </a-row>
-        <a-row justify="space-between">
-          <a-col :span="8">
-            <a-typography-title :heading="5" bold="true"
-              >应用页面数量</a-typography-title
-            >
-            <a-statistic
-              title=""
-              :value="pageList.totalCount"
-              show-group-separator
-            />
-          </a-col>
-        </a-row>
-        <a-typography-title :heading="5"> 页面列表 </a-typography-title>
-        <a-list hoverable>
-          <a-list-item v-for="item in pageList.data" :key="item.url">
-            {{ item.url }}
-          </a-list-item>
-        </a-list>
+        <a-card title="页面列表" :bordered="false" class="general-card">
+          <a-list hoverable>
+            <a-list-item v-for="item in pageList.data" :key="item.url">
+              {{ item.url }}
+            </a-list-item>
+          </a-list>
+        </a-card>
       </a-card>
     </div>
   </a-spin>
@@ -78,10 +78,11 @@
   } from '@/api/performance';
 
   const { loading, setLoading } = useLoading(true);
+  // console.log($t('performance.api.chart.title.visitcount'));
 
   const visitCountOption = ref({
     title: {
-      text: '访问量统计',
+      text: '访问量',
       show: true,
       textStyle: {
         fontSize: 18,
@@ -91,13 +92,7 @@
       trigger: 'axis',
       axisPointer: {
         type: 'cross',
-        label: {
-          backgroundColor: '#6a7985',
-        },
       },
-    },
-    legend: {
-      data: ['count'],
     },
     xAxis: [
       {
@@ -126,8 +121,8 @@
       trigger: 'item',
     },
     legend: {
-      top: '5%',
-      left: 'center',
+      // orient: 'vertical',
+      left: 'right',
     },
     series: [
       {
@@ -135,19 +130,12 @@
         type: 'pie',
         radius: ['40%', '70%'],
         avoidLabelOverlap: false,
-        label: {
-          show: false,
-          position: 'center',
-        },
         emphasis: {
           label: {
             show: true,
-            fontSize: '30',
-            fontWeight: 'bold',
+            // fontSize: '30',
+            // fontWeight: 'bold',
           },
-        },
-        labelLine: {
-          show: false,
         },
         data: [] as unknown as WebVitals['overview'],
       },
