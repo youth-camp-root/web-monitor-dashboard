@@ -1,5 +1,5 @@
 # deploy.yml
-name: deploy blog to ssh server
+name: Deploy to ssh server
 on:
   workflow_dispatch:
   push:
