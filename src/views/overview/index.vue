@@ -1,6 +1,10 @@
 <template>
   <div class="container">
     <Breadcrumb :items="['menu.user', 'menu.user.overview']" />
+    <a-back-top
+      target-container="#basic-demo"
+      :style="{ position: 'absolute' }"
+    />
     <a-space direction="vertical" :size="12" fill>
       <a-space direction="vertical" :size="16" fill>
         <div class="space-unit">
@@ -18,6 +22,9 @@
         <div>
           <DataChainGrowth />
         </div>
+        <div>
+          <ErrorOverview />
+        </div>
       </a-space>
     </a-space>
   </div>
@@ -27,6 +34,7 @@
   import DataChainGrowth from './components/data-chain-growth.vue';
   import PublicOpinion from './components/public-opinion.vue';
   import ContentPublishRatio from './components/content-publish-ratio.vue';
+  import ErrorOverview from '../error/issues/components/error-overview.vue';
 </script>
 
 <script lang="ts">

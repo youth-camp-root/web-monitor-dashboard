@@ -1,3 +1,4 @@
+<!-- eslint-disable no-loop-func -->
 <template>
   <a-card class="general-card" :title="$t('issuses.card.title.errorlist')">
     <div class="form">
@@ -12,11 +13,11 @@
           @change="changeHandle"
         >
           <a-option>All Error</a-option>
-          <a-option>JS Error</a-option>
-          <a-option>Promise Error</a-option>
-          <a-option>Resource Error</a-option>
-          <a-option>Request Error</a-option>
-          <a-option>Blank screen Error</a-option>
+          <a-option>jsError</a-option>
+          <a-option>promiseError</a-option>
+          <a-option>resourceError</a-option>
+          <a-option>requestError</a-option>
+          <a-option>blankscreenError</a-option>
         </a-select>
       </div>
       <div class="form-item">
@@ -37,6 +38,9 @@
           @click="submitHandle"
         >
           <icon-filter
+        /></a-button>
+        <a-button class="btn" shape="circle" @click="refreshHandle">
+          <icon-refresh
         /></a-button>
       </div>
     </div>
@@ -177,9 +181,28 @@
       );
     } else {
       console.log('empty');
-      fetchData();
     }
-    console.log(fdType);
+    if (fdType.length !== 0 && !fdType.includes('All Error')) {
+      console.log(fdType);
+      const renderData2 = ref<ErrorList[]>([]);
+      for (let i = 0; i < fdType.length; i += 1) {
+        console.log(fdType[i]);
+        renderData2.value.push(
+          // eslint-disable-next-line no-loop-func
+          ...renderData.value.filter((item) => item.errorType === fdType[i])
+        );
+      }
+      console.log(renderData2);
+      console.log(renderData);
+      renderData.value = renderData2.value;
+      console.log(renderData2);
+      console.log(renderData);
+    } else {
+      console.log('empty');
+    }
+  };
+  const refreshHandle = () => {
+    fetchData();
   };
   const createOptions = (param: number[]): EChartsOption => {
     // console.log(param);
