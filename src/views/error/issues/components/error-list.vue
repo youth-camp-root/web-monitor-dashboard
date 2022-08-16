@@ -130,7 +130,7 @@
   import router from '@/router';
   import useLoading from '@/hooks/loading';
   import { queryErrorList, ErrorListParams, ErrorList } from '@/api/errorData';
-  import { Empty } from '@arco-design/web-vue';
+  import { Empty, SelectOptionData } from '@arco-design/web-vue';
   import { arrayBuffer } from 'stream/consumers';
 
   const { loading, setLoading } = useLoading(true);
@@ -150,8 +150,10 @@
   let fdType = ['All Error'];
   let fdURL = '';
 
-  const changeHandle = (value: string[]) => {
-    fdType = value;
+  const changeHandle = (
+    value: SelectOptionData['value'] | SelectOptionData['value'][]
+  ) => {
+    fdType = value as string[];
   };
 
   const InpChangeHandle = (value: string) => {
