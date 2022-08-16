@@ -1,67 +1,77 @@
 <template>
-  <div class="container">
-    <Breadcrumb
-      :items="[
-        'menu.performance',
-        'menu.performance.page',
-        'menu.performance.pageInfo',
-      ]"
-    />
-    <a-card
-      :bordered="false"
-      :style="{
-        borderRadius: '5px',
-        width: '100%',
-      }"
-    >
-      <a-row justify="space-between">
-        <a-col :span="8">
-          <Chart
-            :option="visitCountOption"
-            :style="{ width: 'auto', height: '200px' }"
-            :auto-resize="true"
-          >
-          </Chart>
-        </a-col>
-        <a-col :span="8">
-          <Chart
-            :option="webVitalsOption"
-            :style="{ width: 'auto', height: '200px' }"
-            :auto-resize="true"
-          >
-          </Chart>
-        </a-col>
-        <a-col :span="8">
-          <Chart
-            :option="stayDurationOption"
-            :style="{ width: 'auto', height: '200px' }"
-            :auto-resize="true"
-          >
-          </Chart>
-        </a-col>
-      </a-row>
-      <a-row justify="space-between">
-        <a-col :span="8">
-          <!-- <a-statistic></a-statistic> -->
-          <a-typography-title :heading="5" bold="true"
-            >错误统计</a-typography-title
-          >
-          <a-statistic title="" :value="3030" show-group-separator>
-            <template #suffix>
-              <icon-arrow-rise :style="{ color: 'red' }" />
-            </template>
-          </a-statistic>
-        </a-col>
-        <a-col :span="8">
-          <ratio-line
-            v-for="item in tagsData"
-            :key="item.type"
-            :data="item"
-          ></ratio-line>
-        </a-col>
-      </a-row>
-    </a-card>
-  </div>
+  <a-spin :loading="loading" style="width: 100%">
+    <div class="container">
+      <Breadcrumb
+        :items="[
+          'menu.performance',
+          'menu.performance.page',
+          'menu.performance.pageInfo',
+        ]"
+      />
+      <a-card
+        :bordered="false"
+        :style="{
+          borderRadius: '5px',
+          width: '100%',
+        }"
+      >
+        <a-row :gutter="30">
+          <a-col :flex="20">
+            <a-grid
+              :cols="{ xs: 1, sm: 1, md: 1, lg: 1, xl: 2, xxl: 3 }"
+              :col-gap="12"
+              :row-gap="16"
+            >
+              <a-grid-item>
+                <Chart
+                  :option="visitCountOption"
+                  :style="{ width: 'auto', height: '200px' }"
+                  :auto-resize="true"
+                >
+                </Chart>
+              </a-grid-item>
+              <a-grid-item>
+                <Chart
+                  :option="stayDurationOption"
+                  :style="{ width: 'auto', height: '200px' }"
+                  :auto-resize="true"
+                >
+                </Chart>
+              </a-grid-item>
+              <a-grid-item>
+                <Chart
+                  :option="webVitalsOption"
+                  :style="{ width: 'auto', height: '200px' }"
+                  :auto-resize="true"
+                >
+                </Chart>
+              </a-grid-item>
+            </a-grid>
+          </a-col>
+          <a-col :flex="4">
+            <div>
+              <a-typography-title :heading="5" bold="true">
+                错误统计
+              </a-typography-title>
+              <a-statistic title="" :value="3030" show-group-separator>
+                <template #suffix>
+                  <icon-arrow-rise :style="{ color: 'red' }" />
+                </template>
+              </a-statistic>
+              <a-typography-title :heading="5" bold="true">
+                访问信息
+              </a-typography-title>
+              <ratio-line
+                v-for="item in tagsData"
+                :key="item.type"
+                :data="item"
+              ></ratio-line>
+            </div>
+          </a-col>
+        </a-row>
+      </a-card>
+    </div>
+  </a-spin>
 </template>
 
 <script lang="ts" setup>
@@ -98,9 +108,6 @@
         },
       },
     },
-    legend: {
-      data: ['count'],
-    },
     xAxis: [
       {
         type: 'category',
@@ -129,7 +136,8 @@
     },
     legend: {
       top: '5%',
-      left: 'center',
+      left: 'right',
+      orient: 'vertical',
     },
     series: [
       {
@@ -137,19 +145,10 @@
         type: 'pie',
         radius: ['40%', '70%'],
         avoidLabelOverlap: false,
-        label: {
-          show: false,
-          position: 'center',
-        },
         emphasis: {
           label: {
             show: true,
-            fontSize: '30',
-            fontWeight: 'bold',
           },
-        },
-        labelLine: {
-          show: false,
         },
         data: [] as unknown as WebVitals['overview'],
       },
@@ -171,9 +170,6 @@
           backgroundColor: '#6a7985',
         },
       },
-    },
-    legend: {
-      data: ['cost-time'],
     },
     xAxis: [
       {

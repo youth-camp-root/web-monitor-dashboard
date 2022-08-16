@@ -2,32 +2,36 @@
   <a-spin :loading="loading" style="width: 100%">
     <div class="container">
       <Breadcrumb :items="['menu.performance', 'menu.performance.api']" />
-      <a-typography-title :heading="5"> 数据概览 </a-typography-title>
       <a-card
+        :title="$t('performance.api.card.title.overview')"
         :bordered="false"
         :style="{
           borderRadius: '5px',
           width: '100%',
         }"
+        class="general-card"
       >
-        <a-row justify="space-between">
-          <a-col
-            v-for="(item, index) in testList"
-            :key="index"
-            :span="24 / testList.length"
-          >
+        <a-grid
+          :cols="{ xs: 1, sm: 1, md: 2, lg: 2, xl: 2, xxl: 2 }"
+          :col-gap="12"
+          :row-gap="16"
+        >
+          <a-grid-item v-for="(item, index) in testList" :key="index">
             <Chart
               :option="createOptions(item)"
               :width="'auto'"
-              :height="'330px'"
+              :height="'300px'"
               :auto-resize="true"
             >
             </Chart>
-          </a-col>
-        </a-row>
+          </a-grid-item>
+        </a-grid>
       </a-card>
-      <a-typography-title :heading="5"> 页面列表 </a-typography-title>
-      <a-card>
+      <a-card
+        :title="$t('performance.api.card.title.apilist')"
+        :bordered="false"
+        class="general-card"
+      >
         <a-list hoverable>
           <a-list-item
             v-for="item in apiList"
