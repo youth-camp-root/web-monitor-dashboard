@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  import { IErrorData } from '@/api/errorData';
+  import { IRequestData } from '@/api/requestData';
   import { debounce } from 'lodash';
   import { onMounted, onUnmounted, ref } from 'vue';
   import ListDetail from './list/list-detail.vue';
@@ -6,7 +8,7 @@
 
   const size = ref(0.6);
   const item = ref();
-  const handleClick = (e: any) => {
+  const handleClick = (e: IRequestData | IErrorData) => {
     item.value = e;
   };
 

@@ -21,24 +21,29 @@
   import { useRoute } from 'vue-router';
   import Breadcrumb from '@/components/breadcrumb/index.vue';
   import useRequest from '@/hooks/request';
-  import { IUserFull, queryUserInfo } from '@/api/user';
+  import { IUserRequest, queryUserInfo } from '@/api/user';
   import UserInfo from '@/views/user/[id]/components/user-info.vue';
   import UserCharts from '@/views/user/[id]/components/user-charts.vue';
   import UserInfoList from '@/views/user/[id]/components/user-info-list.vue';
-  import { IErrorData } from '@/api/errorData';
-  import { IRequestData } from '@/api/requestData';
-
-  type IUserRequest = {
-    user: IUserFull;
-    errors: IErrorData[];
-    events: IRequestData[];
-  };
+  import { provide } from 'vue';
+  import { computed } from '@vue/reactivity';
 
   const route = useRoute();
   const id = route.params.id as string;
 
   const { loading, response: data } = useRequest<IUserRequest>(() =>
     queryUserInfo(id)
+  );
+
+  provide(
+    'user/[id]/info',
+    computed(() => {
+      return {
+        user: data.value.user,
+        errors: data.value.errors,
+        events: data.value.events,
+      };
+    })
   );
 </script>
 
