@@ -85,7 +85,13 @@
                 </span>
                 <span class="special-msg"> {{ record.info.errorMsg }} </span>
               </div>
-              <span class="special-time"> {{ record.info.timestamp }} </span>
+              <span class="special-time">
+                {{
+                  new Date(record.info.timestamp.$date)
+                    .toISOString()
+                    .split('T')[0]
+                }}
+              </span>
               <span class="special-time"> {{ record.info.originURL }} </span>
             </div>
           </template>
