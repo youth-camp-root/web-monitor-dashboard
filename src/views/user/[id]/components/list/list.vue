@@ -1,12 +1,27 @@
 <script lang="ts" setup>
-  import { UserEventRecord } from '@/api/user';
-  import useLoading from '@/hooks/loading';
-  import { userInfoList } from '@/views/user/[id]/mock';
+  import dayjs from 'dayjs';
+  import { computed, inject, Ref } from 'vue';
+  import { IErrorData } from '@/api/errorData';
+  import { IRequestData } from '@/api/requestData';
+  import { IUserRequest } from '@/api/user';
+
+  const isIErrorData = (x: IErrorData | IRequestData): x is IErrorData => {
+    return (x as IErrorData).errorMsg !== undefined;
+  };
+
+  const data = inject<Ref<IUserRequest>>('user/[id]/info');
+  const other = computed<(IErrorData | IRequestData)[]>(() => {
+    return [...(data?.value.errors ?? []), ...(data?.value.events ?? [])].sort(
+      (a, b) => {
+        return dayjs(a.timestamp.$date).isBefore(dayjs(b.timestamp.$date))
+          ? 1
+          : -1;
+      }
+    );
+  });
 
   const emit = defineEmits(['userListClicked']);
-  const { loading, setLoading } = useLoading(false);
-  const renderData = userInfoList;
-  const view = (record: UserEventRecord) => {
+  const view = (record: any) => {
     emit('userListClicked', record);
   };
 </script>
@@ -18,8 +33,7 @@
       :scroll="{
         maxHeight: '400px',
       }"
-      :loading="loading"
-      :data="renderData"
+      :data="other"
       :pagination="false"
       :bordered="false"
     >
@@ -29,14 +43,17 @@
           data-index="number"
         >
           <template #cell="{ record }">
-            <a-tag :color="record.type === 'error' ? 'red' : 'arcoblue'">{{
-              $t(`user.detail.list.type.${record.type}`)
-            }}</a-tag>
+            <a-tag v-if="isIErrorData(record)" color="red">
+              {{ $t('user.detail.list.type.error') }}
+            </a-tag>
+            <a-tag v-else color="arcoblue">
+              {{ $t('user.detail.list.type.event') }}
+            </a-tag>
           </template>
         </a-table-column>
         <a-table-column
           :title="$t('user.detail.list.datetime')"
-          data-index="datetime"
+          data-index="timestamp.$date"
         />
         <a-table-column
           :title="$t('user.detail.list.type')"
@@ -48,10 +65,7 @@
             {{ record.title }}
           </template>
         </a-table-column>
-        <a-table-column
-          :title="$t('user.detail.list.detail')"
-          data-index="operations"
-        >
+        <a-table-column :title="$t('user.detail.list.detail')">
           <template #cell="{ record }">
             <a-button
               v-permission="['admin']"

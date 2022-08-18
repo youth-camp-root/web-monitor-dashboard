@@ -10,7 +10,7 @@
     return Object.entries(props.item ?? {}).map(([key, value]) => {
       return {
         label: key,
-        value,
+        value: JSON.stringify(value),
       };
     });
   });

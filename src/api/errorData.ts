@@ -10,7 +10,9 @@ export interface IErrorData {
   _cls: string;
   category: string;
   originURL: string;
-  timestamp: string;
+  timestamp: {
+    $date: string;
+  };
   errorType: string;
   errorMsg: string;
   filename: string;
