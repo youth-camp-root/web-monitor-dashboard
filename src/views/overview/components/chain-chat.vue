@@ -6,17 +6,21 @@
       :header-style="{ paddingBottom: '12px' }"
     >
       <template #extra>
-        <a-statistic
-          extra="较一周之前"
-          :value="50.52"
-          :precision="2"
-          :value-style="{ color: '#0fbf60' }"
-        >
-          <template #prefix>
-            <icon-arrow-rise />
-          </template>
-          <template #suffix>%</template>
-        </a-statistic>
+        <div style="margin: 5px">
+          <a-space size="small">
+            <a-statistic
+              extra="较一周之前"
+              :value="50.52"
+              :precision="2"
+              :value-style="{ color: '#0fbf60' }"
+            >
+              <template #prefix>
+                <icon-arrow-rise />
+              </template>
+              <template #suffix>%</template>
+            </a-statistic>
+          </a-space>
+        </div>
       </template>
       <Chart
         style="height: 328px; margin-top: 20px"
