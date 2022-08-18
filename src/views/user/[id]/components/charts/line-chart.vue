@@ -1,6 +1,5 @@
 <script lang="ts" setup>
   import useChartOption from '@/hooks/chart-option';
-  import dataChainGrowthVue from '@/views/overview/components/data-chain-growth.vue';
   import { PropType } from 'vue';
 
   const props = defineProps({
