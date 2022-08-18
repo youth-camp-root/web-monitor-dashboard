@@ -4,7 +4,9 @@ export type IRequestData = {
   };
   targetURL: string;
   statusCode: string;
-  timestamp: string;
+  timestamp: {
+    $date: string;
+  };
   eventType: string;
   httpDuration: string;
   dnsDuration: string;

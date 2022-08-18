@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { IErrorData } from './errorData';
+import { IRequestData } from './requestData';
 
 export interface UserInfo {
   _id: string;
@@ -22,6 +24,12 @@ export type IUserFull = {
   device: string;
   ip: string;
   os: string;
+};
+
+export type IUserRequest = {
+  user: IUserFull;
+  errors: IErrorData[];
+  events: IRequestData[];
 };
 
 export function queryUserInfo(id: string) {

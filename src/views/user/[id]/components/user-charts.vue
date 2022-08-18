@@ -27,6 +27,9 @@
 </template>
 
 <script lang="ts" setup>
+  import { inject } from 'vue';
   import BarChart from './charts/bar-chart.vue';
   import LineChart from './charts/line-chart.vue';
+
+  const data = inject('user/[id]/info');
 </script>
