@@ -152,12 +152,12 @@
 <script lang="ts" setup>
   import { useRoute } from 'vue-router';
   import useRequest from '@/hooks/request';
-  import { IErrorData, queryErrorIssue } from '@/api/errorData';
+  import { ErrorDetailData, queryErrorIssue } from '@/api/errorData';
   import Vcharts from '@/components/chart/index.vue';
   
   const route = useRoute();
   const issueid = route.params.issueid as string;
-  const { response: data } = useRequest<IErrorData>(() =>
+  const { response: data } = useRequest<ErrorDetailData>(() =>
     queryErrorIssue(issueid)
   );
   // data-pannel
