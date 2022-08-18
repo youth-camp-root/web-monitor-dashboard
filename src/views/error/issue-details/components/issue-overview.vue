@@ -1,5 +1,5 @@
 <template>
-  <a-col class="issue-overview">
+  <div class="issue-overview">
     <a-typography-text bold style="font-size: 18px; color: blue">
       {{ issueInfo.name }}
     </a-typography-text>
@@ -12,7 +12,7 @@
         {{ issueInfo.time }}
       </a-typography-text>
     </div>
-  </a-col>
+  </div>
 </template>
 <script lang="ts" setup>
   interface IIssueInfo {

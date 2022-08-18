@@ -4,21 +4,41 @@ import type { TableData } from '@arco-design/web-vue/es/table/interface';
 
 // 这个是 mongodb 的接口类型
 export interface IErrorData {
-  _id: {
-    $oid: string;
+  name: string;
+  details: {
+    TotalErrCnt: number;
+    errorFreq: number[];
+    userAffectCnt: number;
   };
-  _cls: string;
-  category: string;
-  originURL: string;
-  timestamp: {
-    $date: string;
+  info: {
+    _id: {
+      $oid: string;
+    };
+    _cls: string;
+    category: string;
+    originURL: string;
+    timestamp: {
+      $date: string;
+    };
+    errorType: string;
+    errorMsg: string;
+    filename: string;
+    position: string;
+    stack: string;
+    selector: string;
+    user: {
+      _id: {
+        $oid: string;
+      };
+      browser: string;
+      device: string;
+      ip: string;
+      os: string;
+      page: string;
+      tag: string;
+    };
+    viewPoint: string;
   };
-  errorType: string;
-  errorMsg: string;
-  filename: string;
-  position: string;
-  stack: string;
-  selector: string;
 }
 
 export interface PopularRecord {
@@ -82,4 +102,8 @@ export interface ErrorListRes {
 
 export function queryErrorList() {
   return axios.get('/api/error/issues/list');
+}
+
+export function queryErrorIssue(issueId: string) {
+  return axios.get(`/api/error/issue/${issueId}`);
 }
