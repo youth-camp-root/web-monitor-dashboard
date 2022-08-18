@@ -33,20 +33,28 @@
         :pagination="pagination"
         :data="renderData"
         :bordered="false"
+        :scroll="scrollPercent"
         @page-change="onPageChange"
       >
         <template #columns>
           <a-table-column
             :title="$t('useraction.columns.number')"
+            :table-layout-fixed="true"
             data-index="number"
+            :ellipsis="true"
+            :tooltip="true"
           />
           <a-table-column
             :title="$t('useraction.columns.name')"
             data-index="name"
+            :ellipsis="true"
+            :tooltip="true"
           />
           <a-table-column
             :title="$t('useraction.columns.contentType')"
             data-index="contentType"
+            :ellipsis="true"
+            :tooltip="true"
           >
             <template #cell="{ record }">
               <a-space>
@@ -83,6 +91,8 @@
           <a-table-column
             :title="$t('useraction.columns.filterType')"
             data-index="filterType"
+            :ellipsis="true"
+            :tooltip="true"
           >
             <template #cell="{ record }">
               {{ $t(`useraction.form.filterType.${record.filterType}`) }}
@@ -91,12 +101,16 @@
           <a-table-column
             :title="$t('useraction.columns.count')"
             data-index="count"
+            :ellipsis="true"
+            :tooltip="true"
           />
           <a-table-column
             :title="$t('useraction.columns.createdTime')"
             data-index="createdTime"
+            :ellipsis="true"
+            :tooltip="true"
           />
-          <a-table-column
+          <!-- <a-table-column
             :title="$t('useraction.columns.status')"
             data-index="status"
           >
@@ -105,10 +119,12 @@
               <span v-else class="circle pass"></span>
               {{ $t(`useraction.form.status.${record.status}`) }}
             </template>
-          </a-table-column>
+          </a-table-column> -->
           <a-table-column
             :title="$t('useraction.columns.operations')"
             data-index="operations"
+            :ellipsis="true"
+            :tooltip="true"
           >
             <template #cell="{ record }">
               <a-button
@@ -161,6 +177,10 @@
   const basePagination: Pagination = {
     current: 1,
     pageSize: 20,
+  };
+  const scrollPercent = {
+    x: '120%',
+    y: '100%',
   };
   const pagination = reactive({
     ...basePagination,

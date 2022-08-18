@@ -2,6 +2,25 @@ import axios from 'axios';
 import type { TableData } from '@arco-design/web-vue/es/table/interface';
 import qs from 'query-string';
 
+// 这个是 mongodb 的接口类型
+export interface IErrorData {
+  _id: {
+    $oid: string;
+  };
+  _cls: string;
+  category: string;
+  originURL: string;
+  timestamp: {
+    $date: string;
+  };
+  errorType: string;
+  errorMsg: string;
+  filename: string;
+  position: string;
+  stack: string;
+  selector: string;
+}
+
 export interface PopularRecord {
   key: number;
   clickNumber: string;

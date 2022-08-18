@@ -18,7 +18,11 @@
           <template #suffix>%</template>
         </a-statistic>
       </template>
-      <Chart style="height: 328px; margin-top: 20px" :option="chartOption" />
+      <Chart
+        style="height: 328px; margin-top: 20px"
+        :option="chartOption"
+        autoresize
+      />
     </a-card>
   </a-spin>
 </template>
@@ -98,10 +102,10 @@
   const { chartOption } = useChartOption((dark) => {
     return {
       grid: {
-        left: '2.6%',
-        right: '4',
-        top: '40',
-        bottom: '40',
+        left: 44,
+        right: 20,
+        top: 0,
+        bottom: 20,
       },
       xAxis: {
         type: 'category',
@@ -110,6 +114,7 @@
         boundaryGap: false,
         axisLabel: {
           color: '#4E5969',
+          show: true,
           formatter(value: number, idx: number) {
             if (idx === 0) return '';
             if (idx === xAxis.value.length - 1) return '';
@@ -139,6 +144,8 @@
           show: false,
         },
         axisLabel: {
+          show: true,
+          color: '#4E5969',
           formatter(value: number, idx: number) {
             if (idx === 0) return String(value);
             return `${value / 1000}k`;

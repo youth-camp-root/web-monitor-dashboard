@@ -1,28 +1,28 @@
 <template>
   <div>
-    <a-row :gutter="16">
-      <a-col :span="8">
+    <a-grid :gutter="16" :cols="{ xs: 1, sm: 2, md: 3 }">
+      <a-grid-item>
         <ChainItem
           :title="$t('multiDAnalysis.card.title.retentionTrends')"
           quota="retentionTrends"
           chart-type="line"
         />
-      </a-col>
-      <a-col :span="8">
+      </a-grid-item>
+      <a-grid-item>
         <ChainItem
           :title="$t('multiDAnalysis.card.title.userRetention')"
           quota="userRetention"
           chart-type="bar"
         />
-      </a-col>
-      <a-col :span="8">
+      </a-grid-item>
+      <a-grid-item>
         <ChainItem
           :title="$t('multiDAnalysis.card.title.contentConsumptionTrends')"
           quota="contentConsumptionTrends"
           chart-type="line"
         />
-      </a-col>
-    </a-row>
+      </a-grid-item>
+    </a-grid>
   </div>
 </template>
 
