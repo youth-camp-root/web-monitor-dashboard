@@ -1,4 +1,3 @@
-import localeMessageBox from '@/components/message-box/locale/en-US';
 import localeLogin from '@/views/login/locale/en-US';
 
 import localeUserDetail from '@/views/user/[id]/locale/en-US';
@@ -41,10 +40,10 @@ export default {
   'menu.userinfo': 'User Center',
   'menu.arcoWebsite': 'Arco Design',
   'menu.faq': 'FAQ',
+  'menu.logout': 'Log out',
   'navbar.docs': 'Docs',
   'navbar.action.locale': 'Switch to English',
   ...localeSettings,
-  ...localeMessageBox,
   ...localeLogin,
   ...localeOverview,
   ...localeUserDetail,

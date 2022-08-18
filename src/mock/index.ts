@@ -1,12 +1,9 @@
 import Mock from 'mockjs';
 
 import './user';
-import './message-box';
 
 import '@/views/userinfo/info/mock';
 import '@/views/userinfo/setting/mock';
-
-import '@/views/user/[id]/mock';
 
 import '@/views/error/issue-details/mock';
 
