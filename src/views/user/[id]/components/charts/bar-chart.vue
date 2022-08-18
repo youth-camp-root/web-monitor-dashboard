@@ -9,14 +9,26 @@
 
 <script lang="ts" setup>
   import useChartOption from '@/hooks/chart-option';
+  import { PropType } from 'vue';
+
+  type IChartData = {
+    url: string;
+    time: number;
+  };
+
+  const data = defineProps({
+    data: {
+      type: Object as PropType<IChartData[]>,
+    },
+  });
 
   const { chartOption } = useChartOption((isDark) => {
     return {
       grid: {
-        left: 44,
-        right: 20,
         top: 0,
-        bottom: 20,
+        bottom: 0,
+        left: 130,
+        right: 20,
       },
       xAxis: {
         type: 'value',
@@ -36,10 +48,13 @@
       },
       yAxis: {
         type: 'category',
-        data: ['/user', '/performance', '/error', '/detail', '/home'],
+        data: data.data?.map((item) => item.url),
         axisLabel: {
           show: true,
           color: '#4E5969',
+          formatter(item: string) {
+            return item.substring(0, 20);
+          },
         },
         axisTick: {
           show: true,
@@ -61,7 +76,7 @@
       },
       series: [
         {
-          data: [1033, 1244, 1520, 2000, 2300],
+          data: data.data?.map((item) => item.time),
           type: 'bar',
           barWidth: 14,
           itemStyle: {
