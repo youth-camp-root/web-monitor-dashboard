@@ -243,6 +243,10 @@
     }
   }
 
+  :deep(.arco-card-header) {
+    height: auto !important;
+  }
+
   .statistic-prefix {
     display: inline-block;
     width: 32px;
