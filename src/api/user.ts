@@ -43,7 +43,7 @@ export type IUserStatRequest = {
   }[];
   trend: {
     count: number;
-  };
+  }[];
 };
 
 export function queryUserInfo(id: string) {
