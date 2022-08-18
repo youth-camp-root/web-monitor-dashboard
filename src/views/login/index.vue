@@ -7,7 +7,7 @@
       />
       <div class="logo-text">Root</div>
     </div>
-    <LoginBanner />
+    <!-- <LoginBanner /> -->
     <div class="content">
       <div class="content-inner">
         <LoginForm />
@@ -21,7 +21,7 @@
 
 <script lang="ts" setup>
   import Footer from '@/components/footer/index.vue';
-  import LoginBanner from './components/banner.vue';
+  // import LoginBanner from './components/banner.vue';
   import LoginForm from './components/login-form.vue';
 </script>
 
@@ -63,7 +63,7 @@
     &-text {
       margin-right: 4px;
       margin-left: 4px;
-      color: var(--color-fill-1);
+      color: var(--color-text-1);
       font-size: 20px;
     }
   }

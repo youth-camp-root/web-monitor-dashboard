@@ -4,9 +4,6 @@
       <template #title>
         {{ $t('overview.contentPublishRatio') }}
       </template>
-      <!-- <template #extra>
-        <a-link>{{ $t('workplace.viewMore') }}</a-link>
-      </template> -->
       <Chart style="width: 100%; height: 347px" :option="chartOption" />
     </a-card>
   </a-spin>

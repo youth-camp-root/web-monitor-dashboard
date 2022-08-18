@@ -21,7 +21,7 @@
               <template #icon>
                 <icon-refresh />
               </template>
-              {{ $t('searchTable.form.reset') }}
+              {{ $t('useraction.form.reset') }}
             </a-button>
           </a-space>
         </a-col>

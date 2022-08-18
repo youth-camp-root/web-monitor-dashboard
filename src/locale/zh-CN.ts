@@ -21,9 +21,6 @@ import localeGroupForm from '@/views/form/group/locale/zh-CN';
 
 import localeBasicProfile from '@/views/profile/basic/locale/zh-CN';
 
-import localeDataAnalysis from '@/views/visualization/data-analysis/locale/zh-CN';
-import localeMultiDAnalysis from '@/views/visualization/multi-dimension-data-analysis/locale/zh-CN';
-
 import localeSuccess from '@/views/result/success/locale/zh-CN';
 import localeError from '@/views/result/error/locale/zh-CN';
 
@@ -84,8 +81,6 @@ export default {
   ...localeStepForm,
   ...localeGroupForm,
   ...localeBasicProfile,
-  ...localeDataAnalysis,
-  ...localeMultiDAnalysis,
   ...localeSuccess,
   ...localeError,
   ...locale403,
