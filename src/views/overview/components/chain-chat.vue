@@ -3,24 +3,20 @@
     <a-card
       class="general-card"
       :title="props.title"
-      :header-style="{ paddingBottom: '12px' }"
+      :header-style="{ paddingBottom: '12px', margin: '10px' }"
     >
       <template #extra>
-        <div style="margin: 5px">
-          <a-space size="small">
-            <a-statistic
-              extra="较一周之前"
-              :value="50.52"
-              :precision="2"
-              :value-style="{ color: '#0fbf60' }"
-            >
-              <template #prefix>
-                <icon-arrow-rise />
-              </template>
-              <template #suffix>%</template>
-            </a-statistic>
-          </a-space>
-        </div>
+        <a-statistic
+          extra="较一周之前"
+          :value="50.52"
+          :precision="2"
+          :value-style="{ color: '#0fbf60' }"
+        >
+          <template #prefix>
+            <icon-arrow-rise />
+          </template>
+          <template #suffix>%</template>
+        </a-statistic>
       </template>
       <Chart
         style="height: 328px; margin-top: 20px"
