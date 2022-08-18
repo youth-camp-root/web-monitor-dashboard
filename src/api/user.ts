@@ -32,8 +32,26 @@ export type IUserRequest = {
   events: IRequestData[];
 };
 
+export type IUserStatRequest = {
+  page: {
+    FCP: number;
+    pageUrl: string;
+  }[];
+  request: {
+    httpDuration: number;
+    targetURL: string;
+  }[];
+  trend: {
+    count: number;
+  };
+};
+
 export function queryUserInfo(id: string) {
   return axios.get(`/api/user/${id}`);
+}
+
+export function queryUserStat(id: string) {
+  return axios.get(`/api/user/${id}/stat`);
 }
 
 export function queryUserChartInfo() {
