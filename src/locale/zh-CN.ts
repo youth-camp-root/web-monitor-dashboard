@@ -13,7 +13,7 @@ import localeWorkplace from '@/views/dashboard/workplace/locale/zh-CN';
 
 import localeMonitor from '@/views/dashboard/monitor/locale/zh-CN';
 
-import localeSearchTable from '@/views/list/search-table/locale/zh-CN';
+// import localeSearchTable from '@/views/list/search-table/locale/zh-CN';
 import localeCardList from '@/views/list/card/locale/zh-CN';
 
 import localeStepForm from '@/views/form/step/locale/zh-CN';
@@ -76,7 +76,7 @@ export default {
   ...localeWorkplace,
 
   ...localeMonitor,
-  ...localeSearchTable,
+  // ...localeSearchTable,
   ...localeCardList,
   ...localeStepForm,
   ...localeGroupForm,
