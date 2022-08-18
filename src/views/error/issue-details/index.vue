@@ -47,28 +47,7 @@
         </a-row>
         <a-row class="grid-row">
           <Vcharts
-            :options="{
-              title: { text: '错误次数统计表' },
-              tooltip: {},
-              xAxis: {
-                data: [
-                  '2022-8-2',
-                  '2022-8-3',
-                  '2022-8-4',
-                  '2022-08-5',
-                  '2022-8-6',
-                  '2022-8-7',
-                ],
-              },
-              yAxis: {},
-              series: [
-                {
-                  name: '错误次数',
-                  type: 'bar',
-                  data: [0, 0, 0, 0, 0, 1],
-                },
-              ],
-            }"
+            :options="{options}"
             :height="'300px'"
           ></Vcharts>
         </a-row>
@@ -175,6 +154,7 @@
   import useRequest from '@/hooks/request';
   import { IErrorData, queryErrorIssue } from '@/api/errorData';
   import Vcharts from '@/components/chart/index.vue';
+  
   const route = useRoute();
   const issueid = route.params.issueid as string;
   const { response: data } = useRequest<IErrorData>(() =>
