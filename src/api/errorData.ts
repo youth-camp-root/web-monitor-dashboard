@@ -4,13 +4,6 @@ import type { TableData } from '@arco-design/web-vue/es/table/interface';
 
 // 这个是 mongodb 的接口类型
 export interface IErrorData {
-  name: string;
-  details: {
-    TotalErrCnt: number;
-    errorFreq: number[];
-    userAffectCnt: number;
-  };
-  info: {
     _id: {
       $oid: string;
     };
@@ -38,7 +31,6 @@ export interface IErrorData {
       tag: string;
     };
     viewPoint: string;
-  };
 }
 
 export interface ErrorDetailData {
