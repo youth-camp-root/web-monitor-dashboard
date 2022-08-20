@@ -25,7 +25,7 @@
               <a-grid-item>
                 <Chart
                   :option="visitCountOption"
-                  :style="{ width: 'auto', height: '200px' }"
+                  :style="{ width: 'auto', height: '400px' }"
                   :auto-resize="true"
                 >
                 </Chart>
@@ -33,7 +33,7 @@
               <a-grid-item>
                 <Chart
                   :option="stayDurationOption"
-                  :style="{ width: 'auto', height: '200px' }"
+                  :style="{ width: 'auto', height: '400px' }"
                   :auto-resize="true"
                 >
                 </Chart>
@@ -41,7 +41,7 @@
               <a-grid-item>
                 <Chart
                   :option="webVitalsOption"
-                  :style="{ width: 'auto', height: '200px' }"
+                  :style="{ width: 'auto', height: '400px' }"
                   :auto-resize="true"
                 >
                 </Chart>
