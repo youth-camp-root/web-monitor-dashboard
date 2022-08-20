@@ -137,12 +137,13 @@
   import { ref } from 'vue';
   // import { Pagination } from '@/types/global';
   import { EChartsOption } from 'echarts';
-  import 'echarts/lib/component/markLine';
-  import router from '@/router';
+  import { useRouter } from 'vue-router';
   import useLoading from '@/hooks/loading';
   import { queryErrorList, ErrorList } from '@/api/errorData';
+  import 'echarts/lib/component/markLine';
   import { SelectOptionData } from '@arco-design/web-vue';
 
+  const router = useRouter();
   const { loading, setLoading } = useLoading(true);
   const renderData = ref<ErrorList[]>([]);
   // const basePagination: Pagination = {
@@ -154,7 +155,7 @@
 
   const issuesDetail = (issueid: number) => {
     // console.log(issueid);
-    router.push({ name: 'IssueDetails', params: { issueid } });
+    router.push(`/error/issue-details/${issueid}`);
   };
 
   let fdType = ['All Error'];

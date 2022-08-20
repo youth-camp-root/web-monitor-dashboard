@@ -7,13 +7,13 @@
           <a-col class="grid-col">
             <div class="issue-overview">
               <a-typography-text bold style="font-size: 18px; color: blue">
-                {{ data.name ? data.name : 'typeerror' }}
+                {{ data.name ? data.name : '' }}
               </a-typography-text>
               <a-typography-text code>
                 {{
                   data.info && data.info.originURL
                     ? data.info.originURL
-                    : 'www.baidu.com'
+                    : ''
                 }}
               </a-typography-text>
               <div class="issue-timeShow">
@@ -24,7 +24,7 @@
                   {{
                     data.info && data.info.timestamp.$date
                       ? data.info.timestamp.$date
-                      : '2022-8-20'
+                      : ''
                   }}
                 </a-typography-text>
               </div>
@@ -92,7 +92,7 @@
                   data:
                     data.details && data.details.errorFreq
                       ? data.details.errorFreq
-                      : [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                      : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 },
               ],
             }"
@@ -109,19 +109,19 @@
           <p class="deviceItemText">{{
             data.user && data.user.user._id.$oid
               ? data.user.user._id.$oid
-              : '156141dasdasd'
+              : ''
           }}</p>
         </div>
         <div class="deviceItem">
           <icon-printer :size="54" />
           <p class="deviceItemText">{{
-            data.user && data.user.user.device ? data.user.user.device : 'apple'
+            data.user && data.user.user.device ? data.user.user.device : ''
           }}</p>
         </div>
         <div class="deviceItem">
           <icon-computer :size="54" />
           <p class="deviceItemText">{{
-            data.user && data.user.user.os ? data.user.user.os : 'windows'
+            data.user && data.user.user.os ? data.user.user.os : ''
           }}</p>
         </div>
       </div>
@@ -143,7 +143,7 @@
           <card class="detailDetailCard">
             <a-tag checkable>IP地址:</a-tag>
             <a-tag checkable color="arcoblue" :default-checked="true">{{
-              data.user && data.user.user.ip ? data.user.user.ip : '192.168.1.1'
+              data.user && data.user.user.ip ? data.user.user.ip : ''
             }}</a-tag>
           </card>
           <card class="detailDetailCard">
@@ -151,7 +151,7 @@
             <a-tag checkable color="arcoblue" :default-checked="true">{{
               data.user && data.user.user.device
                 ? data.user.user.device
-                : 'chrome'
+                : ''
             }}</a-tag>
           </card>
           <card class="detailDetailCard">
@@ -159,7 +159,7 @@
             <a-tag checkable color="arcoblue" :default-checked="true">{{
               data.user && data.user.user.page
                 ? data.user.user.page
-                : 'www.sdasdas.com'
+                : ''
             }}</a-tag>
           </card>
         </a-space>
