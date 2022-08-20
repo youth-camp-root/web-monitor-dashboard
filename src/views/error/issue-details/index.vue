@@ -79,9 +79,9 @@
                   '2022-8-14',
                   '2022-8-15',
                   '2022-8-16',
-                  '2022-8-17',
-                  '2022-8-18',
-                  '2022-8-19',
+                  '2022-8-25',
+                  '2022-8-26',
+                  '2022-8-27',
                 ],
               },
               yAxis: {},
@@ -274,10 +274,6 @@
     margin-left: 20px;
     text-align: left;
   }
-  // echarts
-  .chartPannel {
-    width: 60%;
-  }
   // dataPannel---------------------------
   .PannelContainer {
     padding: 20px;
@@ -292,6 +288,9 @@
     margin-left: 20px;
   }
   // dataPannel---------------------------
+  .chartPannel {
+    width: 60%;
+  }
   // userMessage---------------------------
   .userContainer {
     width: 100%;
@@ -325,6 +324,8 @@
   // userMessage---------------------
 
   .container {
+    display: flex;
+    flex-direction: column;
     padding: 16px 20px;
     padding-bottom: 0;
   }
