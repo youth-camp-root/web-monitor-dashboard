@@ -7,50 +7,98 @@
           <a-col class="grid-col">
             <div class="issue-overview">
               <a-typography-text bold style="font-size: 18px; color: blue">
-                {{ data.name }}
+                {{ data.name ? data.name : 'typeerror' }}
               </a-typography-text>
               <a-typography-text code>
-                {{ data.info.originURL }}
+                {{
+                  data.info && data.info.originURL
+                    ? data.info.originURL
+                    : 'www.baidu.com'
+                }}
               </a-typography-text>
               <div class="issue-timeShow">
                 <a-tag checkable color="red" :default-checked="true"
                   >时间</a-tag
                 >
                 <a-typography-text>
-                  {{ data.info.timestamp.$date }}
+                  {{
+                    data.info && data.info.timestamp.$date
+                      ? data.info.timestamp.$date
+                      : '2022-8-20'
+                  }}
                 </a-typography-text>
               </div>
             </div>
           </a-col>
         </a-row>
-        <a-row class="grid-row">
+        <div class="grid-row">
           <a-col class="grid-col" :span="8">
             <a-statistic
               :title="$t('error.issueDetails.errTotalNum')"
-              :value="data.details.TotalErrCnt"
+              :value="
+                data.details && data.details.TotalErrCnt
+                  ? data.details.TotalErrCnt
+                  : 0
+              "
               :value-from="0"
               animation
               show-group-separator
             >
             </a-statistic>
           </a-col>
-          <a-col>
+          <a-col grid-col>
             <a-statistic
               :title="$t('error.issueDetails.affectNum')"
-              :value="data.details.userAffectCnt"
+              :value="
+                data.details && data.details.userAffectCnt
+                  ? data.details.userAffectCnt
+                  : 0
+              "
               :value-from="0"
               animation
               show-group-separator
             >
             </a-statistic>
           </a-col>
-        </a-row>
-        <a-row class="grid-row">
+        </div>
+        <div class="chartPannel">
           <Vcharts
-            :options="{options}"
+            :options="{
+              title: { text: '错误次数统计表' },
+              tooltip: {},
+              xAxis: {
+                data: [
+                  '2022-8-6',
+                  '2022-8-7',
+                  '2022-8-8',
+                  '2022-8-9',
+                  '2022-8-10',
+                  '2022-8-11',
+                  '2022-8-12',
+                  '2022-8-13',
+                  '2022-8-14',
+                  '2022-8-15',
+                  '2022-8-16',
+                  '2022-8-17',
+                  '2022-8-18',
+                  '2022-8-19',
+                ],
+              },
+              yAxis: {},
+              series: [
+                {
+                  name: '错误次数',
+                  type: 'bar',
+                  data:
+                    data.details && data.details.errorFreq
+                      ? data.details.errorFreq
+                      : [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                },
+              ],
+            }"
             :height="'300px'"
           ></Vcharts>
-        </a-row>
+        </div>
       </a-row>
     </div>
     <!-- userMessage -->
@@ -58,15 +106,23 @@
       <div class="device">
         <div class="deviceItem">
           <icon-user :size="54" />
-          <p class="deviceItemText">{{ data.info.user._id.$oid }}</p>
+          <p class="deviceItemText">{{
+            data.user && data.user.user._id.$oid
+              ? data.user.user._id.$oid
+              : '156141dasdasd'
+          }}</p>
         </div>
         <div class="deviceItem">
           <icon-printer :size="54" />
-          <p class="deviceItemText">{{ data.info.user.device }}</p>
+          <p class="deviceItemText">{{
+            data.user && data.user.user.device ? data.user.user.device : 'apple'
+          }}</p>
         </div>
         <div class="deviceItem">
           <icon-computer :size="54" />
-          <p class="deviceItemText">{{ data.info.user.os }}</p>
+          <p class="deviceItemText">{{
+            data.user && data.user.user.os ? data.user.user.os : 'windows'
+          }}</p>
         </div>
       </div>
       <div class="detail">
@@ -87,24 +143,28 @@
           <card class="detailDetailCard">
             <a-tag checkable>IP地址:</a-tag>
             <a-tag checkable color="arcoblue" :default-checked="true">{{
-              data.info.user.ip
+              data.user && data.user.user.ip ? data.user.user.ip : '192.168.1.1'
             }}</a-tag>
           </card>
           <card class="detailDetailCard">
             <a-tag checkable>设备:</a-tag>
             <a-tag checkable color="arcoblue" :default-checked="true">{{
-              data.info.user.device
+              data.user && data.user.user.device
+                ? data.user.user.device
+                : 'chrome'
             }}</a-tag>
           </card>
           <card class="detailDetailCard">
             <a-tag checkable>页面地址:</a-tag>
             <a-tag checkable color="arcoblue" :default-checked="true">{{
-              data.info.user.page
+              data.user && data.user.user.page
+                ? data.user.user.page
+                : 'www.sdasdas.com'
             }}</a-tag>
           </card>
         </a-space>
         <h3>UserAgent</h3>
-        {{ data.info.user.browser }}
+        {{ data.user && data.user.user.browser ? data.user.user.browser : '' }}
       </div>
     </div>
     <!--  -->
@@ -154,35 +214,14 @@
   import useRequest from '@/hooks/request';
   import { ErrorDetailData, queryErrorIssue } from '@/api/errorData';
   import Vcharts from '@/components/chart/index.vue';
-  
+
   const route = useRoute();
   const issueid = route.params.issueid as string;
   const { response: data } = useRequest<ErrorDetailData>(() =>
     queryErrorIssue(issueid)
   );
   // data-pannel
-  const options = {
-    title: { text: '错误次数统计表' },
-    tooltip: {},
-    xAxis: {
-      data: [
-        '2022-8-2',
-        '2022-8-3',
-        '2022-8-4',
-        '2022-08-5',
-        '2022-8-6',
-        '2022-8-7',
-      ],
-    },
-    yAxis: {},
-    series: [
-      {
-        name: '错误次数',
-        type: 'bar',
-        data: [1, 1, 1, 1, 1, 1],
-      },
-    ],
-  };
+
   //  stack
   const recordList = [
     {
@@ -235,6 +274,10 @@
     margin-left: 20px;
     text-align: left;
   }
+  // echarts
+  .chartPannel {
+    width: 60%;
+  }
   // dataPannel---------------------------
   .PannelContainer {
     padding: 20px;
@@ -245,6 +288,7 @@
     margin-bottom: 20px;
   }
   .grid-col {
+    width: 40%;
     margin-left: 20px;
   }
   // dataPannel---------------------------
@@ -281,8 +325,6 @@
   // userMessage---------------------
 
   .container {
-    display: flex;
-    flex-direction: column;
     padding: 16px 20px;
     padding-bottom: 0;
   }

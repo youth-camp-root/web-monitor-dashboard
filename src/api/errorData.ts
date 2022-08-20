@@ -4,21 +4,21 @@ import type { TableData } from '@arco-design/web-vue/es/table/interface';
 
 // 这个是 mongodb 的接口类型
 export interface IErrorData {
-    _id: {
-      $oid: string;
-    };
-    _cls: string;
-    category: string;
-    originURL: string;
-    timestamp: {
-      $date: string;
-    };
-    errorType: string;
-    errorMsg: string;
-    filename: string;
-    position: string;
-    stack: string;
-    selector: string;
+  _id: {
+    $oid: string;
+  };
+  _cls: string;
+  category: string;
+  originURL: string;
+  timestamp: {
+    $date: string;
+  };
+  errorType: string;
+  errorMsg: string;
+  filename: string;
+  position: string;
+  stack: string;
+  selector: string;
 }
 
 export interface ErrorDetailData {
@@ -44,6 +44,9 @@ export interface ErrorDetailData {
     position: string;
     stack: string;
     selector: string;
+    viewPoint: string;
+  };
+  user: {
     user: {
       _id: {
         $oid: string;
@@ -55,7 +58,6 @@ export interface ErrorDetailData {
       page: string;
       tag: string;
     };
-    viewPoint: string;
   };
 }
 
@@ -119,7 +121,7 @@ export interface ErrorListRes {
 // }
 
 export function queryErrorList() {
-  return axios.get('/api/error/issues/list');
+  return axios.get('/api/error/issues/list?page=1&items=20');
 }
 
 export function queryErrorIssue(issueId: string) {
