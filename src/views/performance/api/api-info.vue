@@ -24,7 +24,7 @@
             >
               <a-grid-item>
                 <Chart
-                  :option="createOptions(visitCount)"
+                  :option="createOptions(chartData)"
                   :style="{ width: 'auto', height: '400px' }"
                   :auto-resize="true"
                 >
@@ -77,7 +77,7 @@
   const { loading, setLoading } = useLoading(true);
 
   const { apiurl } = router.currentRoute.value.params;
-  const visitCount = ref<any>([]);
+  const chartData = ref<any>([]);
   interface CreateOptionsParam {
     titleText: string;
     xData: any;
@@ -128,7 +128,7 @@
     };
   };
 
-  const apiVital = ref<any>([]);
+  const apiVitals = ref<any>([]);
   const APIVitalsOption = ref({
     title: {
       text: '页面性能',
@@ -151,7 +151,7 @@
             show: true,
           },
         },
-        data: apiVital,
+        data: apiVitals,
       },
     ],
   });
@@ -169,7 +169,9 @@
     try {
       setLoading(true);
       const { data: APIInfoOverviewData } = await queryAPIInfoOverview(apiurl);
-      [apiVital.value, visitCount.value] = APIInfoOverviewData;
+      // [apiVital.value, visitCount.value] = APIInfoOverviewData;
+      apiVitals.value = APIInfoOverviewData.apiVitals;
+      chartData.value = APIInfoOverviewData.chartData;
     } catch (err) {
       // you can report use errorHandler or other
     } finally {

@@ -22,7 +22,7 @@
               :col-gap="12"
               :row-gap="16"
             >
-              <a-grid-item v-for="item in overviewData" :key="item.titleText">
+              <a-grid-item v-for="item in chartData" :key="item?.titleText">
                 <Chart
                   :option="createOptions(item)"
                   :style="{ width: 'auto', height: '400px' }"
@@ -45,7 +45,7 @@
               <a-typography-title :heading="5" bold="true">
                 {{ $t('performance.page.overview.errorcount') }}
               </a-typography-title>
-              <a-statistic title="" :value="3030" show-group-separator>
+              <a-statistic title="" :value="errorCount" show-group-separator>
                 <template #suffix>
                   <icon-arrow-rise :style="{ color: 'red' }" />
                 </template>
@@ -58,7 +58,7 @@
               </a-typography-title>
               <ratio-line
                 v-for="item in tagsData"
-                :key="item.type"
+                :key="item"
                 :data="item"
               ></ratio-line>
             </div>
@@ -85,6 +85,8 @@
   const overviewData = ref<any>([]);
   const webVitalData = ref<any>([]);
   const tagsData = ref<any>([]);
+  const chartData = ref<any>([]);
+  const errorCount = ref<any>(0);
 
   interface CreateOptionsParam {
     titleText: string;
@@ -172,6 +174,7 @@
   };
   function uniqueOfAttr(arr1: any, attr: string) {
     const res = new Map();
+
     return arr1.filter(
       (item: any) => !res.has(item[attr]) && res.set(item[attr], 1)
     );
@@ -179,10 +182,14 @@
   const fetchData = async () => {
     try {
       setLoading(true);
-      let tagsTempData: never[] = [];
+      // const tagsTempData = ref<any>([]);
+      let tagsTempData: any = [];
       overviewData.value = await queryPageInfoOverview(fdURL);
-      [webVitalData.value, overviewData.value, tagsTempData] =
-        overviewData.value.data;
+      // [, overviewData.value, tagsTempData] = overviewData.value.data;
+      webVitalData.value = overviewData.value.data.webVitals;
+      chartData.value = overviewData.value.data.chartData;
+      tagsTempData = overviewData.value.data.tagsData;
+      errorCount.value = overviewData.value.data.errorCount;
 
       ['browser', 'os', 'device'].forEach((name) => {
         tagsData.value.push({
