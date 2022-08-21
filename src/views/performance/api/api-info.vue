@@ -70,18 +70,11 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import useLoading from '@/hooks/loading';
-  import {
-    queryVisitCountList,
-    queryAPIVitalsData,
-    queryAPIInfoOverview,
-    WebVitals,
-    queryPageListAPI,
-  } from '@/api/performance';
+  import { queryAPIInfoOverview } from '@/api/performance';
   import router from '@/router';
   import { EChartsOption } from 'echarts';
 
   const { loading, setLoading } = useLoading(true);
-  // console.log($t('performance.api.chart.title.visitcount'));
 
   const { apiurl } = router.currentRoute.value.params;
   const visitCount = ref<any>([]);
@@ -156,8 +149,6 @@
         emphasis: {
           label: {
             show: true,
-            // fontSize: '30',
-            // fontWeight: 'bold',
           },
         },
         data: apiVital,

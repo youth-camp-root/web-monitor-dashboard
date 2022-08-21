@@ -72,11 +72,7 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import useLoading from '@/hooks/loading';
-  import {
-    queryTagsData,
-    queryPageInfoOverview,
-    WebVitals,
-  } from '@/api/performance';
+  import { queryPageInfoOverview } from '@/api/performance';
   import { EChartsOption } from 'echarts';
   import router from '@/router';
   import { useI18n } from 'vue-i18n';
@@ -101,7 +97,6 @@
     xData,
     contentData,
   }) => {
-    // console.log(titleText, xData, contentData);
     return {
       title: {
         text: titleText,
@@ -188,9 +183,6 @@
       overviewData.value = await queryPageInfoOverview(fdURL);
       [webVitalData.value, overviewData.value, tagsTempData] =
         overviewData.value.data;
-      // console.log(tagsTempData);
-
-      console.log(uniqueOfAttr(tagsData.value, 'browser'));
 
       ['browser', 'os', 'device'].forEach((name) => {
         tagsData.value.push({
@@ -204,11 +196,6 @@
           }),
         });
       });
-
-      console.log(tagsData.value);
-      // const { data: tagsDataRes } = await queryTagsData();
-      // tagsData.value = tagsDataRes;
-      // console.log(tagsData);
     } catch (err) {
       // you can report use errorHandler or other
     } finally {

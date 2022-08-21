@@ -11,9 +11,6 @@ import '@/views/overview/mock';
 
 import '@/views/useraction/mock';
 
-import '@/views/performance/page/mock';
-import '@/views/performance/api/mock';
-
 Mock.setup({
   timeout: '600-1000',
 });

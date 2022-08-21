@@ -41,7 +41,16 @@
             {{ item }}
           </a-list-item>
         </a-list>
-        <a-pagination :total="apisCount" @change="changHandle"></a-pagination>
+        <a-space
+          fill
+          :style="{
+            display: 'flex',
+            justifyContent: 'center',
+            paddingTop: '20px',
+          }"
+        >
+          <a-pagination :total="apisCount" @change="changHandle"></a-pagination>
+        </a-space>
       </a-card>
       <!-- </a-space> -->
     </div>
@@ -110,45 +119,7 @@
       ],
     };
   };
-  const Option = ref({
-    title: {
-      text: 'FC',
-      show: true,
-      textStyle: {
-        fontSize: 18,
-      },
-    },
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'cross',
-        label: {
-          backgroundColor: '#6a7985',
-        },
-      },
-    },
-    legend: {
-      data: ['FP'],
-    },
-    xAxis: [
-      {
-        type: 'category',
-        data: [] as number[],
-      },
-    ],
-    yAxis: [
-      {
-        type: 'value',
-      },
-    ],
-    series: [
-      {
-        name: 'count',
-        type: 'bar',
-        data: [] as number[],
-      },
-    ],
-  });
+
   const chartsData = ref<any>([]);
   const apiList = ref([]);
   const apisCount = ref(0);
@@ -163,7 +134,6 @@
       });
       apiList.value = apiListRes.apiList;
       apisCount.value = apiListRes.apisCount;
-      // console.log(data);
     } catch (err) {
       // you can report use errorHandler or other
     } finally {
@@ -171,13 +141,13 @@
     }
   };
   fetchData();
+
   const changHandle = async (newPage: any) => {
     const { data: apiListRes } = await queryAPIList({
       count: 10,
       page: newPage,
     });
     apiList.value = apiListRes.apiList;
-    apisCount.value = apiListRes.count;
   };
   const gotoPage = (urlname: string, params?: any, query?: any) => {
     router.push({

@@ -1,7 +1,6 @@
 <template>
   <a-spin :loading="loading" style="width: 100%">
     <div class="container">
-      <!-- <a-space direction="vertical" size="medium"> -->
       <Breadcrumb :items="['menu.performance', 'menu.performance.page']" />
       <a-card
         :title="$t('performance.page.card.title.overview')"
@@ -41,12 +40,20 @@
             {{ item }}
           </a-list-item>
         </a-list>
-        <a-pagination
-          :total="pageData?.pagesCount"
-          @change="changHandle"
-        ></a-pagination>
+        <a-space
+          fill
+          :style="{
+            display: 'flex',
+            justifyContent: 'center',
+            paddingTop: '20px',
+          }"
+        >
+          <a-pagination
+            :total="pageData?.pagesCount"
+            @change="changHandle"
+          ></a-pagination>
+        </a-space>
       </a-card>
-      <!-- </a-space> -->
     </div>
   </a-spin>
 </template>
@@ -71,7 +78,6 @@
     xData,
     contentData,
   }) => {
-    // console.log(titleText, xData, contentData);
     return {
       title: {
         text: titleText,
@@ -163,11 +169,7 @@
       setLoading(true);
       const { data } = await queryOverviewData();
       overviewData.value = data;
-      // const count = data.map((item) => item.count);
-      // const value = data.map((item) => item.value);
-      // console.log(res);
-      // createOption.value.series[0].data = count;
-      // createOption.value.xAxis[0].data = value;
+
       const { data: pageListRes } = await queryPageList({
         page: 1,
         count: 10,
