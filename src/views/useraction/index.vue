@@ -30,38 +30,42 @@
       <a-table
         row-key="id"
         :loading="loading"
-        :pagination="pagination"
         :data="renderData"
         :scroll="scrollPercent"
+        pagination
         @page-change="onPageChange"
       >
         <template #columns>
           <a-table-column
-            :title="$t('useraction.columns.number')"
+            :title="$t('useraction.columns.id')"
             :table-layout-fixed="true"
-            data-index="number"
+            data-index="_id.$oid"
             fixed="left"
           />
+          <!-- <a-table-column
+            :title="$t('useraction.columns.tag')"
+            data-index="tag"
+            :ellipsis="true"
+          /> -->
           <a-table-column
-            :title="$t('useraction.columns.contentType')"
-            data-index="contentType"
+            :title="$t('useraction.columns.device')"
+            data-index="device"
             :ellipsis="true"
           />
           <a-table-column
-            :title="$t('useraction.columns.filterType')"
-            data-index="filterType"
-          >
-            <template #cell="{ record }">
-              {{ $t(`useraction.form.filterType.${record.filterType}`) }}
-            </template>
-          </a-table-column>
-          <a-table-column
-            :title="$t('useraction.columns.count')"
-            data-index="count"
+            :title="$t('useraction.columns.os')"
+            data-index="os"
+            :ellipsis="true"
           />
           <a-table-column
-            :title="$t('useraction.columns.createdTime')"
-            data-index="createdTime"
+            :title="$t('useraction.columns.ip')"
+            data-index="ip"
+            :ellipsis="true"
+          />
+          <a-table-column
+            :title="$t('useraction.columns.page')"
+            data-index="page"
+            :ellipsis="true"
           />
           <a-table-column
             :title="$t('useraction.columns.operations')"
@@ -73,7 +77,7 @@
                 v-permission="['admin']"
                 type="text"
                 size="small"
-                @click="jumpTo(record.number)"
+                @click="jumpTo(record._id.$oid)"
               >
                 {{ $t('useraction.columns.operations.view') }}
               </a-button>

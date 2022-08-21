@@ -5,10 +5,10 @@
     :header-style="{ paddingBottom: '12px' }"
   >
     <a-grid :cols="24" :col-gap="12" :row-gap="12">
-      <a-grid-item :span="{ xs: 12, sm: 12, md: 12, lg: 12, xl: 6, xxl: 6 }">
+      <a-grid-item :span="{ xs: 12, sm: 12, md: 12, lg: 12, xl: 12, xxl: 12 }">
         <ChainItem
           :title="$t('overview.card.title.allVisitors')"
-          quota="visitors"
+          quota="PV"
           chart-type="line"
           :card-style="{
             background: isDark
@@ -17,39 +17,15 @@
           }"
         />
       </a-grid-item>
-      <a-grid-item :span="{ xs: 12, sm: 12, md: 12, lg: 12, xl: 6, xxl: 6 }">
+      <a-grid-item :span="{ xs: 12, sm: 12, md: 12, lg: 12, xl: 12, xxl: 12 }">
         <ChainItem
           :title="$t('overview.card.title.contentPublished')"
-          quota="published"
+          quota="UV"
           chart-type="bar"
           :card-style="{
             background: isDark
               ? ' linear-gradient(180deg, #3D492E 0%, #263827 100%)'
               : 'linear-gradient(180deg, #F5FEF2 0%, #E6FEEE 100%)',
-          }"
-        />
-      </a-grid-item>
-      <a-grid-item :span="{ xs: 12, sm: 12, md: 12, lg: 12, xl: 6, xxl: 6 }">
-        <ChainItem
-          :title="$t('overview.card.title.totalComment')"
-          quota="comment"
-          chart-type="line"
-          :card-style="{
-            background: isDark
-              ? 'linear-gradient(180deg, #294B94 0%, #0F275C 100%)'
-              : 'linear-gradient(180deg, #f2f9fe 0%, #e6f4fe 100%)',
-          }"
-        />
-      </a-grid-item>
-      <a-grid-item :span="{ xs: 12, sm: 12, md: 12, lg: 12, xl: 6, xxl: 6 }">
-        <ChainItem
-          :title="$t('overview.card.title.totalShare')"
-          quota="share"
-          chart-type="pie"
-          :card-style="{
-            background: isDark
-              ? 'linear-gradient(180deg, #312565 0%, #201936 100%)'
-              : 'linear-gradient(180deg, #F7F7FF 0%, #ECECFF 100%)',
           }"
         />
       </a-grid-item>

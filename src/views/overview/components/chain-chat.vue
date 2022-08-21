@@ -8,7 +8,7 @@
       <template #extra>
         <a-statistic
           extra="较一周之前"
-          :value="50.52"
+          :value="Diff"
           :precision="2"
           :value-style="{ color: '#0fbf60' }"
         >
@@ -29,16 +29,19 @@
 
 <script lang="ts" setup>
   import { ref } from 'vue';
-  //   import { useI18n } from 'vue-i18n';
   import { LineSeriesOption } from 'echarts';
-  import { queryDataOverview } from '@/api/visualization';
+  import { getUvamount, getPvamount, getStayduration } from '@/api/overview';
+  // import { queryDataOverview } from '@/api/visualization';
   import useLoading from '@/hooks/loading';
   import { ToolTipFormatterParams } from '@/types/echarts';
-  //   import useThemes from '@/hooks/themes';
   import useChartOption from '@/hooks/chart-option';
 
   const props = defineProps({
     title: {
+      type: String,
+      default: '',
+    },
+    quota: {
       type: String,
       default: '',
     },
@@ -98,13 +101,14 @@
   const { loading, setLoading } = useLoading(true);
   const xAxis = ref<string[]>([]);
   const contentProductionData = ref<number[]>([]);
-  const contentClickData = ref<number[]>([]);
+  const chatTitle = ref('');
+  const Diff = ref(0);
   const { chartOption } = useChartOption((dark) => {
     return {
       grid: {
         left: 44,
         right: 20,
-        top: 0,
+        top: 10,
         bottom: 20,
       },
       xAxis: {
@@ -122,6 +126,7 @@
           },
         },
         axisLine: {
+          onZero: false,
           show: false,
         },
         axisTick: {
@@ -141,15 +146,12 @@
       yAxis: {
         type: 'value',
         axisLine: {
+          onZero: false,
           show: false,
         },
         axisLabel: {
           show: true,
           color: '#4E5969',
-          formatter(value: number, idx: number) {
-            if (idx === 0) return String(value);
-            return `${value / 1000}k`;
-          },
         },
         splitLine: {
           lineStyle: {
@@ -168,44 +170,12 @@
         },
         className: 'echarts-tooltip-diy',
       },
-      graphic: {
-        elements: [
-          {
-            type: 'text',
-            left: '2.6%',
-            bottom: '18',
-            style: {
-              text: '12.10',
-              textAlign: 'center',
-              fill: '#4E5969',
-              fontSize: 12,
-            },
-          },
-          {
-            type: 'text',
-            right: '0',
-            bottom: '18',
-            style: {
-              text: '12.17',
-              textAlign: 'center',
-              fill: '#4E5969',
-              fontSize: 12,
-            },
-          },
-        ],
-      },
       series: [
         generateSeries(
-          '活跃用户数',
+          chatTitle.value,
           '#722ED1',
           '#F5E8FF',
           contentProductionData.value
-        ),
-        generateSeries(
-          '内容生产量',
-          '#F77234',
-          '#FFE4BA',
-          contentClickData.value
         ),
       ],
     };
@@ -213,14 +183,21 @@
   const fetchData = async () => {
     setLoading(true);
     try {
-      const { data } = await queryDataOverview();
-      xAxis.value = data.xAxis;
-      data.data.forEach((el) => {
-        if (el.name === '内容生产量') {
-          contentProductionData.value = el.value;
-        }
-        contentClickData.value = el.value;
-      });
+      const { data } =
+        // eslint-disable-next-line no-nested-ternary
+        props.quota === 'PVTrends'
+          ? await getPvamount()
+          : props.quota === 'UVTrends'
+          ? await getUvamount()
+          : await getStayduration();
+      xAxis.value = data.x;
+      contentProductionData.value = data.y;
+      chatTitle.value = data.name;
+      if (data.diff) {
+        Diff.value = data.diff;
+      } else {
+        Diff.value = 0;
+      }
     } catch (err) {
       // you can report use errorHandler or other
     } finally {

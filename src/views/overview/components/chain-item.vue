@@ -5,7 +5,7 @@
         <div class="content">
           <a-statistic
             :title="title"
-            :value="renderData.count"
+            :value="renderData"
             :value-from="0"
             animation
             show-group-separator
@@ -15,14 +15,11 @@
               {{ $t('overview.card.yesterday') }}
             </a-typography-text>
             <a-typography-text type="danger">
-              {{ renderData.growth }}
+              {{ Math.floor(Math.random() * 100) }}
               <icon-arrow-rise />
             </a-typography-text>
           </div>
         </div>
-        <!-- <div class="chart">
-          <Chart v-if="!loading" :option="chartOption" />
-        </div> -->
       </div>
     </a-card>
   </a-spin>
@@ -31,148 +28,7 @@
 <script lang="ts" setup>
   import { ref, PropType, CSSProperties } from 'vue';
   import useLoading from '@/hooks/loading';
-  import {
-    queryPublicOpinionAnalysis,
-    PublicOpinionAnalysis,
-    PublicOpinionAnalysisRes,
-  } from '@/api/visualization';
-  import useChartOption from '@/hooks/chart-option';
-
-  const barChartOptionsFactory = () => {
-    const data = ref<any>([]);
-    const { chartOption } = useChartOption(() => {
-      return {
-        grid: {
-          left: 0,
-          right: 0,
-          top: 10,
-          bottom: 0,
-        },
-        xAxis: {
-          type: 'category',
-          show: false,
-        },
-        yAxis: {
-          show: false,
-        },
-        tooltip: {
-          show: true,
-          trigger: 'axis',
-        },
-        series: {
-          name: 'total',
-          data,
-          type: 'bar',
-          barWidth: 7,
-          itemStyle: {
-            borderRadius: 2,
-          },
-        },
-      };
-    });
-    return {
-      data,
-      chartOption,
-    };
-  };
-
-  const lineChartOptionsFactory = () => {
-    const data = ref<number[][]>([[], []]);
-    const { chartOption } = useChartOption(() => {
-      return {
-        grid: {
-          left: 0,
-          right: 0,
-          top: 10,
-          bottom: 0,
-        },
-        xAxis: {
-          type: 'category',
-          show: false,
-        },
-        yAxis: {
-          show: false,
-        },
-        tooltip: {
-          show: true,
-          trigger: 'axis',
-        },
-        series: [
-          {
-            name: '2001',
-            data: data.value[0],
-            type: 'line',
-            showSymbol: false,
-            smooth: true,
-            lineStyle: {
-              color: '#165DFF',
-              width: 3,
-            },
-          },
-          {
-            name: '2002',
-            data: data.value[1],
-            type: 'line',
-            showSymbol: false,
-            smooth: true,
-            lineStyle: {
-              color: '#6AA1FF',
-              width: 3,
-              type: 'dashed',
-            },
-          },
-        ],
-      };
-    });
-    return {
-      data,
-      chartOption,
-    };
-  };
-
-  const pieChartOptionsFactory = () => {
-    const data = ref<any>([]);
-    const { chartOption } = useChartOption(() => {
-      return {
-        grid: {
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0,
-        },
-        legend: {
-          show: true,
-          top: 'center',
-          right: '0',
-          orient: 'vertical',
-          icon: 'circle',
-          itemWidth: 6,
-          itemHeight: 6,
-          textStyle: {
-            color: '#4E5969',
-          },
-        },
-        tooltip: {
-          show: true,
-        },
-        series: [
-          {
-            name: '总计',
-            type: 'pie',
-            radius: ['50%', '70%'],
-            label: {
-              show: false,
-            },
-            data,
-          },
-        ],
-      };
-    });
-    return {
-      data,
-      chartOption,
-    };
-  };
+  import { getPV, getUV } from '@/api/overview';
 
   const props = defineProps({
     title: {
@@ -196,55 +52,19 @@
   });
 
   const { loading, setLoading } = useLoading(true);
-  const { chartOption: lineChartOption, data: lineData } =
-    lineChartOptionsFactory();
-  const { chartOption: barChartOption, data: barData } =
-    barChartOptionsFactory();
-  const { chartOption: pieChartOption, data: pieData } =
-    pieChartOptionsFactory();
-  const renderData = ref<PublicOpinionAnalysisRes>({
-    count: 0,
-    growth: 0,
-    chartData: [],
-  });
-  const chartOption = ref({});
-  const fetchData = async (params: PublicOpinionAnalysis) => {
+  const renderData = ref();
+  const fetchData = async () => {
+    setLoading(true);
     try {
-      const { data } = await queryPublicOpinionAnalysis(params);
+      const { data } = props.quota === 'PV' ? await getPV() : await getUV();
       renderData.value = data;
-      const { chartData } = data;
-      if (props.chartType === 'bar') {
-        chartData.forEach((el, idx) => {
-          barData.value.push({
-            value: el.y,
-            itemStyle: {
-              color: idx % 2 ? '#2CAB40' : '#86DF6C',
-            },
-          });
-        });
-        chartOption.value = barChartOption.value;
-      } else if (props.chartType === 'line') {
-        chartData.forEach((el) => {
-          if (el.name === '2021') {
-            lineData.value[0].push(el.y);
-          } else {
-            lineData.value[1].push(el.y);
-          }
-        });
-        chartOption.value = lineChartOption.value;
-      } else {
-        chartData.forEach((el) => {
-          pieData.value.push(el);
-        });
-        chartOption.value = pieChartOption.value;
-      }
     } catch (err) {
       // you can report use errorHandler or other
     } finally {
       setLoading(false);
     }
   };
-  fetchData({ quota: props.quota });
+  fetchData();
 </script>
 
 <style scoped lang="less">
@@ -255,17 +75,15 @@
   :deep(.arco-card-body) {
     width: 100%;
     height: 134px;
-    padding: 0;
   }
 
   .content-wrap {
     width: 100%;
-    padding: 16px;
     white-space: nowrap;
   }
 
   :deep(.content) {
-    float: left;
+    // float: left;
     width: 108px;
     height: 102px;
   }
@@ -283,7 +101,7 @@
   }
 
   .chart {
-    float: right;
+    // float: right;
     width: calc(100% - 108px);
     height: 90px;
     vertical-align: bottom;

@@ -8,10 +8,6 @@ import localeErrorIssueDetails from '@/views/error/issue-details/locale/en-US';
 import localePerformancePage from '@/views/performance/page/locale/en-US';
 import localePerformanceHttp from '@/views/performance/api/locale/en-US';
 
-import locale403 from '@/views/exception/403/locale/en-US';
-import locale404 from '@/views/exception/404/locale/en-US';
-import locale500 from '@/views/exception/500/locale/en-US';
-
 import localeUserInfo from '@/views/userinfo/info/locale/en-US';
 import localeUserSetting from '@/views/userinfo/setting/locale/en-US';
 import localeOverview from '@/views/overview/locale/en-US';
@@ -28,20 +24,9 @@ export default {
   'menu.error': 'Error',
   'menu.performance': 'Performance',
   'menu.dashboard': 'Dashboard',
-  'menu.server.dashboard': 'Dashboard-Server',
-  'menu.server.workplace': 'Workplace-Server',
-  'menu.server.monitor': 'Monitor-Server',
-  'menu.list': 'List',
-  'menu.result': 'Result',
-  'menu.exception': 'Exception',
   'menu.form': 'Form',
   'menu.profile': 'Profile',
-  'menu.visualization': 'Data Visualization',
-  'menu.userinfo': 'User Center',
-  'menu.arcoWebsite': 'Arco Design',
-  'menu.faq': 'FAQ',
   'menu.logout': 'Log out',
-  'navbar.docs': 'Docs',
   'navbar.action.locale': 'Switch to English',
   ...localeSettings,
   ...localeLogin,
@@ -54,9 +39,6 @@ export default {
   ...localePerformancePage,
   ...localePerformanceHttp,
 
-  ...locale403,
-  ...locale404,
-  ...locale500,
   ...localeUserInfo,
   ...localeUserSetting,
   ...localUserActionSearch,
