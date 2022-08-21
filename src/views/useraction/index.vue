@@ -5,7 +5,7 @@
       <a-row justify="center">
         <a-col :span="12" style="height: '60px'">
           <a-input
-            v-model="formModel.number"
+            v-model="idInput"
             :placeholder="$t('useraction.form.number.placeholder')"
           />
         </a-col>
@@ -86,36 +86,18 @@
 </template>
 
 <script lang="ts" setup>
-  // import { computed, ref, reactive } from 'vue';
   import { ref, reactive } from 'vue';
-  // import { useI18n } from 'vue-i18n';
   import useLoading from '@/hooks/loading';
   import { useRouter } from 'vue-router';
   import { Message } from '@arco-design/web-vue';
-  import {
-    queryPolicyList,
-    PolicyRecord,
-    PolicyParams,
-    PolicyParamsUserAction,
-    queryUserList,
-  } from '@/api/list';
   import { Pagination } from '@/types/global';
-  // import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
-  const generateFormModel = () => {
-    return {
-      number: '',
-      name: '',
-      contentType: '',
-      filterType: '',
-      createdTime: [],
-      status: '',
-    };
-  };
+  import { queryUserList, queryUserListId } from '@/api/user-action';
+  import { UserInfo } from '@/api/user';
+
   const router = useRouter();
   const { loading, setLoading } = useLoading(true);
-  // const { t } = useI18n();
-  const renderData = ref<PolicyRecord[]>([]);
-  const formModel = ref(generateFormModel());
+  const renderData = ref<UserInfo[]>([]);
+  const idInput = ref('');
   const basePagination: Pagination = {
     current: 1,
     pageSize: 20,
@@ -127,33 +109,19 @@
   const pagination = reactive({
     ...basePagination,
   });
+
   const fetchData = async (
-    params: PolicyParams = { current: 1, pageSize: 20 }
+    pagParam: Pagination = basePagination,
+    id?: string
   ) => {
     setLoading(true);
     try {
-      const { data } = await queryPolicyList(params);
+      const { data } =
+        id === undefined
+          ? await queryUserList(pagParam)
+          : await queryUserListId(pagParam, id);
       renderData.value = data.list;
-      pagination.current = params.current;
-      pagination.total = data.total;
-    } catch (err) {
-      // you can report use errorHandler or other
-    } finally {
-      setLoading(false);
-    }
-  };
-  const fetchData1 = async (
-    params: PolicyParamsUserAction = {
-      id: formModel.value.number,
-      current: 1,
-      pageSize: 20,
-    }
-  ) => {
-    setLoading(true);
-    try {
-      const { data } = await queryUserList(params);
-      renderData.value = data.list;
-      pagination.current = params.current;
+      pagination.current = pagParam.current;
       pagination.total = data.total;
     } catch (err) {
       // you can report use errorHandler or other
@@ -162,18 +130,13 @@
     }
   };
   const jumpTo = (id: number) => {
-    // eslint-disable-next-line no-console
-    // const tempId: string = parseInt(number, 10);
     router.push(`/user/${id}`);
   };
   const search = () => {
-    if (formModel.value.number) {
-      fetchData1({
-        ...basePagination,
-        ...formModel.value,
-      } as unknown as PolicyParamsUserAction);
+    if (idInput.value) {
+      fetchData(basePagination, idInput.value);
     } else {
-      Message.info('请输入用户编号');
+      Message.warning('请输入用户编号');
     }
   };
   const onPageChange = (current: number) => {
@@ -182,7 +145,7 @@
 
   fetchData();
   const reset = () => {
-    formModel.value = generateFormModel();
+    idInput.value = '';
     fetchData({ ...basePagination });
   };
 </script>
