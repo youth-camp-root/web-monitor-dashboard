@@ -23,7 +23,7 @@
 
   const props = defineProps({
     data: {
-      type: Array as PropType<any>,
+      type: Object as PropType<any>,
       default() {
         return [];
       },
@@ -41,7 +41,7 @@
     align-items: center;
     justify-content: center;
     // margin: 10px 0;
-    width: 300px;
+    width: 100%;
     height: 20px;
     overflow: hidden;
     border-radius: 10px;

@@ -1,49 +1,52 @@
 <template>
-  <div class="container">
-    <!-- <a-space direction="vertical" size="medium"> -->
-    <Breadcrumb :items="['menu.performance', 'menu.performance.page']" />
-    <a-card
-      :title="$t('performance.page.card.title.overview')"
-      :bordered="false"
-      :style="{
-        borderRadius: '5px',
-        width: '100%',
-      }"
-      class="general-card"
-    >
-      <a-grid
-        :cols="{ xs: 1, sm: 1, md: 2, lg: 2, xl: 4, xxl: 4 }"
-        :col-gap="12"
-        :row-gap="16"
+  <a-spin :loading="loading" style="width: 100%">
+    <div class="container">
+      <!-- <a-space direction="vertical" size="medium"> -->
+      <Breadcrumb :items="['menu.performance', 'menu.performance.page']" />
+      <a-card
+        :title="$t('performance.page.card.title.overview')"
+        :bordered="false"
+        :style="{
+          borderRadius: '5px',
+          width: '100%',
+        }"
+        class="general-card"
       >
-        <a-grid-item v-for="(item, index) in testList" :key="index">
-          <Chart
-            :option="createOptions(item)"
-            :width="'auto'"
-            :height="'300px'"
-            :auto-resize="true"
-          >
-          </Chart>
-        </a-grid-item>
-      </a-grid>
-    </a-card>
-    <a-card
-      :title="$t('performance.page.card.title.pagelist')"
-      :bordered="false"
-      class="general-card"
-    >
-      <a-list hoverable>
-        <a-list-item
-          v-for="item in pageList"
-          :key="item.url"
-          @click="gotoPage(`pageinfo/${item.pageid}`, {})"
+        <a-grid
+          :cols="{ xs: 1, sm: 1, md: 2, lg: 2, xl: 4, xxl: 4 }"
+          :col-gap="12"
+          :row-gap="16"
         >
-          {{ item.url }}
-        </a-list-item>
-      </a-list>
-    </a-card>
-    <!-- </a-space> -->
-  </div>
+          <a-grid-item v-for="(item, index) in testList" :key="index">
+            <Chart
+              :option="createOptions(item)"
+              :style="{ width: 'auto', height: '300px' }"
+              :auto-resize="true"
+            >
+            </Chart>
+          </a-grid-item>
+        </a-grid>
+      </a-card>
+      <a-card
+        :title="$t('performance.page.card.title.pagelist')"
+        :bordered="false"
+        class="general-card"
+      >
+        <a-list hoverable>
+          <a-list-item
+            v-for="item in pageList"
+            :key="item.url"
+            @click="
+              gotoPage('PageInfo', { pageid: item.pageid, fdURL: item.url })
+            "
+          >
+            {{ item.url }}
+          </a-list-item>
+        </a-list>
+      </a-card>
+      <!-- </a-space> -->
+    </div>
+  </a-spin>
 </template>
 
 <script lang="ts" setup>
@@ -51,10 +54,9 @@
   import useLoading from '@/hooks/loading';
   import { queryFPData, PageList, queryPageList } from '@/api/performance';
   import { EChartsOption } from 'echarts';
-  import { useRouter } from 'vue-router';
+  import router from '@/router';
 
-  const router = useRouter();
-  const { setLoading } = useLoading();
+  const { loading, setLoading } = useLoading();
 
   const testList = ref([
     {
@@ -235,10 +237,11 @@
   };
   fetchData();
 
-  const gotoPage = (url: string, params: any) => {
+  const gotoPage = (urlname: string, params?: any, query?: any) => {
     router.push({
-      path: url,
-      query: params,
+      name: urlname,
+      params,
+      query,
     });
   };
 </script>

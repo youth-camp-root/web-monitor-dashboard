@@ -16,7 +16,7 @@
         }"
       >
         <a-row :gutter="30">
-          <a-col :flex="20">
+          <a-col :sm="24" :lg="18">
             <a-grid
               :cols="{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2, xxl: 2 }"
               :col-gap="12"
@@ -40,7 +40,7 @@
               </a-grid-item>
             </a-grid>
           </a-col>
-          <a-col :flex="4">
+          <a-col :xs="24" :sm="24" :lg="6">
             <a-space direction="vertical" fill>
               <a-statistic title="错误统计" :value="2000" show-group-separator>
                 <template #suffix>
@@ -55,13 +55,13 @@
             </a-space>
           </a-col>
         </a-row>
-        <a-card title="页面列表" :bordered="false" class="general-card">
-          <a-list hoverable>
-            <a-list-item v-for="item in pageList.data" :key="item.url">
-              {{ item.url }}
-            </a-list-item>
-          </a-list>
-        </a-card>
+      </a-card>
+      <a-card title="页面列表" :bordered="false" class="general-card">
+        <a-list hoverable>
+          <a-list-item v-for="item in pageList.data" :key="item.url">
+            {{ item.url }}
+          </a-list-item>
+        </a-list>
       </a-card>
     </div>
   </a-spin>
@@ -121,7 +121,7 @@
       trigger: 'item',
     },
     legend: {
-      // orient: 'vertical',
+      orient: 'vertical',
       left: 'right',
     },
     series: [

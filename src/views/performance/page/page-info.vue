@@ -16,9 +16,9 @@
         }"
       >
         <a-row :gutter="30">
-          <a-col :flex="20">
+          <a-col :sm="24" :lg="18">
             <a-grid
-              :cols="{ xs: 1, sm: 1, md: 1, lg: 1, xl: 2, xxl: 3 }"
+              :cols="{ xs: 1, sm: 1, md: 1, lg: 1, xl: 1, xxl: 2 }"
               :col-gap="12"
               :row-gap="16"
             >
@@ -48,18 +48,21 @@
               </a-grid-item>
             </a-grid>
           </a-col>
-          <a-col :flex="4">
+          <a-col :xs="24" :sm="24" :lg="6">
             <div>
               <a-typography-title :heading="5" bold="true">
-                错误统计
+                {{ $t('performance.page.overview.errorcount') }}
               </a-typography-title>
               <a-statistic title="" :value="3030" show-group-separator>
                 <template #suffix>
                   <icon-arrow-rise :style="{ color: 'red' }" />
                 </template>
               </a-statistic>
+              <a-link @click="gotoErrorPage">{{
+                $t('performance.page.overview.errorcount.viewmore')
+              }}</a-link>
               <a-typography-title :heading="5" bold="true">
-                访问信息
+                {{ $t('performance.page.overview.visittags') }}
               </a-typography-title>
               <ratio-line
                 v-for="item in tagsData"
@@ -75,7 +78,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  import { ref, computed } from 'vue';
   import useLoading from '@/hooks/loading';
   import {
     queryStayDurationData,
@@ -84,16 +87,17 @@
     queryWebVitalsData,
     WebVitals,
   } from '@/api/performance';
-  import { useRouter } from 'vue-router';
+  import router from '@/router';
+  import { useI18n } from 'vue-i18n';
   import RatioLine from './components/ratio-line.vue';
 
-  const router = useRouter();
-  const { loading, setLoading } = useLoading();
-  const { pageid } = router.currentRoute.value.params;
+  const { pageid, fdURL } = router.currentRoute.value.params;
 
+  const { loading, setLoading } = useLoading();
+  const { t } = useI18n();
   const visitCountOption = ref({
     title: {
-      text: '访问量统计',
+      text: t('performance.page.chart.title.pageloadtime'),
       show: true,
       textStyle: {
         fontSize: 18,
@@ -129,7 +133,7 @@
   });
   const webVitalsOption = ref({
     title: {
-      text: '页面性能',
+      text: t('performance.page.chart.title.webvitals'),
     },
     tooltip: {
       trigger: 'item',
@@ -156,7 +160,7 @@
   });
   const stayDurationOption = ref({
     title: {
-      text: '停留时间',
+      text: t('performance.page.chart.title.staydurationtime'),
       show: true,
       textStyle: {
         fontSize: 18,
@@ -190,7 +194,15 @@
       },
     ],
   });
-  const tagsData = ref<any[]>([]);
+  const tagsData = ref<any>({});
+  const gotoErrorPage = () => {
+    router.push({
+      path: '/error',
+      query: {
+        fdURL,
+      },
+    });
+  };
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -213,7 +225,7 @@
       stayDurationOption.value.xAxis[0].data = stayDurationTimestamp;
       const { data: tagsDataRes } = await queryTagsData();
       tagsData.value = tagsDataRes;
-      console.log(tagsData);
+      // console.log(tagsData);
     } catch (err) {
       // you can report use errorHandler or other
     } finally {
