@@ -193,7 +193,7 @@
       xAxis.value = data.x;
       contentProductionData.value = data.y;
       chatTitle.value = data.name;
-      if (Diff.value) {
+      if (data.diff) {
         Diff.value = data.diff;
       } else {
         Diff.value = 0;

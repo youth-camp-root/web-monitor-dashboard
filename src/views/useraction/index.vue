@@ -30,9 +30,9 @@
       <a-table
         row-key="id"
         :loading="loading"
-        :pagination="pagination"
         :data="renderData"
         :scroll="scrollPercent"
+        pagination
         @page-change="onPageChange"
       >
         <template #columns>
@@ -77,7 +77,7 @@
                 v-permission="['admin']"
                 type="text"
                 size="small"
-                @click="jumpTo(record.number)"
+                @click="jumpTo(record._id.$oid)"
               >
                 {{ $t('useraction.columns.operations.view') }}
               </a-button>
