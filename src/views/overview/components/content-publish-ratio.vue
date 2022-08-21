@@ -13,10 +13,7 @@
   import { ref } from 'vue';
   import { ToolTipFormatterParams } from '@/types/echarts';
   import useLoading from '@/hooks/loading';
-  import {
-    queryContentPublishOverview,
-    ContentPublishRecord,
-  } from '@/api/visualization';
+  import { getUseraction } from '@/api/overview';
   import useChartOption from '@/hooks/chart-option';
 
   const tooltipItemsHtmlString = (items: ToolTipFormatterParams[]) => {
@@ -42,7 +39,6 @@
   const { loading, setLoading } = useLoading(true);
   const xAxis = ref<string[]>([]);
   const textChartsData = ref<number[]>([]);
-  // const imgChartsData = ref<number[]>([]);
   const videoChartsData = ref<number[]>([]);
   const { chartOption } = useChartOption((isDark) => {
     return {
@@ -80,12 +76,9 @@
       },
       yAxis: {
         type: 'value',
+        scale: true,
         axisLabel: {
           color: '#86909C',
-          formatter(value: number, idx: number) {
-            if (idx === 0) return `${value}`;
-            return `${value / 1000}k`;
-          },
         },
         splitLine: {
           lineStyle: {
@@ -114,13 +107,6 @@
           barWidth: 16,
           color: isDark ? '#4A7FF7' : '#246EFF',
         },
-        // {
-        //   name: '中用户数',
-        //   data: imgChartsData.value,
-        //   stack: 'one',
-        //   type: 'bar',
-        //   color: isDark ? '#085FEF' : '#00B2FF',
-        // },
         {
           name: '老用户数',
           data: videoChartsData.value,
@@ -137,19 +123,12 @@
   const fetchData = async () => {
     setLoading(true);
     try {
-      const { data: chartData } = await queryContentPublishOverview();
+      const { data: chartData } = await getUseraction();
+      // eslint-disable-next-line no-console
+      console.log('charData', chartData);
       xAxis.value = chartData[0].x;
-      chartData.forEach((el: ContentPublishRecord) => {
-        // eslint-disable-next-line no-console
-        console.log(el);
-        if (el.name === '新用户数') {
-          textChartsData.value = el.y;
-        }
-        // else if (el.name === '中用户数') {
-        //   imgChartsData.value = el.y;
-        // }
-        videoChartsData.value = el.y;
-      });
+      textChartsData.value = chartData[0].y;
+      videoChartsData.value = chartData[1].y;
     } catch (err) {
       // you can report use errorHandler or other
     } finally {
