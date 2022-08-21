@@ -108,7 +108,7 @@
       grid: {
         left: 44,
         right: 20,
-        top: 0,
+        top: 10,
         bottom: 20,
       },
       xAxis: {
