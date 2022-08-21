@@ -21,7 +21,7 @@
               <template #icon>
                 <icon-refresh />
               </template>
-              {{ $t('searchTable.form.reset') }}
+              {{ $t('useraction.form.reset') }}
             </a-button>
           </a-space>
         </a-col>
@@ -32,7 +32,6 @@
         :loading="loading"
         :pagination="pagination"
         :data="renderData"
-        :bordered="false"
         :scroll="scrollPercent"
         @page-change="onPageChange"
       >
@@ -41,58 +40,16 @@
             :title="$t('useraction.columns.number')"
             :table-layout-fixed="true"
             data-index="number"
-            :ellipsis="true"
-            :tooltip="true"
-          />
-          <a-table-column
-            :title="$t('useraction.columns.name')"
-            data-index="name"
-            :ellipsis="true"
-            :tooltip="true"
+            fixed="left"
           />
           <a-table-column
             :title="$t('useraction.columns.contentType')"
             data-index="contentType"
             :ellipsis="true"
-            :tooltip="true"
-          >
-            <template #cell="{ record }">
-              <a-space>
-                <a-avatar
-                  v-if="record.contentType === 'img'"
-                  :size="16"
-                  shape="square"
-                >
-                  <img
-                    alt="avatar"
-                    src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/581b17753093199839f2e327e726b157.svg~tplv-49unhts6dw-image.image"
-                  />
-                </a-avatar>
-                <a-avatar
-                  v-else-if="record.contentType === 'horizontalVideo'"
-                  :size="16"
-                  shape="square"
-                >
-                  <img
-                    alt="avatar"
-                    src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/77721e365eb2ab786c889682cbc721c1.svg~tplv-49unhts6dw-image.image"
-                  />
-                </a-avatar>
-                <a-avatar v-else :size="16" shape="square">
-                  <img
-                    alt="avatar"
-                    src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/ea8b09190046da0ea7e070d83c5d1731.svg~tplv-49unhts6dw-image.image"
-                  />
-                </a-avatar>
-                {{ $t(`useraction.form.contentType.${record.contentType}`) }}
-              </a-space>
-            </template>
-          </a-table-column>
+          />
           <a-table-column
             :title="$t('useraction.columns.filterType')"
             data-index="filterType"
-            :ellipsis="true"
-            :tooltip="true"
           >
             <template #cell="{ record }">
               {{ $t(`useraction.form.filterType.${record.filterType}`) }}
@@ -101,30 +58,15 @@
           <a-table-column
             :title="$t('useraction.columns.count')"
             data-index="count"
-            :ellipsis="true"
-            :tooltip="true"
           />
           <a-table-column
             :title="$t('useraction.columns.createdTime')"
             data-index="createdTime"
-            :ellipsis="true"
-            :tooltip="true"
           />
-          <!-- <a-table-column
-            :title="$t('useraction.columns.status')"
-            data-index="status"
-          >
-            <template #cell="{ record }">
-              <span v-if="record.status === 'offline'" class="circle"></span>
-              <span v-else class="circle pass"></span>
-              {{ $t(`useraction.form.status.${record.status}`) }}
-            </template>
-          </a-table-column> -->
           <a-table-column
             :title="$t('useraction.columns.operations')"
             data-index="operations"
-            :ellipsis="true"
-            :tooltip="true"
+            fixed="right"
           >
             <template #cell="{ record }">
               <a-button

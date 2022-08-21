@@ -54,21 +54,24 @@
       <template #columns>
         <a-table-column data-index="type">
           <template #cell="{ record }">
-            <a-badge v-if="record.errorType === 'jsError'" status="danger" />
             <a-badge
-              v-else-if="record.errorType === 'promiseError'"
+              v-if="record.info.errorType === 'jsError'"
+              status="danger"
+            />
+            <a-badge
+              v-else-if="record.info.errorType === 'promiseError'"
               status="processing"
             />
             <a-badge
-              v-else-if="record.errorType === 'resourceError'"
+              v-else-if="record.info.errorType === 'resourceError'"
               status="success"
             />
             <a-badge
-              v-else-if="record.errorType === 'requestError'"
+              v-else-if="record.info.errorType === 'requestError'"
               status="warning"
             />
             <a-badge
-              v-else-if="record.errorType === 'blankscreenError'"
+              v-else-if="record.info.errorType === 'blankscreenError'"
               status="normal"
             />
           </template>
@@ -80,17 +83,23 @@
                 <span class="special-name" style="color: #3c74dd">
                   {{ record.name }}
                 </span>
-                <span class="special-msg"> {{ record.errorMsg }} </span>
+                <span class="special-msg"> {{ record.info.errorMsg }} </span>
               </div>
-              <span class="special-time"> {{ record.timestamp }} </span>
-              <span class="special-time"> {{ record.originURL }} </span>
+              <span class="special-time">
+                {{
+                  new Date(record.info.timestamp.$date)
+                    .toISOString()
+                    .split('T')[0]
+                }}
+              </span>
+              <span class="special-time"> {{ record.info.originURL }} </span>
             </div>
           </template>
         </a-table-column>
         <a-table-column data-index="errorFreq">
           <template #cell="{ record }">
             <Chart
-              :option="createOptions(record.errorFreq)"
+              :option="createOptions(record.details.errorFreq)"
               :width="'220px'"
               :height="'65px'"
               :auto-resize="true"
@@ -100,21 +109,23 @@
         </a-table-column>
         <a-table-column
           title="TotalErrCnt"
-          data-index="TotalErrCnt"
+          data-index="details.TotalErrCnt"
           :sortable="{
             sortDirections: ['ascend', 'descend'],
           }"
         />
         <a-table-column
           title="userAffectCnt"
-          data-index="userAffectCnt"
+          data-index="details.userAffectCnt"
           :sortable="{
             sortDirections: ['ascend', 'descend'],
           }"
         />
         <a-table-column fixed="right">
           <template #cell="{ record }">
-            <a-button @click="issuesDetail(record.errorID)">view</a-button>
+            <a-button @click="issuesDetail(record.info._id.$oid)"
+              >view</a-button
+            >
           </template>
         </a-table-column>
       </template>
@@ -123,28 +134,28 @@
 </template>
 
 <script lang="ts" setup>
-  import { reactive, ref } from 'vue';
-  import { Pagination } from '@/types/global';
+  import { ref } from 'vue';
+  // import { Pagination } from '@/types/global';
   import { EChartsOption } from 'echarts';
-  import 'echarts/lib/component/markLine';
-  import router from '@/router';
+  import { useRouter } from 'vue-router';
   import useLoading from '@/hooks/loading';
-  import { queryErrorList, ErrorListParams, ErrorList } from '@/api/errorData';
-  import { Empty, SelectOptionData } from '@arco-design/web-vue';
-  import { arrayBuffer } from 'stream/consumers';
+  import { queryErrorList, ErrorList } from '@/api/errorData';
+  import 'echarts/lib/component/markLine';
+  import { SelectOptionData } from '@arco-design/web-vue';
 
+  const router = useRouter();
   const { loading, setLoading } = useLoading(true);
   const renderData = ref<ErrorList[]>([]);
-  const basePagination: Pagination = {
-    current: 1,
-    pageSize: 10,
-  };
+  // const basePagination: Pagination = {
+  //   current: 1,
+  //   pageSize: 10,
+  // };
   const pagination = { pageSize: 10 };
-  const xAxis = ref<string[]>([]);
+  const dateList = ref<string[]>([]);
 
   const issuesDetail = (issueid: number) => {
     // console.log(issueid);
-    router.push({ name: 'IssueDetails', params: { issueid } });
+    router.push(`/error/issue-details/${issueid}`);
   };
 
   let fdType = ['All Error'];
@@ -164,7 +175,7 @@
     setLoading(true);
     try {
       const { data } = await queryErrorList();
-      xAxis.value = data.xAxis;
+      dateList.value = data.dateList;
       renderData.value = data.list;
     } catch (err) {
       // you can report use errorHandler or other
@@ -177,29 +188,41 @@
 
   const submitHandle = () => {
     if (fdURL !== '') {
+      // eslint-disable-next-line no-console
       console.log(fdURL);
       renderData.value = renderData.value.filter(
-        (item) => item.originURL === fdURL
+        (item) => item.info.originURL === fdURL
       );
     } else {
+      // eslint-disable-next-line no-console
       console.log('empty');
     }
     if (fdType.length !== 0 && !fdType.includes('All Error')) {
+      // eslint-disable-next-line no-console
       console.log(fdType);
       const renderData2 = ref<ErrorList[]>([]);
       for (let i = 0; i < fdType.length; i += 1) {
+        // eslint-disable-next-line no-console
         console.log(fdType[i]);
         renderData2.value.push(
           // eslint-disable-next-line no-loop-func
-          ...renderData.value.filter((item) => item.errorType === fdType[i])
+          ...renderData.value.filter(
+            // eslint-disable-next-line no-loop-func
+            (item) => item.info.errorType === fdType[i]
+          )
         );
       }
+      // eslint-disable-next-line no-console
       console.log(renderData2);
+      // eslint-disable-next-line no-console
       console.log(renderData);
       renderData.value = renderData2.value;
+      // eslint-disable-next-line no-console
       console.log(renderData2);
+      // eslint-disable-next-line no-console
       console.log(renderData);
     } else {
+      // eslint-disable-next-line no-console
       console.log('empty');
     }
   };
@@ -229,7 +252,7 @@
           splitLine: {
             show: false,
           },
-          data: xAxis.value,
+          data: dateList.value,
         },
       ],
       yAxis: [

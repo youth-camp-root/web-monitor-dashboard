@@ -3,7 +3,7 @@
     <a-card
       class="general-card"
       :title="props.title"
-      :header-style="{ paddingBottom: '12px' }"
+      :header-style="{ paddingBottom: '12px', margin: '10px' }"
     >
       <template #extra>
         <a-statistic
@@ -241,6 +241,10 @@
       display: flex;
       align-items: center;
     }
+  }
+
+  :deep(.arco-card-header) {
+    height: auto !important;
   }
 
   .statistic-prefix {

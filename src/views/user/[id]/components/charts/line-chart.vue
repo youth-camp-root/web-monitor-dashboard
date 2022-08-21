@@ -1,14 +1,12 @@
-<template>
-  <a-card
-    class="general-card"
-    :title="$t('multiDAnalysis.card.title.userActions')"
-  >
-    <Chart :option="chartOption" autoresize />
-  </a-card>
-</template>
-
 <script lang="ts" setup>
   import useChartOption from '@/hooks/chart-option';
+  import { PropType } from 'vue';
+
+  const props = defineProps({
+    data: {
+      type: Object as PropType<{ count: number }[]>,
+    },
+  });
 
   const { chartOption } = useChartOption((isDark) => {
     return {
@@ -57,7 +55,7 @@
       },
       series: [
         {
-          data: [82, 93, 90, 93, 129, 133, 132],
+          data: props.data?.map((item) => item.count),
           type: 'line',
           smooth: true,
           showSymbol: false,
@@ -69,5 +67,14 @@
     };
   });
 </script>
+
+<template>
+  <a-card
+    class="general-card"
+    :title="$t('multiDAnalysis.card.title.userActions')"
+  >
+    <Chart :option="chartOption" autoresize />
+  </a-card>
+</template>
 
 <style scoped lang="less"></style>

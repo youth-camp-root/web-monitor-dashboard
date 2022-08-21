@@ -89,38 +89,6 @@
       ],
       contentData: [100, 200, 140, 240, 330, 220, 240, 200, 160, 210],
     },
-    // {
-    //   titleText: 'DOMReady',
-    //   xData: [
-    //     '01-01',
-    //     '01-02',
-    //     '01-03',
-    //     '01-04',
-    //     '01-05',
-    //     '01-06',
-    //     '01-07',
-    //     '01-08',
-    //     '01-09',
-    //     '01-10',
-    //   ],
-    //   contentData: [100, 200, 140, 240, 130, 220, 140, 100, 160, 210],
-    // },
-    // {
-    //   titleText: 'DNS',
-    //   xData: [
-    //     '01-01',
-    //     '01-02',
-    //     '01-03',
-    //     '01-04',
-    //     '01-05',
-    //     '01-06',
-    //     '01-07',
-    //     '01-08',
-    //     '01-09',
-    //     '01-10',
-    //   ],
-    //   contentData: [100, 100, 140, 120, 130, 120, 140, 100, 160, 110],
-    // },
   ]);
 
   interface CreateOptionsParam {
@@ -226,7 +194,6 @@
       Option.value.xAxis[0].data = value;
       const { data: apiListRes } = await queryAPIList();
       apiList.value = apiListRes;
-      console.log(apiList.value);
 
       // console.log(data);
     } catch (err) {

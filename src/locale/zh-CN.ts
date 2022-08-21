@@ -1,4 +1,3 @@
-import localeMessageBox from '@/components/message-box/locale/zh-CN';
 import localeLogin from '@/views/login/locale/zh-CN';
 
 import localeUserDetail from '@/views/user/[id]/locale/zh-CN';
@@ -8,24 +7,6 @@ import localeErrorIssueDetails from '@/views/error/issue-details/locale/zh-CN';
 
 import localePerformancePage from '@/views/performance/page/locale/zh-CN';
 import localePerformanceHttp from '@/views/performance/api/locale/zh-CN';
-
-import localeWorkplace from '@/views/dashboard/workplace/locale/zh-CN';
-
-import localeMonitor from '@/views/dashboard/monitor/locale/zh-CN';
-
-import localeSearchTable from '@/views/list/search-table/locale/zh-CN';
-import localeCardList from '@/views/list/card/locale/zh-CN';
-
-import localeStepForm from '@/views/form/step/locale/zh-CN';
-import localeGroupForm from '@/views/form/group/locale/zh-CN';
-
-import localeBasicProfile from '@/views/profile/basic/locale/zh-CN';
-
-import localeDataAnalysis from '@/views/visualization/data-analysis/locale/zh-CN';
-import localeMultiDAnalysis from '@/views/visualization/multi-dimension-data-analysis/locale/zh-CN';
-
-import localeSuccess from '@/views/result/success/locale/zh-CN';
-import localeError from '@/views/result/error/locale/zh-CN';
 
 import locale403 from '@/views/exception/403/locale/zh-CN';
 import locale404 from '@/views/exception/404/locale/zh-CN';
@@ -60,10 +41,10 @@ export default {
   'menu.userinfo': '个人中心',
   'menu.arcoWebsite': 'Arco Design',
   'menu.faq': '常见问题',
+  'menu.logout': '退出登录',
   'navbar.docs': '文档中心',
   'navbar.action.locale': '切换为中文',
   ...localeSettings,
-  ...localeMessageBox,
   ...localeLogin,
 
   ...localeOverview,
@@ -76,18 +57,6 @@ export default {
   ...localePerformancePage,
   ...localePerformanceHttp,
 
-  ...localeWorkplace,
-
-  ...localeMonitor,
-  ...localeSearchTable,
-  ...localeCardList,
-  ...localeStepForm,
-  ...localeGroupForm,
-  ...localeBasicProfile,
-  ...localeDataAnalysis,
-  ...localeMultiDAnalysis,
-  ...localeSuccess,
-  ...localeError,
   ...locale403,
   ...locale404,
   ...locale500,

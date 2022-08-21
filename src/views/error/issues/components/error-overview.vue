@@ -38,26 +38,33 @@
     };
   };
 
-  const xAxis = ref<string[]>([]);
+  const dateList = ref<string[]>([]);
   const totalErrorData = ref<number[]>([]);
   const jsErrorData = ref<number[]>([]);
   const apiErrorData = ref<number[]>([]);
   const resourceErrorData = ref<number[]>([]);
+  const blankscreenErrorData = ref<number[]>([]);
   const { chartOption } = useChartOption((dark) => {
     return {
       legend: {
-        data: ['Total Error', 'JS Error', 'API Error', 'Resource Error'],
+        data: [
+          'Total Error',
+          'JS Error',
+          'API Error',
+          'Resource Error',
+          'BlankScreen Error',
+        ],
       },
       xAxis: {
         type: 'category',
         offset: 2,
-        data: xAxis.value,
+        data: dateList.value,
         boundaryGap: false,
         axisLabel: {
           color: '#4E5969',
           formatter(value: number, idx: number) {
             if (idx === 0) return '';
-            if (idx === xAxis.value.length - 1) return '';
+            if (idx === dateList.value.length - 1) return '';
             return `${value}`;
           },
         },
@@ -120,6 +127,7 @@
         generateSeries('JS Error', jsErrorData.value),
         generateSeries('API Error', apiErrorData.value),
         generateSeries('Resource Error', resourceErrorData.value),
+        generateSeries('BlankScreen Error', blankscreenErrorData.value),
       ],
     };
   });
@@ -128,17 +136,22 @@
     setLoading(true);
     try {
       const { data } = await queryErrorOverview();
-      xAxis.value = data.xAxis;
-      data.data.forEach((el) => {
-        if (el.name === 'Total Error') {
-          totalErrorData.value = el.value;
-        } else if (el.name === 'JS Error') {
-          jsErrorData.value = el.value;
-        } else if (el.name === 'API Error') {
-          apiErrorData.value = el.value;
+      dateList.value = data.dateList;
+      data.data.forEach(
+        (el: { name: string; value: number[]; count: number }) => {
+          if (el.name === 'Total Error') {
+            totalErrorData.value = el.value;
+          } else if (el.name === 'JS Error') {
+            jsErrorData.value = el.value;
+          } else if (el.name === 'API Error') {
+            apiErrorData.value = el.value;
+          } else if (el.name === 'Resource Error') {
+            resourceErrorData.value = el.value;
+          } else if (el.name === 'BlankScreen Error') {
+            blankscreenErrorData.value = el.value;
+          }
         }
-        resourceErrorData.value = el.value;
-      });
+      );
     } catch (err) {
       // you can report use errorHandler or other
     } finally {

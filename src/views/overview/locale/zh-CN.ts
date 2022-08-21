@@ -25,4 +25,7 @@ export default {
   'overview.card.title.contentConsumptionTrends': '内容消费趋势',
   'overview.card.title.contentConsumption': '内容消费量',
   'overview.card.title.contentPublishingSource': '内容发布来源',
+  'multiDAnalysis.card.title.PV': '页面浏览量趋势',
+  'multiDAnalysis.card.title.UV': '访客量趋势',
+  'multiDAnalysis.card.title.UserRetentionAverageTime': '用户平均停留时长',
 };

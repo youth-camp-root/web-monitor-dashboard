@@ -7,7 +7,6 @@
       />
       <div class="logo-text">Root</div>
     </div>
-    <LoginBanner />
     <div class="content">
       <div class="content-inner">
         <LoginForm />
@@ -21,7 +20,6 @@
 
 <script lang="ts" setup>
   import Footer from '@/components/footer/index.vue';
-  import LoginBanner from './components/banner.vue';
   import LoginForm from './components/login-form.vue';
 </script>
 
@@ -29,11 +27,6 @@
   .container {
     display: flex;
     height: 100vh;
-
-    .banner {
-      width: 550px;
-      background: linear-gradient(163.85deg, #1d2129 0%, #00308f 100%);
-    }
 
     .content {
       position: relative;
@@ -63,7 +56,7 @@
     &-text {
       margin-right: 4px;
       margin-left: 4px;
-      color: var(--color-fill-1);
+      color: var(--color-text-1);
       font-size: 20px;
     }
   }

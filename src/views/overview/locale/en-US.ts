@@ -25,4 +25,8 @@ export default {
   'overview.card.title.contentConsumptionTrends': 'Content Consumption Trends',
   'overview.card.title.contentConsumption': 'Content Consumption',
   'overview.card.title.contentPublishingSource': 'Content Publishing Source',
+  'multiDAnalysis.card.title.PV': 'PV Trend',
+  'multiDAnalysis.card.title.UV': 'UV Trend',
+  'multiDAnalysis.card.title.UserRetentionAverageTime':
+    'User Average Retention Time',
 };
