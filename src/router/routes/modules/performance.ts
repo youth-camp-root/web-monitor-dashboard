@@ -23,7 +23,7 @@ const PERFORMANCE: AppRouteRecordRaw = {
       },
     },
     {
-      path: 'pageinfo/:pageid',
+      path: 'pageinfo/:fdURL',
       name: 'PageInfo',
       component: () => import('@/views/performance/page/page-info.vue'),
       meta: {
@@ -44,7 +44,7 @@ const PERFORMANCE: AppRouteRecordRaw = {
       },
     },
     {
-      path: 'apiinfo/:apiid',
+      path: 'apiinfo/:apiurl',
       name: 'APIInfo',
       component: () => import('@/views/performance/api/api-info.vue'),
       meta: {

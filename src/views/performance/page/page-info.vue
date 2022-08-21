@@ -22,17 +22,9 @@
               :col-gap="12"
               :row-gap="16"
             >
-              <a-grid-item>
+              <a-grid-item v-for="item in overviewData" :key="item.titleText">
                 <Chart
-                  :option="visitCountOption"
-                  :style="{ width: 'auto', height: '400px' }"
-                  :auto-resize="true"
-                >
-                </Chart>
-              </a-grid-item>
-              <a-grid-item>
-                <Chart
-                  :option="stayDurationOption"
+                  :option="createOptions(item)"
                   :style="{ width: 'auto', height: '400px' }"
                   :auto-resize="true"
                 >
@@ -78,59 +70,75 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, computed } from 'vue';
+  import { ref } from 'vue';
   import useLoading from '@/hooks/loading';
   import {
-    queryStayDurationData,
     queryTagsData,
-    queryVisitCountList,
-    queryWebVitalsData,
+    queryPageInfoOverview,
     WebVitals,
   } from '@/api/performance';
+  import { EChartsOption } from 'echarts';
   import router from '@/router';
   import { useI18n } from 'vue-i18n';
   import RatioLine from './components/ratio-line.vue';
 
-  const { pageid, fdURL } = router.currentRoute.value.params;
+  const { fdURL } = router.currentRoute.value.params;
 
   const { loading, setLoading } = useLoading();
   const { t } = useI18n();
-  const visitCountOption = ref({
-    title: {
-      text: t('performance.page.chart.title.pageloadtime'),
-      show: true,
-      textStyle: {
-        fontSize: 18,
-      },
-    },
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'cross',
-        label: {
-          backgroundColor: '#6a7985',
+  const overviewData = ref<any>([]);
+  const webVitalData = ref<any>([]);
+  const tagsData = ref<any>([]);
+
+  interface CreateOptionsParam {
+    titleText: string;
+    xData: any;
+    contentData: any;
+  }
+
+  const createOptions: (param: CreateOptionsParam) => EChartsOption = ({
+    titleText,
+    xData,
+    contentData,
+  }) => {
+    // console.log(titleText, xData, contentData);
+    return {
+      title: {
+        text: titleText,
+        show: true,
+        textStyle: {
+          fontSize: 18,
         },
       },
-    },
-    xAxis: [
-      {
-        type: 'category',
-        data: [] as string[],
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+          label: {
+            backgroundColor: '#6a7985',
+          },
+        },
       },
-    ],
-    yAxis: [
-      {
-        type: 'value',
-      },
-    ],
-    series: [
-      {
-        name: 'count',
-        type: 'line',
-        data: [] as number[],
-      },
-    ],
-  });
+      xAxis: [
+        {
+          type: 'category',
+          data: xData,
+        },
+      ],
+      yAxis: [
+        {
+          type: 'value',
+        },
+      ],
+      series: [
+        {
+          name: 'count',
+          type: 'line',
+          data: contentData,
+        },
+      ],
+    };
+  };
   const webVitalsOption = ref({
     title: {
       text: t('performance.page.chart.title.webvitals'),
@@ -154,47 +162,11 @@
             show: true,
           },
         },
-        data: [] as unknown as WebVitals['overview'],
+        data: webVitalData,
       },
     ],
   });
-  const stayDurationOption = ref({
-    title: {
-      text: t('performance.page.chart.title.staydurationtime'),
-      show: true,
-      textStyle: {
-        fontSize: 18,
-      },
-    },
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'cross',
-        label: {
-          backgroundColor: '#6a7985',
-        },
-      },
-    },
-    xAxis: [
-      {
-        type: 'category',
-        data: [] as string[],
-      },
-    ],
-    yAxis: [
-      {
-        type: 'value',
-      },
-    ],
-    series: [
-      {
-        name: 'cost-time',
-        type: 'line',
-        data: [] as number[],
-      },
-    ],
-  });
-  const tagsData = ref<any>({});
+
   const gotoErrorPage = () => {
     router.push({
       path: '/error',
@@ -203,28 +175,39 @@
       },
     });
   };
+  function uniqueOfAttr(arr1: any, attr: string) {
+    const res = new Map();
+    return arr1.filter(
+      (item: any) => !res.has(item[attr]) && res.set(item[attr], 1)
+    );
+  }
   const fetchData = async () => {
     try {
       setLoading(true);
-      const { data } = await queryVisitCountList();
-      const count = data.map((item) => item.count);
-      const timestamp = data.map((item) => item.timestamp);
-      // console.log(res);
-      visitCountOption.value.series[0].data = count;
-      visitCountOption.value.xAxis[0].data = timestamp;
-      const { data: webVitalsData } = await queryWebVitalsData();
-      // console.log(webVitalsData);
-      webVitalsOption.value.series[0].data = webVitalsData.overview;
-      const { data: stayDurationData } = await queryStayDurationData();
-      // console.log(stayDurationData);
-      const stayDuration = stayDurationData.map((item) => item.stayDuration);
-      const stayDurationTimestamp = stayDurationData.map(
-        (item) => item.timestamp
-      );
-      stayDurationOption.value.series[0].data = stayDuration;
-      stayDurationOption.value.xAxis[0].data = stayDurationTimestamp;
-      const { data: tagsDataRes } = await queryTagsData();
-      tagsData.value = tagsDataRes;
+      let tagsTempData: never[] = [];
+      overviewData.value = await queryPageInfoOverview(fdURL);
+      [webVitalData.value, overviewData.value, tagsTempData] =
+        overviewData.value.data;
+      // console.log(tagsTempData);
+
+      console.log(uniqueOfAttr(tagsData.value, 'browser'));
+
+      ['browser', 'os', 'device'].forEach((name) => {
+        tagsData.value.push({
+          type: name,
+          data: uniqueOfAttr(tagsTempData, name).map((item: any) => {
+            return {
+              name: item[name],
+              value: tagsTempData.filter((tag: any) => tag[name] === item[name])
+                .length,
+            };
+          }),
+        });
+      });
+
+      console.log(tagsData.value);
+      // const { data: tagsDataRes } = await queryTagsData();
+      // tagsData.value = tagsDataRes;
       // console.log(tagsData);
     } catch (err) {
       // you can report use errorHandler or other

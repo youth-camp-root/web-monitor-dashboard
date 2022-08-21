@@ -17,7 +17,7 @@
           :col-gap="12"
           :row-gap="16"
         >
-          <a-grid-item v-for="(item, index) in testList" :key="index">
+          <a-grid-item v-for="(item, index) in overviewData" :key="index">
             <Chart
               :option="createOptions(item)"
               :style="{ width: 'auto', height: '300px' }"
@@ -34,15 +34,17 @@
       >
         <a-list hoverable>
           <a-list-item
-            v-for="item in pageList"
-            :key="item.url"
-            @click="
-              gotoPage('PageInfo', { pageid: item.pageid, fdURL: item.url })
-            "
+            v-for="item in pageData?.pageUrlList"
+            :key="item"
+            @click="gotoPage('PageInfo', { fdURL: item })"
           >
-            {{ item.url }}
+            {{ item }}
           </a-list-item>
         </a-list>
+        <a-pagination
+          :total="pageData?.pagesCount"
+          @change="changHandle"
+        ></a-pagination>
       </a-card>
       <!-- </a-space> -->
     </div>
@@ -52,78 +54,11 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import useLoading from '@/hooks/loading';
-  import { queryFPData, PageList, queryPageList } from '@/api/performance';
+  import { queryOverviewData, queryPageList } from '@/api/performance';
   import { EChartsOption } from 'echarts';
   import router from '@/router';
 
   const { loading, setLoading } = useLoading();
-
-  const testList = ref([
-    {
-      titleText: 'FP',
-      xData: [
-        '01-01',
-        '01-02',
-        '01-03',
-        '01-04',
-        '01-05',
-        '01-06',
-        '01-07',
-        '01-08',
-        '01-09',
-        '01-10',
-      ],
-      contentData: [100, 200, 130, 240, 330, 220, 230, 200, 160, 200],
-    },
-    {
-      titleText: 'FCP',
-      xData: [
-        '01-01',
-        '01-02',
-        '01-03',
-        '01-04',
-        '01-05',
-        '01-06',
-        '01-07',
-        '01-08',
-        '01-09',
-        '01-10',
-      ],
-      contentData: [100, 200, 140, 240, 330, 220, 240, 200, 160, 210],
-    },
-    {
-      titleText: 'DOMReady',
-      xData: [
-        '01-01',
-        '01-02',
-        '01-03',
-        '01-04',
-        '01-05',
-        '01-06',
-        '01-07',
-        '01-08',
-        '01-09',
-        '01-10',
-      ],
-      contentData: [100, 200, 140, 240, 130, 220, 140, 100, 160, 210],
-    },
-    {
-      titleText: 'DNS',
-      xData: [
-        '01-01',
-        '01-02',
-        '01-03',
-        '01-04',
-        '01-05',
-        '01-06',
-        '01-07',
-        '01-08',
-        '01-09',
-        '01-10',
-      ],
-      contentData: [100, 100, 140, 120, 130, 120, 140, 100, 160, 110],
-    },
-  ]);
 
   interface CreateOptionsParam {
     titleText: string;
@@ -175,60 +110,69 @@
     };
   };
 
-  const FCOption = ref({
-    title: {
-      text: 'FC',
-      show: true,
-      textStyle: {
-        fontSize: 18,
-      },
-    },
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'cross',
-        label: {
-          backgroundColor: '#6a7985',
-        },
-      },
-    },
-    legend: {
-      data: ['FP'],
-    },
-    xAxis: [
-      {
-        type: 'category',
-        data: [] as number[],
-      },
-    ],
-    yAxis: [
-      {
-        type: 'value',
-      },
-    ],
-    series: [
-      {
-        name: 'count',
-        type: 'bar',
-        data: [] as number[],
-      },
-    ],
-  });
-  const pageList = ref<PageList[]>();
+  //   title: {
+  //     text: 'FC',
+  //     show: true,
+  //     textStyle: {
+  //       fontSize: 18,
+  //     },
+  //   },
+  //   tooltip: {
+  //     trigger: 'axis',
+  //     axisPointer: {
+  //       type: 'cross',
+  //       label: {
+  //         backgroundColor: '#6a7985',
+  //       },
+  //     },
+  //   },
+  //   legend: {
+  //     data: ['FP'],
+  //   },
+  //   xAxis: [
+  //     {
+  //       type: 'category',
+  //       data: [] as number[],
+  //     },
+  //   ],
+  //   yAxis: [
+  //     {
+  //       type: 'value',
+  //     },
+  //   ],
+  //   series: [
+  //     {
+  //       name: 'count',
+  //       type: 'bar',
+  //       data: [] as number[],
+  //     },
+  //   ],
+  // });
+  const pageData = ref<any>();
+  const overviewData = ref<any>();
+  const changHandle = async (newPage: any) => {
+    const { data: pageListRes } = await queryPageList({
+      page: newPage,
+      count: 10,
+    });
+    pageData.value = pageListRes;
+  };
+
   const fetchData = async () => {
     try {
       setLoading(true);
-      const { data } = await queryFPData();
-      const count = data.map((item) => item.count);
-      const value = data.map((item) => item.value);
+      const { data } = await queryOverviewData();
+      overviewData.value = data;
+      // const count = data.map((item) => item.count);
+      // const value = data.map((item) => item.value);
       // console.log(res);
-      FCOption.value.series[0].data = count;
-      FCOption.value.xAxis[0].data = value;
-      const { data: pageListRes } = await queryPageList();
-      pageList.value = pageListRes;
-      // console.log(pageList);
-
-      // console.log(data);
+      // createOption.value.series[0].data = count;
+      // createOption.value.xAxis[0].data = value;
+      const { data: pageListRes } = await queryPageList({
+        page: 1,
+        count: 10,
+      });
+      pageData.value = pageListRes;
     } catch (err) {
       // you can report use errorHandler or other
     } finally {
@@ -240,7 +184,9 @@
   const gotoPage = (urlname: string, params?: any, query?: any) => {
     router.push({
       name: urlname,
-      params,
+      params: {
+        fdURL: window.btoa(params.fdURL),
+      },
       query,
     });
   };

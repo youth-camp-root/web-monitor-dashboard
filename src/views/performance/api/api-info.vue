@@ -24,7 +24,7 @@
             >
               <a-grid-item>
                 <Chart
-                  :option="visitCountOption"
+                  :option="createOptions(visitCount)"
                   :style="{ width: 'auto', height: '400px' }"
                   :auto-resize="true"
                 >
@@ -73,46 +73,69 @@
   import {
     queryVisitCountList,
     queryAPIVitalsData,
+    queryAPIInfoOverview,
     WebVitals,
     queryPageListAPI,
   } from '@/api/performance';
+  import router from '@/router';
+  import { EChartsOption } from 'echarts';
 
   const { loading, setLoading } = useLoading(true);
   // console.log($t('performance.api.chart.title.visitcount'));
 
-  const visitCountOption = ref({
-    title: {
-      text: '访问量',
-      show: true,
-      textStyle: {
-        fontSize: 18,
+  const { apiurl } = router.currentRoute.value.params;
+  const visitCount = ref<any>([]);
+  interface CreateOptionsParam {
+    titleText: string;
+    xData: any;
+    contentData: any;
+  }
+
+  const createOptions: (param: CreateOptionsParam) => EChartsOption = ({
+    titleText,
+    xData,
+    contentData,
+  }) => {
+    // console.log(titleText, xData, contentData);
+    return {
+      title: {
+        text: titleText,
+        show: true,
+        textStyle: {
+          fontSize: 18,
+        },
       },
-    },
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'cross',
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+          label: {
+            backgroundColor: '#6a7985',
+          },
+        },
       },
-    },
-    xAxis: [
-      {
-        type: 'category',
-        data: [] as string[],
-      },
-    ],
-    yAxis: [
-      {
-        type: 'value',
-      },
-    ],
-    series: [
-      {
-        name: 'count',
-        type: 'line',
-        data: [] as number[],
-      },
-    ],
-  });
+      xAxis: [
+        {
+          type: 'category',
+          data: xData,
+        },
+      ],
+      yAxis: [
+        {
+          type: 'value',
+        },
+      ],
+      series: [
+        {
+          name: 'count',
+          type: 'line',
+          data: contentData,
+        },
+      ],
+    };
+  };
+
+  const apiVital = ref<any>([]);
   const APIVitalsOption = ref({
     title: {
       text: '页面性能',
@@ -137,7 +160,7 @@
             // fontWeight: 'bold',
           },
         },
-        data: [] as unknown as WebVitals['overview'],
+        data: apiVital,
       },
     ],
   });
@@ -154,18 +177,8 @@
   const fetchData = async () => {
     try {
       setLoading(true);
-      const { data } = await queryVisitCountList();
-      const count = data.map((item) => item.count);
-      const timestamp = data.map((item) => item.timestamp);
-      // console.log(res);
-      visitCountOption.value.series[0].data = count;
-      visitCountOption.value.xAxis[0].data = timestamp;
-      const { data: APIVitalsData } = await queryAPIVitalsData();
-      // console.log(webVitalsData);
-      APIVitalsOption.value.series[0].data = APIVitalsData.overview;
-      const { data: pageListRes } = await queryPageListAPI();
-
-      pageList.value = pageListRes;
+      const { data: APIInfoOverviewData } = await queryAPIInfoOverview(apiurl);
+      [apiVital.value, visitCount.value] = APIInfoOverviewData;
     } catch (err) {
       // you can report use errorHandler or other
     } finally {
