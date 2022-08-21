@@ -15,7 +15,7 @@
               {{ $t('overview.card.yesterday') }}
             </a-typography-text>
             <a-typography-text type="danger">
-              103.35
+              {{ Math.floor(Math.random() * 100) }}
               <icon-arrow-rise />
             </a-typography-text>
           </div>
@@ -75,17 +75,15 @@
   :deep(.arco-card-body) {
     width: 100%;
     height: 134px;
-    padding: 0;
   }
 
   .content-wrap {
     width: 100%;
-    padding: 16px;
     white-space: nowrap;
   }
 
   :deep(.content) {
-    float: left;
+    // float: left;
     width: 108px;
     height: 102px;
   }
@@ -103,7 +101,7 @@
   }
 
   .chart {
-    float: right;
+    // float: right;
     width: calc(100% - 108px);
     height: 90px;
     vertical-align: bottom;
