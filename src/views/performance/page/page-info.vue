@@ -87,9 +87,7 @@
   import { useRouter } from 'vue-router';
   import RatioLine from './components/ratio-line.vue';
 
-  const router = useRouter();
   const { loading, setLoading } = useLoading();
-  const { pageid } = router.currentRoute.value.params;
 
   const visitCountOption = ref({
     title: {
