@@ -8,7 +8,6 @@ export interface FP {
 
 export interface PageList {
   url: string;
-  pageid: string;
 }
 
 export interface VisitCount {
@@ -40,42 +39,75 @@ export interface tags {
   data: tagsInfo[];
 }
 
-export function queryFPData() {
-  return axios.get<FP[]>('/api/perfomance/page/fc');
+export function queryOverviewData() {
+  return axios({
+    url: '/api/performance/page/overview',
+    method: 'get',
+  });
 }
 
-export function queryPageList() {
-  return axios.get<PageList[]>('/api/perfomance/page/pagelist');
+export function queryPageList(params: any) {
+  return axios({
+    url: '/api/performance/page/pagelist',
+    method: 'get',
+    params,
+  });
+}
+
+export function queryPageInfoOverview(pageURL: any, params?: any) {
+  return axios({
+    url: `/api/performance/pageinfo/${pageURL}`,
+    method: 'get',
+    params,
+  });
 }
 
 export function queryVisitCountList() {
-  return axios.get<VisitCount[]>('/api/perfomance/pageinfo/visitCountList');
+  return axios.get<VisitCount[]>('/api/performance/pageinfo/visitCountList');
 }
 
 export function queryWebVitalsData() {
-  return axios.get<WebVitals>('/api/perfomance/pageinfo/webvitals');
+  return axios.get<WebVitals>('/api/performance/pageinfo/webvitals');
 }
 
 export function queryStayDurationData() {
-  return axios.get<stayDuration[]>('/api/perfomance/pageinfo/stayDurationList');
+  return axios.get<stayDuration[]>(
+    '/api/performance/pageinfo/stayDurationList'
+  );
 }
 
 export function queryTagsData() {
-  return axios.get<[]>('/api/perfomance/pageinfo/tags');
+  return axios.get<[]>('/api/performance/pageinfo/tags');
 }
 
 export function queryLoadCostData() {
   return axios.get<FP[]>('/api/performance/api/loadCost');
 }
 
-export function queryAPIList() {
-  return axios.get<PageList[]>('/api/perfomance/api/apilist');
+export function queryApiOverviewData() {
+  return axios.get('/api/performance/api/overview');
+}
+
+export function queryAPIList(params: any) {
+  return axios({
+    url: `/api/performance/api/apilist`,
+    method: 'get',
+    params,
+  });
+}
+
+export function queryAPIInfoOverview(apiURL: any, params?: any) {
+  return axios({
+    url: `/api/performance/apiinfo/${apiURL}`,
+    method: 'get',
+    params,
+  });
 }
 
 export function queryAPIVitalsData() {
-  return axios.get<WebVitals>('/api/perfomance/api/apivitals');
+  return axios.get<WebVitals>('/api/performance/api/apivitals');
 }
 
 export function queryPageListAPI() {
-  return axios.get<any>('/api/perfomance/api/pagelist');
+  return axios.get<any>('/api/performance/api/pagelist');
 }

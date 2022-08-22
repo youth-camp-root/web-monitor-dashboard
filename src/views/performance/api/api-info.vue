@@ -16,7 +16,7 @@
         }"
       >
         <a-row :gutter="30">
-          <a-col :flex="20">
+          <a-col :sm="24" :lg="18">
             <a-grid
               :cols="{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2, xxl: 2 }"
               :col-gap="12"
@@ -24,7 +24,7 @@
             >
               <a-grid-item>
                 <Chart
-                  :option="visitCountOption"
+                  :option="createOptions(chartData)"
                   :style="{ width: 'auto', height: '400px' }"
                   :auto-resize="true"
                 >
@@ -40,7 +40,7 @@
               </a-grid-item>
             </a-grid>
           </a-col>
-          <a-col :flex="4">
+          <a-col :xs="24" :sm="24" :lg="6">
             <a-space direction="vertical" fill>
               <a-statistic title="错误统计" :value="2000" show-group-separator>
                 <template #suffix>
@@ -55,13 +55,13 @@
             </a-space>
           </a-col>
         </a-row>
-        <a-card title="页面列表" :bordered="false" class="general-card">
-          <a-list hoverable>
-            <a-list-item v-for="item in pageList.data" :key="item.url">
-              {{ item.url }}
-            </a-list-item>
-          </a-list>
-        </a-card>
+      </a-card>
+      <a-card title="页面列表" :bordered="false" class="general-card">
+        <a-list hoverable>
+          <a-list-item v-for="item in pageList.data" :key="item.url">
+            {{ item.url }}
+          </a-list-item>
+        </a-list>
       </a-card>
     </div>
   </a-spin>
@@ -70,49 +70,65 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import useLoading from '@/hooks/loading';
-  import {
-    queryVisitCountList,
-    queryAPIVitalsData,
-    WebVitals,
-    queryPageListAPI,
-  } from '@/api/performance';
+  import { queryAPIInfoOverview } from '@/api/performance';
+  import router from '@/router';
+  import { EChartsOption } from 'echarts';
 
   const { loading, setLoading } = useLoading(true);
-  // console.log($t('performance.api.chart.title.visitcount'));
 
-  const visitCountOption = ref({
-    title: {
-      text: '访问量',
-      show: true,
-      textStyle: {
-        fontSize: 18,
+  const { apiurl } = router.currentRoute.value.params;
+  const chartData = ref<any>([]);
+  interface CreateOptionsParam {
+    titleText: string;
+    xData: any;
+    contentData: any;
+  }
+
+  const createOptions: (param: CreateOptionsParam) => EChartsOption = ({
+    titleText,
+    xData,
+    contentData,
+  }) => {
+    // console.log(titleText, xData, contentData);
+    return {
+      title: {
+        text: titleText,
+        show: true,
+        textStyle: {
+          fontSize: 18,
+        },
       },
-    },
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'cross',
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+          label: {
+            backgroundColor: '#6a7985',
+          },
+        },
       },
-    },
-    xAxis: [
-      {
-        type: 'category',
-        data: [] as string[],
-      },
-    ],
-    yAxis: [
-      {
-        type: 'value',
-      },
-    ],
-    series: [
-      {
-        name: 'count',
-        type: 'line',
-        data: [] as number[],
-      },
-    ],
-  });
+      xAxis: [
+        {
+          type: 'category',
+          data: xData,
+        },
+      ],
+      yAxis: [
+        {
+          type: 'value',
+        },
+      ],
+      series: [
+        {
+          name: 'count',
+          type: 'line',
+          data: contentData,
+        },
+      ],
+    };
+  };
+
+  const apiVitals = ref<any>([]);
   const APIVitalsOption = ref({
     title: {
       text: '页面性能',
@@ -121,7 +137,7 @@
       trigger: 'item',
     },
     legend: {
-      // orient: 'vertical',
+      orient: 'vertical',
       left: 'right',
     },
     series: [
@@ -133,11 +149,9 @@
         emphasis: {
           label: {
             show: true,
-            // fontSize: '30',
-            // fontWeight: 'bold',
           },
         },
-        data: [] as unknown as WebVitals['overview'],
+        data: apiVitals,
       },
     ],
   });
@@ -154,18 +168,10 @@
   const fetchData = async () => {
     try {
       setLoading(true);
-      const { data } = await queryVisitCountList();
-      const count = data.map((item) => item.count);
-      const timestamp = data.map((item) => item.timestamp);
-      // console.log(res);
-      visitCountOption.value.series[0].data = count;
-      visitCountOption.value.xAxis[0].data = timestamp;
-      const { data: APIVitalsData } = await queryAPIVitalsData();
-      // console.log(webVitalsData);
-      APIVitalsOption.value.series[0].data = APIVitalsData.overview;
-      const { data: pageListRes } = await queryPageListAPI();
-
-      pageList.value = pageListRes;
+      const { data: APIInfoOverviewData } = await queryAPIInfoOverview(apiurl);
+      // [apiVital.value, visitCount.value] = APIInfoOverviewData;
+      apiVitals.value = APIInfoOverviewData.apiVitals;
+      chartData.value = APIInfoOverviewData.chartData;
     } catch (err) {
       // you can report use errorHandler or other
     } finally {

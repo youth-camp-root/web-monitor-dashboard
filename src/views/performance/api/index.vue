@@ -16,7 +16,7 @@
           :col-gap="12"
           :row-gap="16"
         >
-          <a-grid-item v-for="(item, index) in testList" :key="index">
+          <a-grid-item v-for="(item, index) in chartsData" :key="index">
             <Chart
               :option="createOptions(item)"
               :width="'auto'"
@@ -35,12 +35,22 @@
         <a-list hoverable>
           <a-list-item
             v-for="item in apiList"
-            :key="item.url"
-            @click="gotoPage(`apiinfo/${item.pageid}`, {})"
+            :key="item"
+            @click="gotoPage('APIInfo', { apiurl: item })"
           >
-            {{ item.url }}
+            {{ item }}
           </a-list-item>
         </a-list>
+        <a-space
+          fill
+          :style="{
+            display: 'flex',
+            justifyContent: 'center',
+            paddingTop: '20px',
+          }"
+        >
+          <a-pagination :total="apisCount" @change="changHandle"></a-pagination>
+        </a-space>
       </a-card>
       <!-- </a-space> -->
     </div>
@@ -50,46 +60,12 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import useLoading from '@/hooks/loading';
-  import { queryFPData, PageList, queryAPIList } from '@/api/performance';
+  import { queryApiOverviewData, queryAPIList } from '@/api/performance';
   import { EChartsOption } from 'echarts';
   import { useRouter } from 'vue-router';
 
   const router = useRouter();
   const { loading, setLoading } = useLoading();
-  const testList = ref([
-    {
-      titleText: '平均请求耗时',
-      xData: [
-        '01-01',
-        '01-02',
-        '01-03',
-        '01-04',
-        '01-05',
-        '01-06',
-        '01-07',
-        '01-08',
-        '01-09',
-        '01-10',
-      ],
-      contentData: [100, 200, 130, 240, 330, 220, 230, 200, 160, 200],
-    },
-    {
-      titleText: '总请求量',
-      xData: [
-        '01-01',
-        '01-02',
-        '01-03',
-        '01-04',
-        '01-05',
-        '01-06',
-        '01-07',
-        '01-08',
-        '01-09',
-        '01-10',
-      ],
-      contentData: [100, 200, 140, 240, 330, 220, 240, 200, 160, 210],
-    },
-  ]);
 
   interface CreateOptionsParam {
     titleText: string;
@@ -143,59 +119,21 @@
       ],
     };
   };
-  const Option = ref({
-    title: {
-      text: 'FC',
-      show: true,
-      textStyle: {
-        fontSize: 18,
-      },
-    },
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'cross',
-        label: {
-          backgroundColor: '#6a7985',
-        },
-      },
-    },
-    legend: {
-      data: ['FP'],
-    },
-    xAxis: [
-      {
-        type: 'category',
-        data: [] as number[],
-      },
-    ],
-    yAxis: [
-      {
-        type: 'value',
-      },
-    ],
-    series: [
-      {
-        name: 'count',
-        type: 'bar',
-        data: [] as number[],
-      },
-    ],
-  });
-  const apiList = ref<PageList[]>([]);
+
+  const chartsData = ref<any>([]);
+  const apiList = ref([]);
+  const apisCount = ref(0);
   const fetchData = async () => {
     try {
       setLoading(true);
-      const { data } = await queryFPData();
-      const count = data.map((item) => item.count);
-      const value = data.map((item) => item.value);
-      // console.log(res);
-      Option.value.series[0].data = count;
-      Option.value.xAxis[0].data = value;
-      const { data: apiListRes } = await queryAPIList();
-      apiList.value = apiListRes;
-
-      // console.log(data);
+      const { data: overviewData } = await queryApiOverviewData();
+      chartsData.value = overviewData;
+      const { data: apiListRes } = await queryAPIList({
+        count: 10,
+        page: 1,
+      });
+      apiList.value = apiListRes.apiList;
+      apisCount.value = apiListRes.apisCount;
     } catch (err) {
       // you can report use errorHandler or other
     } finally {
@@ -204,10 +142,20 @@
   };
   fetchData();
 
-  const gotoPage = (url: string, params: any) => {
+  const changHandle = async (newPage: any) => {
+    const { data: apiListRes } = await queryAPIList({
+      count: 10,
+      page: newPage,
+    });
+    apiList.value = apiListRes.apiList;
+  };
+  const gotoPage = (urlname: string, params?: any, query?: any) => {
     router.push({
-      path: url,
-      query: params,
+      name: urlname,
+      params: {
+        apiurl: window.btoa(params.apiurl),
+      },
+      query,
     });
   };
 </script>

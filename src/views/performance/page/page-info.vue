@@ -16,23 +16,15 @@
         }"
       >
         <a-row :gutter="30">
-          <a-col :flex="20">
+          <a-col :sm="24" :lg="18">
             <a-grid
-              :cols="{ xs: 1, sm: 1, md: 1, lg: 1, xl: 2, xxl: 3 }"
+              :cols="{ xs: 1, sm: 1, md: 1, lg: 1, xl: 1, xxl: 2 }"
               :col-gap="12"
               :row-gap="16"
             >
-              <a-grid-item>
+              <a-grid-item v-for="item in chartData" :key="item?.titleText">
                 <Chart
-                  :option="visitCountOption"
-                  :style="{ width: 'auto', height: '400px' }"
-                  :auto-resize="true"
-                >
-                </Chart>
-              </a-grid-item>
-              <a-grid-item>
-                <Chart
-                  :option="stayDurationOption"
+                  :option="createOptions(item)"
                   :style="{ width: 'auto', height: '400px' }"
                   :auto-resize="true"
                 >
@@ -48,22 +40,25 @@
               </a-grid-item>
             </a-grid>
           </a-col>
-          <a-col :flex="4">
+          <a-col :xs="24" :sm="24" :lg="6">
             <div>
               <a-typography-title :heading="5" bold="true">
-                错误统计
+                {{ $t('performance.page.overview.errorcount') }}
               </a-typography-title>
-              <a-statistic title="" :value="3030" show-group-separator>
+              <a-statistic title="" :value="errorCount" show-group-separator>
                 <template #suffix>
                   <icon-arrow-rise :style="{ color: 'red' }" />
                 </template>
               </a-statistic>
+              <a-link @click="gotoErrorPage">{{
+                $t('performance.page.overview.errorcount.viewmore')
+              }}</a-link>
               <a-typography-title :heading="5" bold="true">
-                访问信息
+                {{ $t('performance.page.overview.visittags') }}
               </a-typography-title>
               <ratio-line
                 v-for="item in tagsData"
-                :key="item.type"
+                :key="item"
                 :data="item"
               ></ratio-line>
             </div>
@@ -77,57 +72,73 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import useLoading from '@/hooks/loading';
-  import {
-    queryStayDurationData,
-    queryTagsData,
-    queryVisitCountList,
-    queryWebVitalsData,
-    WebVitals,
-  } from '@/api/performance';
-  import { useRouter } from 'vue-router';
+  import { queryPageInfoOverview } from '@/api/performance';
+  import { EChartsOption } from 'echarts';
+  import router from '@/router';
+  import { useI18n } from 'vue-i18n';
   import RatioLine from './components/ratio-line.vue';
 
-  const { loading, setLoading } = useLoading();
+  const { fdURL } = router.currentRoute.value.params;
 
-  const visitCountOption = ref({
-    title: {
-      text: '访问量统计',
-      show: true,
-      textStyle: {
-        fontSize: 18,
-      },
-    },
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'cross',
-        label: {
-          backgroundColor: '#6a7985',
+  const { loading, setLoading } = useLoading();
+  const { t } = useI18n();
+  const overviewData = ref<any>([]);
+  const webVitalData = ref<any>([]);
+  const tagsData = ref<any>([]);
+  const chartData = ref<any>([]);
+  const errorCount = ref<any>(0);
+
+  interface CreateOptionsParam {
+    titleText: string;
+    xData: any;
+    contentData: any;
+  }
+
+  const createOptions: (param: CreateOptionsParam) => EChartsOption = ({
+    titleText,
+    xData,
+    contentData,
+  }) => {
+    return {
+      title: {
+        text: titleText,
+        show: true,
+        textStyle: {
+          fontSize: 18,
         },
       },
-    },
-    xAxis: [
-      {
-        type: 'category',
-        data: [] as string[],
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+          label: {
+            backgroundColor: '#6a7985',
+          },
+        },
       },
-    ],
-    yAxis: [
-      {
-        type: 'value',
-      },
-    ],
-    series: [
-      {
-        name: 'count',
-        type: 'line',
-        data: [] as number[],
-      },
-    ],
-  });
+      xAxis: [
+        {
+          type: 'category',
+          data: xData,
+        },
+      ],
+      yAxis: [
+        {
+          type: 'value',
+        },
+      ],
+      series: [
+        {
+          name: 'count',
+          type: 'line',
+          data: contentData,
+        },
+      ],
+    };
+  };
   const webVitalsOption = ref({
     title: {
-      text: '页面性能',
+      text: t('performance.page.chart.title.webvitals'),
     },
     tooltip: {
       trigger: 'item',
@@ -148,70 +159,50 @@
             show: true,
           },
         },
-        data: [] as unknown as WebVitals['overview'],
+        data: webVitalData,
       },
     ],
   });
-  const stayDurationOption = ref({
-    title: {
-      text: '停留时间',
-      show: true,
-      textStyle: {
-        fontSize: 18,
+
+  const gotoErrorPage = () => {
+    router.push({
+      path: '/error',
+      query: {
+        fdURL,
       },
-    },
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'cross',
-        label: {
-          backgroundColor: '#6a7985',
-        },
-      },
-    },
-    xAxis: [
-      {
-        type: 'category',
-        data: [] as string[],
-      },
-    ],
-    yAxis: [
-      {
-        type: 'value',
-      },
-    ],
-    series: [
-      {
-        name: 'cost-time',
-        type: 'line',
-        data: [] as number[],
-      },
-    ],
-  });
-  const tagsData = ref<any[]>([]);
+    });
+  };
+  function uniqueOfAttr(arr1: any, attr: string) {
+    const res = new Map();
+
+    return arr1.filter(
+      (item: any) => !res.has(item[attr]) && res.set(item[attr], 1)
+    );
+  }
   const fetchData = async () => {
     try {
       setLoading(true);
-      const { data } = await queryVisitCountList();
-      const count = data.map((item) => item.count);
-      const timestamp = data.map((item) => item.timestamp);
-      // console.log(res);
-      visitCountOption.value.series[0].data = count;
-      visitCountOption.value.xAxis[0].data = timestamp;
-      const { data: webVitalsData } = await queryWebVitalsData();
-      // console.log(webVitalsData);
-      webVitalsOption.value.series[0].data = webVitalsData.overview;
-      const { data: stayDurationData } = await queryStayDurationData();
-      // console.log(stayDurationData);
-      const stayDuration = stayDurationData.map((item) => item.stayDuration);
-      const stayDurationTimestamp = stayDurationData.map(
-        (item) => item.timestamp
-      );
-      stayDurationOption.value.series[0].data = stayDuration;
-      stayDurationOption.value.xAxis[0].data = stayDurationTimestamp;
-      const { data: tagsDataRes } = await queryTagsData();
-      tagsData.value = tagsDataRes;
-      console.log(tagsData);
+      // const tagsTempData = ref<any>([]);
+      let tagsTempData: any = [];
+      overviewData.value = await queryPageInfoOverview(fdURL);
+      // [, overviewData.value, tagsTempData] = overviewData.value.data;
+      webVitalData.value = overviewData.value.data.webVitals;
+      chartData.value = overviewData.value.data.chartData;
+      tagsTempData = overviewData.value.data.tagsData;
+      errorCount.value = overviewData.value.data.errorCount;
+
+      ['browser', 'os', 'device'].forEach((name) => {
+        tagsData.value.push({
+          type: name,
+          data: uniqueOfAttr(tagsTempData, name).map((item: any) => {
+            return {
+              name: item[name],
+              value: tagsTempData.filter((tag: any) => tag[name] === item[name])
+                .length,
+            };
+          }),
+        });
+      });
     } catch (err) {
       // you can report use errorHandler or other
     } finally {
